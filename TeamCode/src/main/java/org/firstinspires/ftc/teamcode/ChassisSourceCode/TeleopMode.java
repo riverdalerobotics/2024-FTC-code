@@ -43,7 +43,11 @@ public class TeleopMode extends LinearOpMode {
         imu.resetYaw();
 
         while(opModeIsActive()){
-            double yaw = robotOrientation.getYaw();
+
+            double yaw = robotOrientation.getYaw() - Constants.ChassisConstants.YAWOFFSET;
+            if (yaw<0){
+                yaw += 360;
+            }
             double fwdSpeed = -gamepad1.left_stick_y; //Inverted
             double strafeSpeed = gamepad1.left_stick_x;
             double turnSpeed = gamepad1.right_stick_x;
