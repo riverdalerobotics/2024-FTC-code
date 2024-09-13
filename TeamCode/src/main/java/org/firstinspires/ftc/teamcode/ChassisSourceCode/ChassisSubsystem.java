@@ -67,7 +67,41 @@ public class ChassisSubsystem {
         moveRobotMech(rotY, rotX, turn);
     }
 
-    public void returnToZero(double xPos, double yPos, double yaw){
+    /**
+     * This code allows the robot to return to 0 from where ever on the field as long as there is
+     * nothing in the way
+     *
+     * @param xPos the x position relative to 0
+     * @param yPos the y position relative to 0
+     * @param yaw the yaw of the robot
+     * @param kp the proportional constant for the p controller TODO: this might need to be PID
+     */
+    public void returnToZero(double xPos, double yPos, double yaw, double kp){
+        double xSpeed = -xPos*kp;
+        double ySpeed = -yPos*kp;
+        double turnSpeed = -yaw*kp;
+        fieldOriented(yaw, ySpeed, xSpeed, turnSpeed);
+    }
 
+    /**
+     * This code allows you to go to a desired position from anywhere on the field as long as
+     * there is nothing in the way
+     *
+     * @param xPos the x position relative to 0
+     * @param yPos the y position relative to 0
+     * @param yaw the yaw of the robot
+     * @param kp the proportional constant for the p controller TODO: this might need to be PID
+     * @param xResult the desired x position relative to 0 in whatever unit the xPos is
+     * @param yResult the desired y position relative to 0 in whatever unit the yPos is
+     * @param turnResult the desired angle of the robot relative to 0 in whatever unit the yaw is
+     */
+    public void goToPosition(double xPos, double yPos, double yaw, double kp, double xResult, double yResult, double turnResult){
+        double xError = xPos-xResult;
+        double yError = yPos-yResult;
+        double turnError = yaw - turnResult;
+        double xSpeed = xError*kp;
+        double ySpeed = yError*kp;
+        double turnSpeed = turnError*kp;
+        fieldOriented(yaw, ySpeed, xSpeed, turnSpeed);
     }
 }
