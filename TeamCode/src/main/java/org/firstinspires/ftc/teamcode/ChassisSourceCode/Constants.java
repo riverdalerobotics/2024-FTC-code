@@ -22,13 +22,13 @@ public class Constants {
     }
     /**
      * Auto constants needed for auto
-     * */
+     */
     class AutoConstants{
 
     }
     /**
      * Teleop constants needed for teleop
-     * */
+     */
     class TeleopConstants{
 
     }

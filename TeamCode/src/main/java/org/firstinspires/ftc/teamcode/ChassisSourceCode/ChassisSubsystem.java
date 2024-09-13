@@ -17,7 +17,6 @@ public class ChassisSubsystem {
     DcMotor backRight;
 
     public ChassisSubsystem(DcMotor frontLeftDrive, DcMotor frontRightDrive, DcMotor backLeftDrive, DcMotor backRightDrive){
-
         this.frontLeft = frontLeftDrive;
         this.frontRight = frontRightDrive;
         this.backRight = backRightDrive;
@@ -37,10 +36,10 @@ public class ChassisSubsystem {
     public void moveRobotMech(double fwd, double strafe, double turn){
 
         double denominator = Math.max(Math.abs(fwd)+Math.abs(strafe)+Math.abs(turn), 1);
-        rightBackSpeed = fwd - turn + strafe;
-        leftBackSpeed = fwd + turn + strafe;
-        rightFrontSpeed = fwd - turn - strafe;
-        leftFrontSpeed = fwd + turn - strafe;
+        rightBackSpeed = (fwd - turn + strafe)/denominator;
+        leftBackSpeed = (fwd + turn + strafe)/denominator;
+        rightFrontSpeed = (fwd - turn - strafe)/denominator;
+        leftFrontSpeed = (fwd + turn - strafe)/denominator;
 
         frontLeft.setPower(leftFrontSpeed);
         frontRight.setPower(rightFrontSpeed);
@@ -57,11 +56,10 @@ public class ChassisSubsystem {
      *<p/>
      * <b><u>ALL MOTORS CAP AT ONE</u></b>
      * <p/>
-     * @param yaw the yaw of the robot, <u\>must be updated everytime the opmode loop is run<u/>
+     * @param yaw the yaw of the robot, <u\>must be updated everytime the opmode loop is run
      * @param fwd the foreword speed of the robot relative to the field
      * @param strafe the strafe speed of the robot relative to the field
      * @param turn the spin speed of the robot
-     *
      * */
     public void fieldOriented(double yaw, double fwd, double strafe, double turn){
         double rotX = strafe * Math.cos(-yaw) - fwd* Math.sin(-yaw);
