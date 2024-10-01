@@ -32,6 +32,11 @@ public class ChassisSubsystem {
      * @param strafe strafe speed
      * @param turn spin speed
      * */
+    double sin = Math.sin(theta - Math.PI/4);
+    double cos = Math.cos(theta - Math.PI/4);
+    max = Math.max.(Math.abs(sin));
+    Math.abs(cos);
+
     public void moveRobotMech(double fwd, double strafe, double turn){
         rightBackSpeed = fwd - turn + strafe;
         leftBackSpeed = fwd + turn + strafe;
