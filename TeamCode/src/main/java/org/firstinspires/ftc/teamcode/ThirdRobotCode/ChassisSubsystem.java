@@ -25,17 +25,12 @@ public class ChassisSubsystem {
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-
     /**
      * This is kinda source code for mech drive...
      * @param fwd forward speed
      * @param strafe strafe speed
      * @param turn spin speed
      * */
-    double sin = Math.sin(theta - Math.PI/4);
-    double cos = Math.cos(theta - Math.PI/4);
-    max = Math.max.(Math.abs(sin));
-    Math.abs(cos);
 
     public void moveRobotMech(double fwd, double strafe, double turn){
         rightBackSpeed = fwd - turn + strafe;
@@ -43,9 +38,23 @@ public class ChassisSubsystem {
         rightFrontSpeed = fwd - turn - strafe;
         leftFrontSpeed = fwd + turn - strafe;
 
+        //nerf the speed if over absolute 1
+        double max = Math.max(Math.abs(rightFrontSpeed), Math.abs(rightBackSpeed));
+        max = Math.max(max,Math.abs(leftFrontSpeed));
+        max = Math.max(max, Math.abs(leftBackSpeed));
+
+        if(max > 1.0) {
+            rightBackSpeed /= max;
+            rightFrontSpeed /= max;
+            leftBackSpeed /= max;
+            leftFrontSpeed /= max;
+        }
+
         frontLeft.setPower(leftFrontSpeed);
         frontRight.setPower(rightFrontSpeed);
         backRight.setPower(rightBackSpeed);
         backLeft.setPower(leftBackSpeed);
+
+
     }
 }
