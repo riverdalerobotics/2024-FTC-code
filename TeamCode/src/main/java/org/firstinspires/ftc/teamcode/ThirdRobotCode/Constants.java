@@ -17,11 +17,14 @@ public class Constants {
     class ArmSubsystem{
         public static final double GEARRATIO = 0; //TODO: get this number
         public static final double CLAW_SERVO_START_POSITION = 0; //TODO: get this number
+        public static final double WHEEL_DIAMETER = 0; //TODO: get this number
     }
+
     class SlideSubsystem{
         public static final int FORWARDLIMIT = 0; //TODO: get this number
         public static final int BACKWARDLIMIT = 0; // TODO: get this number
         public static final double GEARDIAMETER = 0; //TODO: get this number
+        public static final double ARM_LENGTH = 0; //TODO: get this number
     }
     /**
      * Auto constants needed for auto

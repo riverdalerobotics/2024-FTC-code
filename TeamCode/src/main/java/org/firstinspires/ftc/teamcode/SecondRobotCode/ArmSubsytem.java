@@ -13,5 +13,4 @@ public class ArmSubsytem {
      return pos;
     }
 
-
 }
