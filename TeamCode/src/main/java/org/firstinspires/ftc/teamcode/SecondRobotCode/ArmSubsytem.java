@@ -13,4 +13,9 @@ public class ArmSubsytem {
      return pos;
     }
 
+    public void gotoPosition() {
+
+    }
+
+
 }

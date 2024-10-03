@@ -18,6 +18,8 @@ public class Constants {
 
         public static final double GEARRATIO = 0; //TODO: get this number
 
+        double KP = 0;
+
     }
     /**
      * Auto constants needed for auto

@@ -28,7 +28,7 @@ public class SlideSubsystem {
 
     public void extendSlide(double motorRotation){
         motorRotation = leftSlideExtend.getCurrentPosition();
-        motorRotation*WHEEL_DIAMETER;
+
     }
 
 
