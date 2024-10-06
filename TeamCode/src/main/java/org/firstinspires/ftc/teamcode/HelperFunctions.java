@@ -7,6 +7,13 @@ public class HelperFunctions {
         return output;
     }
 
+    public static double iController(double ki, double setPoint, double pos){
+        double sum = 0;
+        double error = setPoint - pos;
+        sum += error;
+        return ki*sum;
+    }
+
     public static double dController(double kd, double setpoint, double pos){
         double error = setpoint - pos;
         double olddiff = error;
@@ -16,12 +23,6 @@ public class HelperFunctions {
         return speed;
     }
 
-    public static double iController(double ki, double setPoint, double pos){
-        double sum = 0;
-        double error = setPoint - pos;
-        sum += error;
-        return ki*sum;
-    }
 
     public static double piController(double kp, double ki, double setPoint, double pos){
         double speed = pController(kp, setPoint, pos) + iController(ki, setPoint, pos);
