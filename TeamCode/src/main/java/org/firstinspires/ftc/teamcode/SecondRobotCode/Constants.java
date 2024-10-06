@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.SecondRobotCode;
 
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
+
 public class Constants {
     /**
      * All constants needed for the chassis
@@ -18,6 +20,15 @@ public class Constants {
 
         public static final double GEARRATIO = 0; //TODO: get this number
 
+        double KP = 0;
+        public static final double TOLERANCE = 0;//TODO: find this number
+        public static final double Kp = 0; //TODO: Find P Value
+        public static final double Ki = 0; //TODO: Find I Value
+        public static final double Kd = 0; //TODO: Find D Value
+
+    }
+    public static class ArmExtender {
+       public static final double WHEEDIAMITER = 1; //TODO: Find wheel diameter
     }
     /**
      * Auto constants needed for auto
