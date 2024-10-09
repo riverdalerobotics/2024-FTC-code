@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode.ThirdRobotCode;
 
 
-import static org.firstinspires.ftc.teamcode.ThirdRobotCode.Constants.ArmSubsystem.CLAW_SERVO_START_POSITION;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /* cos(pivot angle) = limit/arm
@@ -41,8 +38,13 @@ public class ArmSubsystem {
 
         timer.reset();
 
-        double output = (error * Kp) + (derivitave * Kd) + (integralSum * Ki);
-        return output;
+        return (error * Kp) + (derivitave * Kd) + (integralSum * Ki);
 
+    }
+
+    public void pivotArmUsingBuiltInStuffs(int angle){
+        armPivotMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armPivotMotor.setTargetPosition(angle);
+        armPivotMotor.setPower(1);
     }
 }
