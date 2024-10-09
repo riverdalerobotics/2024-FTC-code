@@ -6,27 +6,35 @@ public class ArmSubsytem {
 
     DcMotor armMotor;
 
-public void armUp() {
-
-    armMotor.setPower(1);
+    public ArmSubsytem(DcMotor arm){
+        this.armMotor = arm;
     }
-public void armDown(){
-    armMotor.setPower(-1);
-}
 
-public void armReset(){
-    //reset arm position
-}
-public void armBasketPosition(){
-    //set arm position to score basket
-}
-public double getEncoders(){
-    return armMotor.getCurrentPosition();
+    public void armUp() {
 
-}
-public void resetEncoders(){
+        armMotor.setPower(1);
+    }
+    public void armDown(){
+        armMotor.setPower(-1);
+    }
 
-}
+    public void moveArm(double speed){
+        armMotor.setPower(speed);
+    }
+
+    public void armReset(){
+        //reset arm position
+    }
+    public void armBasketPosition(){
+        //set arm position to score basket
+    }
+    public double getEncoders(){
+        return armMotor.getCurrentPosition();
+
+    }
+    public void resetEncoders(){
+
+    }
 
 
 }
