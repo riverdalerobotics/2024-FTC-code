@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.ServoController;
+
 public class HelperFunctions {
     public static double pController(double kp, double setpoint, double pos){
         double error = setpoint-pos;
@@ -15,6 +18,7 @@ public class HelperFunctions {
     }
 
     public static double dController(double kd, double setpoint, double pos){
+
         double error = setpoint - pos;
         double olddiff = error;
         double deltaError = error - olddiff;
