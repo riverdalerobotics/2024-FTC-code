@@ -16,7 +16,12 @@ public class Constants {
      * */
     class ArmSubsystem{
 
+
         public static final double GEARRATIO = 0; //TODO: get this number
+
+        public static final double BUCKETANGLE = 0; //TODO: find angle
+        public static final double BARANGLE = 0; //TODO: find angle
+        public static final double INTAKEANGLE = 0; //TODO: find angle
 
     }
     /**
