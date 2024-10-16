@@ -25,6 +25,8 @@ public class Constants {
         public static final double Kp = 0; //TODO: Find P Value
         public static final double Ki = 0; //TODO: Find I Value
         public static final double Kd = 0; //TODO: Find D Value
+        public static final double ENCODERTICKPERROTATION = 0; //TODO: Find the amount of ticks per rotation
+        public static final double GEARREDUCTION = 0; //TODO: Find gear reduction
 
     }
     public static class ArmExtender {
@@ -33,6 +35,15 @@ public class Constants {
     /**
      * Auto constants needed for auto
      * */
+
+    class intakeConstants {
+        public static final double MAX_INTAKE_POSITION = 0; //TODO: Find the Max Servo position for INTAKE
+        public static final double MIN_INTAKE_POSITION = 0; //TODO: Find the MIN Servo position for INTAKE
+        public static final double MAX_UP_POSITION = 0; //TODO: Find the MAX servo position for moving it UP
+        public static final double MIN_DOWN_POSITION = 0; //TODO: Find the MIN servo position for moving it DOWN
+        public static final double START_INTAKE__POSITION = 0; //TODO: Find the starting position for INTAKE
+        public static final double START_MIDDLE_POSITION = 0; //TODO: Find the starting position for the UP/DOWN Servo
+    }
     class AutoConstants{
 
     }
