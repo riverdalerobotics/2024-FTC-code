@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.ThirdRobotCode;
 
-import static org.firstinspires.ftc.teamcode.ThirdRobotCode.Constants.ArmSubsystem.WHEEL_DIAMETER;
+
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.SecondRobotCode.Constants;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.Constants;
 
 public class SlideSubsystem {
     DcMotor rightSlideExtend;
@@ -29,6 +29,10 @@ public class SlideSubsystem {
     public void extendSlide(double motorRotation){
         motorRotation = leftSlideExtend.getCurrentPosition();
 
+    }
+
+    public double slideLimit(double angle){
+        return Constants.SlideConstants.LIMIT/Math.cos(angle*Math.PI/180);
     }
 
 
