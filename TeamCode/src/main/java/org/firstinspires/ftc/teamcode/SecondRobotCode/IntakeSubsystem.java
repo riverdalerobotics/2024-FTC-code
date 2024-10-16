@@ -2,28 +2,30 @@ package org.firstinspires.ftc.teamcode.SecondRobotCode;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
+
+
 public class IntakeSubsystem {
 
-    Continou
-    Servo upDownMotor;
+    CRServo intakeMotor;
+    CRServo upDownMotor;
 
-    double servoGoesUp = Constants.intakeConstants.MAX_UP_POSITION;
-    double servoGoesDown = Constants.intakeConstants.MIN_DOWN_POSITION;
     public void intakeSpin() {
-        intakeMotor.setDirection(Servo.Direction.FORWARD);
+        intakeMotor.setPower(1);
     }
     public void intakeNonoSpin() {
-        intakeMotor.setDirection();
+        intakeMotor.setPower(0);
+    }
+    public void intakeSpit() {
+        intakeMotor.setPower(-1);
     }
     public void Up() {
-        upDownMotor.setPosition(servoGoesUp);
-        upDownMotor.setDirection(Servo.Direction.FORWARD);
-
+         upDownMotor.setPower(1);
     }
     public void Down() {
-        upDownMotor.setPosition(servoGoesDown);
-        upDownMotor.setDirection(Servo.Direction.REVERSE);
+        upDownMotor.setPower(-1);
+    }
 
     }
 }
