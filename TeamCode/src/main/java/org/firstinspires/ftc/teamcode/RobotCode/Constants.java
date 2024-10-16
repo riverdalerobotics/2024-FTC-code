@@ -14,7 +14,7 @@ public class Constants {
     /**
      * All constants needed for the the arm
      * */
-    class ArmSubsystem{
+    class ArmConstants{
 
         public static final double GEARRATIO = 0; //TODO: get this number
 

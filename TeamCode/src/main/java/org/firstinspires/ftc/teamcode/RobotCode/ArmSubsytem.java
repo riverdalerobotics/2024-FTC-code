@@ -6,9 +6,7 @@ public class ArmSubsytem {
 
     DcMotor armMotor;
 
-    public ArmSubsytem(DcMotor arm){
-        this.armMotor = arm;
-    }
+    public ArmSubsytem(DcMotor arm){this.armMotor = arm;}
 
     public void armUp() {
 

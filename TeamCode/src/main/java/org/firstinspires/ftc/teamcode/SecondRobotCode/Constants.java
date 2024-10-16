@@ -16,9 +16,9 @@ public class Constants {
     /**
      * All constants needed for the the arm
      * */
-    class ArmSubsystem{
+    class ArmConstants{
 
-        public static final double GEARRATIO = 0; //TODO: get this number
+        public static final double GEARRATIO = 1; //TODO: get this number
 
         double KP = 0;
         public static final double TOLERANCE = 0;//TODO: find this number
