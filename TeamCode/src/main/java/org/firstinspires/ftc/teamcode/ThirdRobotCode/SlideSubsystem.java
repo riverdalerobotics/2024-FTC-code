@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.Constants;
 
 public class SlideSubsystem {
-    DcMotor rightSlideExtend;
-    DcMotor leftSlideExtend;
+    static DcMotor rightSlideExtend;
+    static DcMotor leftSlideExtend;
 
     public SlideSubsystem(DcMotor rightExtend, DcMotor leftExtend){
         this.leftSlideExtend = leftExtend;
@@ -21,11 +21,17 @@ public class SlideSubsystem {
         // may reverse these
         // set initial position for motors
     }
-    public void moveSlide(double power){
+    public static void moveSlide(double power){
         leftSlideExtend.setPower(power);
         rightSlideExtend.setPower(power);
     }
-
+    public static void goToPos(double distance){
+        leftSlideExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightSlideExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightSlideExtend.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftSlideExtend.setTargetPosition((int)distance*(int)Constants.SlideConstants.GEARDIAMETER);
+        rightSlideExtend.setTargetPosition((int)distance*(int)Constants.SlideConstants.GEARDIAMETER);
+    }
     public void extendSlide(double motorRotation){
         motorRotation = leftSlideExtend.getCurrentPosition();
 
@@ -34,6 +40,7 @@ public class SlideSubsystem {
     public double slideLimit(double angle){
         return Constants.SlideConstants.LIMIT/Math.cos(angle*Math.PI/180);
     }
+
 
 
 }

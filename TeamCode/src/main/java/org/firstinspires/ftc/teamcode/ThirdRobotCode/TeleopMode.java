@@ -11,6 +11,7 @@ import android.transition.Slide;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp (name = "Nicolas Teleop", group = "Linar OpMode")
@@ -21,7 +22,7 @@ public class TeleopMode {
     DcMotor frontRight;
     DcMotor backLeft;
     DcMotor backRight;
-
+    IMU gyro;
     DcMotor rightSlideExtend;
     DcMotor leftSlideExtend;
 
@@ -32,17 +33,19 @@ public class TeleopMode {
     SlideSubsystem slides;
 
     public void runOpMode(){
+        gyro = hardwareMap.get(IMU.class, "Gyro");
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
+
 
         armPivot = hardwareMap.get(DcMotorEx.class, "armPivot");
 
         telemetry.addData("Status", "Initialized");
         telemetry.addData("ArmEncoder", armPivot.getCurrentPosition());
 
-        chassis = new ChassisSubsystem(frontLeft, frontRight, backLeft, backRight);
+        chassis = new ChassisSubsystem(gyro, frontLeft, frontRight, backLeft, backRight);
         arm = new ArmSubsystem(armPivot);
 
 
