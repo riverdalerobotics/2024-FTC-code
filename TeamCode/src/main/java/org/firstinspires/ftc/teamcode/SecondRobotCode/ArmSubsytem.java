@@ -5,35 +5,41 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.har
 import org.firstinspires.ftc.teamcode.HelperFunctions;
 import org.firstinspires.ftc.teamcode.SecondRobotCode.Constants.ArmExtender;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 public class ArmSubsytem {
- DcMotor armMotor;
+ static DcMotor armMotor;
+ static CRServo dumpyMotor;
 
-     public double getPos() {
-         return armMotor.getCurrentPosition()/360*Constants.ArmSubsystem.GEARRATIO;
+    public double getPos() {
+         return armMotor.getCurrentPosition()/360*Constants.ArmConstants.GEARRATIO;
      }
 
 
-         public void pivotArmUP(int angle) {
-             double ARM_TICK_PER_DEGREE = Constants.ArmSubsystem.ENCODERTICKPERROTATION*Constants.ArmSubsystem.GEARRATIO*Constants.ArmSubsystem.GEARREDUCTION*1/360;
+         public static void pivotArmUP(int angle) {
+             double ARM_TICK_PER_DEGREE = Constants.ArmConstants.ENCODERTICKPERROTATION*Constants.ArmConstants.GEARRATIO*Constants.ArmConstants.GEARREDUCTION*1/360;
              armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
              armMotor.setTargetPosition((int) ARM_TICK_PER_DEGREE*angle);
              armMotor.setPower(ARM_TICK_PER_DEGREE*angle);
          }
 
-             public void pivotArmtoINTAKE(int angle) {
-                 double ARM_TICK_PER_DEGREE = Constants.ArmSubsystem.ENCODERTICKPERROTATION*Constants.ArmSubsystem.GEARRATIO*Constants.ArmSubsystem.GEARREDUCTION*1/360;
+         public static void pivotArmtoINTAKE(int angle) {
+                 double ARM_TICK_PER_DEGREE = Constants.ArmConstants.ENCODERTICKPERROTATION*Constants.ArmConstants.GEARRATIO*Constants.ArmConstants.GEARREDUCTION*1/360;
                  armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                  armMotor.setTargetPosition((int) ARM_TICK_PER_DEGREE*angle);
                  armMotor.setPower(ARM_TICK_PER_DEGREE*angle);
 
              }
-                 public void emergencyStop() {
-                     armMotor.setPower(0);
-                 }
 
+
+          public static void dumpyBucketDeposit() {
+            dumpyMotor.setPower(0.5);
+          }
+          public static void dumpyBucketBackUp() {
+            dumpyMotor.setPower(-0.5);
+          }
 
 
  //public void gotoPos(double angle) {
