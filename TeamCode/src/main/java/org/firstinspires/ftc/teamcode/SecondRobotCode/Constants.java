@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.SecondRobotCode;
 
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
-
 public class Constants {
     /**
      * All constants needed for the chassis
@@ -16,7 +14,7 @@ public class Constants {
     /**
      * All constants needed for the the arm
      * */
-    class ArmConstants{
+    class ArmConstants {
 
         public static final double GEARRATIO = 1; //TODO: get this number
         public static final double ENCODERTICKPERROTATION = 0; //TODO: Find the amount of ticks per rotation

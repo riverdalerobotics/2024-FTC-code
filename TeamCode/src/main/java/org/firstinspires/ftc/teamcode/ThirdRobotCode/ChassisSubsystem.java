@@ -1,7 +1,12 @@
 package org.firstinspires.ftc.teamcode.ThirdRobotCode;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 public class ChassisSubsystem {
     double rightBackSpeed;
@@ -13,18 +18,25 @@ public class ChassisSubsystem {
     DcMotor backLeft;
     DcMotor frontRight;
     DcMotor backRight;
+    IMU gyro;
 
-    public ChassisSubsystem(DcMotor frontLeftDrive, DcMotor frontRightDrive, DcMotor backLeftDrive, DcMotor backRightDrive){
+
+    public ChassisSubsystem(IMU gyro, DcMotor frontLeftDrive, DcMotor frontRightDrive, DcMotor backLeftDrive, DcMotor backRightDrive){
 
         this.frontLeft = frontLeftDrive;
         this.frontRight = frontRightDrive;
         this.backRight = backRightDrive;
         this.backLeft = backLeftDrive;
-
+        this.gyro = gyro;
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-    }
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+        ));
+        gyro.initialize(parameters);
 
+    }
     /**
      * This is kinda source code for mech drive...
      * @param fwd forward speed
@@ -55,6 +67,11 @@ public class ChassisSubsystem {
         backRight.setPower(rightBackSpeed);
         backLeft.setPower(leftBackSpeed);
 
-
     }
+
+    public static double pitch(IMU gyro){
+        YawPitchRollAngles yawPitchRollAngles = gyro.getRobotYawPitchRollAngles();
+        return yawPitchRollAngles.getPitch(AngleUnit.DEGREES);
+    }
+
 }
