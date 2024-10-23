@@ -19,9 +19,21 @@ public class Constants {
 
         public static final double GEARRATIO = 0; //TODO: get this number
 
-        public static final double BUCKETANGLE = 0; //TODO: find angle
-        public static final double BARANGLE = 0; //TODO: find angle
-        public static final double INTAKEANGLE = 0; //TODO: find angle
+        public static final double BUCKET_ANGLE = 0; //TODO: find angle
+        public static final double BAR_ANGLE = 0; //TODO: find angle
+        public static final double INTAKE_ANGLE = 0; //TODO: find angle
+
+    }
+
+    /**
+     * All constants needed for the intake
+     */
+    //unsure if this is needed - EMMANUEL
+    class IntakeConstants{
+
+        public static final double INTAKESAMPLE = 0; //TODO: find angle needed for intaking sample
+        public static final double RELEASESAMPLE = 0; // TODO: find angle needed for releasing sample
+        public static final double RESETPOSITION = 0; // TODO: find default angle of intake (if needed)
 
     }
     /**
