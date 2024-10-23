@@ -25,20 +25,30 @@ public class SlideSubsystem {
         leftSlideExtend.setPower(power);
         rightSlideExtend.setPower(power);
     }
-    public static void goToPos(double distance){
+    public static void goToPosWithSpeed(double distance, double speed){
+        leftSlideExtend.setPower(speed);
+        rightSlideExtend.setPower(speed);
         leftSlideExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightSlideExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightSlideExtend.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftSlideExtend.setTargetPosition((int)distance*(int)Constants.SlideConstants.GEARDIAMETER);
-        rightSlideExtend.setTargetPosition((int)distance*(int)Constants.SlideConstants.GEARDIAMETER);
+        leftSlideExtend.setTargetPosition((int)distance/(int)Constants.SlideConstants.GEARDIAMETER);
+        rightSlideExtend.setTargetPosition((int)distance/(int)Constants.SlideConstants.GEARDIAMETER);
     }
-    public void extendSlide(double motorRotation){
-        motorRotation = leftSlideExtend.getCurrentPosition();
-
+    public static void goToPos(double distance){
+        leftSlideExtend.setPower(Constants.SlideConstants.SPEED);
+        rightSlideExtend.setPower(Constants.SlideConstants.SPEED);
+        leftSlideExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightSlideExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightSlideExtend.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftSlideExtend.setTargetPosition((int)distance/(int)Constants.SlideConstants.GEARDIAMETER);
+        rightSlideExtend.setTargetPosition((int)distance/(int)Constants.SlideConstants.GEARDIAMETER);
     }
 
-    public double slideLimit(double angle){
-        return Constants.SlideConstants.LIMIT/Math.cos(angle*Math.PI/180);
+    public static double getSlidePos(){
+        return leftSlideExtend.getCurrentPosition()* Constants.SlideConstants.GEARDIAMETER;
+    }
+    public static double slideLimit(double angle){
+        return Constants.SlideConstants.LIMIT/Math.cos(angle*Math.PI/180)/Constants.SlideConstants.GEARDIAMETER;
     }
 
 
