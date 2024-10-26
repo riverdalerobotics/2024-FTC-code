@@ -17,15 +17,10 @@ public class Constants {
     class ArmConstants {
 
         public static final double GEARRATIO = 1; //TODO: get this number
-
-        double KP = 0;
-        public static final double TOLERANCE = 0;//TODO: find this number
-        public static final double Kp = 0; //TODO: Find P Value
-        public static final double Ki = 0; //TODO: Find I Value
-        public static final double Kd = 0; //TODO: Find D Value
         public static final double ENCODERTICKPERROTATION = 0; //TODO: Find the amount of ticks per rotation
         public static final double GEARREDUCTION = 0; //TODO: Find gear reduction
-
+        public static final double ARMANGLEUP = 0; //TODO: Find that up arm angle
+        public static final double ARMANGLEDOWN = 0; //TODO: Find that down arm angle lol
     }
     public static class ArmExtender {
        public static final double WHEEDIAMITER = 1; //TODO: Find wheel diameter
