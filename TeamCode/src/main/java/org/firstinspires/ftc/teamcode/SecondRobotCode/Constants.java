@@ -15,7 +15,10 @@ public class Constants {
      * All constants needed for the the arm
      * */
     class ArmConstants {
-
+        public static final double Kd = 0; //TODO: find this number
+        public static final double Ki = 0; //TODO: find this number
+        public static final double Kp = 0; //TODO: find this number
+        public static final double TOLERANCE = 0; //TODO: find this number
         public static final double GEARRATIO = 1; //TODO: get this number
         public static final double ENCODERTICKPERROTATION = 0; //TODO: Find the amount of ticks per rotation
         public static final double GEARREDUCTION = 0; //TODO: Find gear reduction

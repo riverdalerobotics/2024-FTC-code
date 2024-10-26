@@ -4,21 +4,21 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.HelperFunctions;
 
 public class ArmSubsytem {
-    DcMotor armMotor;
+    static DcMotor armMotor;
 
     public double getPos() {
         return armMotor.getCurrentPosition() / 360 * Constants.ArmConstants.GEARRATIO;
     }
 
 
-    public void pivotArmUP(int angle) {
+    public static void pivotArmUP(int angle) {
         double ARM_TICK_PER_DEGREE = Constants.ArmConstants.ENCODERTICKPERROTATION * Constants.ArmConstants.GEARRATIO * Constants.ArmConstants.GEARREDUCTION * 1 / 360;
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setTargetPosition((int) ARM_TICK_PER_DEGREE * angle);
         armMotor.setPower(ARM_TICK_PER_DEGREE * angle);
     }
 
-    public void pivotArmtoINTAKE(int angle) {
+    public static void pivotArmtoINTAKE(int angle) {
         double ARM_TICK_PER_DEGREE = Constants.ArmConstants.ENCODERTICKPERROTATION * Constants.ArmConstants.GEARRATIO * Constants.ArmConstants.GEARREDUCTION * 1 / 360;
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setTargetPosition((int) ARM_TICK_PER_DEGREE * angle);

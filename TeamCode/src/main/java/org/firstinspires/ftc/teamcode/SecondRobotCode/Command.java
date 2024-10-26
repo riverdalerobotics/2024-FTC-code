@@ -28,15 +28,15 @@ public class Command {
     }
 
 
-    public static void score() throws InterruptedException {
-        armExtender.armExtends();
-
-        ArmSubsytem.dumpyBucketDeposit();
-
-        ArmSubsytem.dumpyBucketBackUp();
-
-        armExtender.armUnextends();
-    }
+//    public static void score() throws InterruptedException {
+//        armExtender.armExtends();
+//
+//        ArmSubsytem.dumpyBucketDeposit();
+//
+//        ArmSubsytem.dumpyBucketBackUp();
+//
+//        armExtender.armUnextends();
+//    }
 
     //ArmExtender Commands
 
