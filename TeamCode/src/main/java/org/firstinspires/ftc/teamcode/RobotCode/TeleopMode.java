@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class TeleopMode {
     private ElapsedTime runtime = new ElapsedTime();
     public void runOpMode(){
-        Commands.scoreBucket();
+        Commands.teleopCommands.scoreBucket();
 
     }
 
