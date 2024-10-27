@@ -10,22 +10,30 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class armExtender {
-    DcMotor armExtenderMotorRight;
-    DcMotor getArmExtenderMotorLeft;
+    static DcMotor armExtenderMotor;
 
-    public void armExtends() {
 
-        double encoderValue = armExtenderMotorRight.getCurrentPosition();
+    public static void armExtends() {
+
+        double encoderValue = armExtenderMotor.getCurrentPosition();
         double motorRotation = ArmExtender.WHEEDIAMITER;
 
         double measurement = motorRotation*encoderValue;
 
-        armExtenderMotorRight.setTargetPosition( );
-
+        armExtenderMotor.setTargetPosition((int) measurement);
+        armExtenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         telemetry.addData("Measurement moved", measurement);
 
 
+        }
+
+        public static void armUnextends() {
+        double encoderValue = armExtenderMotor.getCurrentPosition();
+        double motorRotation = ArmExtender.WHEEDIAMITER;
+        double measurement = motorRotation*encoderValue;
+        armExtenderMotor.setTargetPosition((int) measurement);
+        armExtenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
 }
 
