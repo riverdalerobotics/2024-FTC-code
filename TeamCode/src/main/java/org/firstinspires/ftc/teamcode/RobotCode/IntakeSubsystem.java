@@ -7,15 +7,21 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class IntakeSubsystem {
 
-    CRServo intakeServo;
+    static CRServo intakeServo;
+    static Servo wrist;
 
-public void IntakePowerOn() {
-    intakeServo.setPower(0.5);
+public static void intakePowerOn(double power) {
+    intakeServo.setPower(power);
 }
 
-public void intakePowerOff(){
+public static void intakePowerOff(){
 intakeServo.setPower(0);
 
+}
+
+public static void moveWrist(double position){
+
+    wrist.setPosition(position);
 }
 }
 

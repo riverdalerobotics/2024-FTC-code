@@ -24,6 +24,8 @@ public class ArmSubsystem {
         armMotor.setPower(1);
         armMotor.setTargetPosition((int)angle);
     }
+
+
 //
 //    public void armReset(){
 //        //reset arm position
