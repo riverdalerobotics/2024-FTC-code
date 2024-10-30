@@ -26,9 +26,17 @@ public class Constants {
         public static final double BUCKET_ANGLE = 0;//TODO: find this number
         public static final double INTAKE_ANGLE = 0;//TODO: find this number
         public static final double INTAKE_SPEED = 0;//TODO: find this number
+
     }
 
     static class SlideConstants {
+        public static final double INTAKE_MIN = 0;//TODO: find this number
+        public static final double INTAKE_MAX = 0;//TODO: find this number
+        public static final double TOLERANCE = 0;//TODO: find this number
+        public static final double kp = 0;//TODO: find this number
+        public static final double ki = 0;//TODO: find this number
+        public static final double kd = 0;//TODO: find this number
+        public static final double kf = 0;//TODO: find this number
         public static final int SPEED = 0;//TODO: find this number
         public static final int FORWARDLIMIT = 0; //TODO: get this number
         public static final int BACKWARDLIMIT = 0; // TODO: get this number
@@ -42,6 +50,7 @@ public class Constants {
         public static final double INTAKE_SPEED = 0; //TODO: find this number
     }
     class IntakeConstants{
+        public static final long WAIT_TIME=0;//TODO: find this number
         public static final double SCORE_POSITION = 0;//TODO: find this number
         public static final double SCORE_SPEED = 0;//TODO: find this number
         public static final double INTAKE_POSITION = 0;//TODO: find this number

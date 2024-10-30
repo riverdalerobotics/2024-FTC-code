@@ -6,7 +6,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 import com.qualcomm.robotcore.hardware.IMU;
 
 public class Commands {
-    static class teleopCommands {
+    static class teleopCommands{
         public static void climbPtOne() {
             SlideSubsystem.goToPos(Constants.SlideConstants.CLIMB_UP);
         }
@@ -36,9 +36,12 @@ public class Commands {
             telemetry.addLine("Im Scoring");
             telemetry.update();
             ArmSubsystem.pivotArm(Constants.ArmConstants.BUCKET_ANGLE, Constants.ArmConstants.SCORE_SPEED);
-            while (SlideSubsystem.rightSlideExtend.isBusy()) {
-                if (SlideSubsystem.rightSlideExtend.getTargetPosition() > SlideSubsystem.slideLimit(ArmSubsystem.getPos())) {
-                    SlideSubsystem.goToPos(SlideSubsystem.slideLimit(ArmSubsystem.getPos()) * Constants.SlideConstants.GEARDIAMETER);
+            while (SlideSubsystem.leftSlideExtend.isBusy()) {
+                if (SlideSubsystem.pidfController.getTargetPosition() > SlideSubsystem.slideLimit(ArmSubsystem.getPos())) {
+                    SlideSubsystem.newGoToPos(SlideSubsystem.slideLimit(ArmSubsystem.getPos()) * Constants.SlideConstants.GEARDIAMETER);
+                }
+                else{
+                    SlideSubsystem.newGoToPos(Constants.SlideConstants.SCORE_BUCKET);
                 }
             }
             IntakeSubsystem.pivotIntake(Constants.IntakeConstants.SCORE_POSITION);
@@ -47,17 +50,25 @@ public class Commands {
             telemetry.update();
         }
 
-        public static void intake(char teamColour) {
+        public static void intake(char teamColour) throws InterruptedException {
             ArmSubsystem.pivotArm(Constants.ArmConstants.INTAKE_ANGLE, Constants.ArmConstants.INTAKE_SPEED);
-            SlideSubsystem.goToPosWithSpeed(SlideSubsystem.slideLimit(ArmSubsystem.getPos()), Constants.SlideConstants.INTAKE_SPEED);
+            SlideSubsystem.newGoToPos(SlideSubsystem.slideLimit(ArmSubsystem.getPos()));
+            SlideSubsystem.pidfController.setOutputBounds(Constants.SlideConstants.INTAKE_MIN, Constants.SlideConstants.INTAKE_MAX);
             IntakeSubsystem.pivotIntake(Constants.IntakeConstants.INTAKE_POSITION);
-            while ((IntakeSubsystem.getColour() == teamColour || IntakeSubsystem.getColour() == 'y')&&SlideSubsystem.leftSlideExtend.isBusy()) {
+            while ((IntakeSubsystem.getColour() != teamColour || IntakeSubsystem.getColour() != 'y')&&SlideSubsystem.leftSlideExtend.isBusy()) {
                 IntakeSubsystem.spinIntake(Constants.IntakeConstants.INTAKE_SPEED);
+                if(IntakeSubsystem.getColour() == teamColour || IntakeSubsystem.getColour() == 'y'){
+                    Thread.sleep(Constants.IntakeConstants.WAIT_TIME);
+                }
             }
             IntakeSubsystem.spinIntake(0);
             SlideSubsystem.goToPos(SlideSubsystem.getSlidePos());
             ArmSubsystem.pivotArm(Constants.ArmConstants.BUCKET_ANGLE, Constants.ArmConstants.SCORE_SPEED);
             telemetry.addLine("I HAVE A PIECE");
+            SlideSubsystem.pidfController.setOutputBounds(1,1);
         }
+    }
+    class Autos{
+
     }
 }
