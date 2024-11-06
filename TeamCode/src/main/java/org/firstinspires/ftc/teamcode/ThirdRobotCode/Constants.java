@@ -4,19 +4,20 @@ public class Constants {
     /**
      * All constants needed for the chassis
      * */
-    class ChassisConstants{
+    static class ChassisConstants{
         public static final int WHEELDIAMATER = 0; //TODO: find this number
-        public static final double WHEELCIRCUMFRANCE = WHEELDIAMATER* Math.PI;
-        public static final double CHASSISWIDTH = 0; //TODO: find this number
-        public static final double CHASSISLENGTH = 0; // TODO: find this number
+        public static final double WHEEL_CIRCUMFERENCE = WHEELDIAMATER* Math.PI;
+        public static final double CHASSIS_WIDTH = 0; //TODO: find this number
+        public static final double CHASSIS_LENGTH = 0; // TODO: find this number
+
 
     }
     /**
      * All constants needed for the the arm
      * */
-    class ArmConstants{
+    static class ArmConstants{
         public static final double START_CLIMB = 0; // TODO: find this number
-        public static final double GEARRATIO = 0; //TODO: get this number
+        public static final double GEAR_RATIO = 0; //TODO: get this number
         public static final double CLAW_SERVO_START_POSITION = 0; //TODO: get this number
         public static final double WHEEL_DIAMETER = 0; //TODO: get this number
         public static final double CLIMB_UP_ANGLE = 0; //TODO: find this number
@@ -38,8 +39,9 @@ public class Constants {
         public static final double kd = 0;//TODO: find this number
         public static final double kf = 0;//TODO: find this number
         public static final int SPEED = 0;//TODO: find this number
-        public static final int FORWARDLIMIT = 0; //TODO: get this number
-        public static final int BACKWARDLIMIT = 0; // TODO: get this number
+        public static final double ABSOLUTE_LIMIT = 0;//TODO: find this number
+        public static final int FORWARD_LIMIT = 0; //TODO: get this number
+        public static final int BACKWARD_LIMIT = 0; // TODO: get this number
         public static final double GEARDIAMETER = 0; //TODO: get this number
         public static final double LIMIT = 41-Math.cos(85*Math.PI/180);
         public static final double ARM_LENGTH = 0; //TODO: get this number
@@ -59,8 +61,8 @@ public class Constants {
     /**
      * Auto constants needed for auto
      * */
-    class AutoConstants{
-
+    static class AutoConstants{
+        public static final double[] SCORE_POS = {0,0,0};
     }
     /**
      * Teleop constants needed for teleop

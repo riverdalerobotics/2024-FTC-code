@@ -1,14 +1,11 @@
 package org.firstinspires.ftc.teamcode.ThirdRobotCode;
 
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-/* cos(pivot angle) = limit/arm
-*
-*/
+
 public class ArmSubsystem {
     static DcMotorEx armPivotMotor;
 
@@ -22,6 +19,11 @@ public class ArmSubsystem {
 
     static int armPivotMotorPosition;
     static PIDFCoefficients values = new PIDFCoefficients(Kp, Ki, Kd, 0.7);
+
+    /**
+     * The subsystem of the arm
+     * @param armPivot the arm motor, must be static and DcMotor<b>EX</b>
+     */
     public ArmSubsystem(DcMotorEx armPivot) {
         this.armPivotMotor = armPivot;
     }
@@ -44,14 +46,14 @@ public class ArmSubsystem {
 
     }
     public static double getPos(){
-        return armPivotMotor.getCurrentPosition()* Constants.ArmConstants.GEARRATIO/360;
+        return armPivotMotor.getCurrentPosition()* Constants.ArmConstants.GEAR_RATIO /360;
     }
-    public static void pivotArmUsingBuiltInStuffs(int angle){
-        int rotations = angle*(int) Constants.ArmConstants.GEARRATIO/360;
+    public static void pivotArmUsingBuiltInStuffs(double angle, double speed){
+        double rotations = angle*(int) Constants.ArmConstants.GEAR_RATIO /360;
         armPivotMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         armPivotMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, values);
-        armPivotMotor.setTargetPosition(rotations);
-        armPivotMotor.setPower(1);
+        armPivotMotor.setTargetPosition((int)rotations);
+        armPivotMotor.setPower(speed);
     }
 
 }
