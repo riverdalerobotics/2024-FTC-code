@@ -14,8 +14,8 @@ public class TestOpMode extends LinearOpMode {
         waitForStart();
         while(opModeIsActive()){
             double power = gamepad1.left_stick_y;
-            testMotor.setPower(power*0.1);
-            telemetry.addData("Motor Position", testMotor.getCurrentPosition());
+            testMotor.setPower(power*0.3);
+            telemetry.addData("Motor Position", testMotor.getCurrentPosition()/537.6);
             telemetry.update();
         }
     }

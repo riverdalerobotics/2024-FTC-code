@@ -9,15 +9,16 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 import android.transition.Slide;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp (name = "TestOpMode", group = "Linar OpMode")
+@TeleOp (name = "TestOpMode", group = "Linear OpMode")
 
-public class TeleopMode {
+public class TeleopMode extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     DcMotor frontLeft;
     DcMotor frontRight;
