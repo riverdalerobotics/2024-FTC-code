@@ -8,13 +8,14 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 
 import android.transition.Slide;
 
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp (name = "Nicolas Teleop", group = "Linar OpMode")
+@TeleOp (name = "TestOpMode", group = "Linar OpMode")
 
 public class TeleopMode {
     private ElapsedTime runtime = new ElapsedTime();
@@ -31,6 +32,7 @@ public class TeleopMode {
     ChassisSubsystem chassis;
     ArmSubsystem arm;
     SlideSubsystem slides;
+    SparkFunOTOS otos;
 
     public void runOpMode(){
         gyro = hardwareMap.get(IMU.class, "Gyro");
@@ -39,13 +41,13 @@ public class TeleopMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
 
-
+        otos = hardwareMap.get(SparkFunOTOS.class, "OTOS");
         armPivot = hardwareMap.get(DcMotorEx.class, "armPivot");
 
         telemetry.addData("Status", "Initialized");
         telemetry.addData("ArmEncoder", armPivot.getCurrentPosition());
 
-        chassis = new ChassisSubsystem(gyro, frontLeft, frontRight, backLeft, backRight);
+        chassis = new ChassisSubsystem(gyro, frontLeft, frontRight, backLeft, backRight, otos);
         arm = new ArmSubsystem(armPivot);
 
 
