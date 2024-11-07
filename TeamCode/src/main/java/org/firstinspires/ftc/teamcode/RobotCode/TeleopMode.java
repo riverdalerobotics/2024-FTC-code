@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp (name = "Nicolas Teleop", group = "Linar OpMode")
+@TeleOp (name = "Nicolas Teleop", group = "Linear OpMode")
 
 public class TeleopMode extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();

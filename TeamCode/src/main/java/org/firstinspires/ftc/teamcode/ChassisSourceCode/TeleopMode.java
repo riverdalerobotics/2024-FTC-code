@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
-@TeleOp (name = "Field Oriented Test OpMode", group = "Linar OpMode")
+@TeleOp (name = "Field Oriented Test OpMode", group = "Linear OpMode")
 
 public class TeleopMode extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
