@@ -24,15 +24,17 @@ public class MecanumChassis extends LinearOpMode {
         double strafe = gamepad1.left_stick_x;
         double turn = gamepad1.right_stick_x;
 
-        leftFront = speed+turn +strafe;
+        leftFront = speed+turn -strafe;
         rightFront = speed-turn-strafe;
-        leftBack = speed+turn-strafe;
+        leftBack = speed+turn+strafe;
         rightBack = speed-turn+strafe;
 
         motorLeftF.setPower(leftFront);
         motorLeftB.setPower(leftBack);
         motorRightF.setPower(rightFront);
         motorRightB.setPower(rightBack);
+
+        //**
 
     }
 

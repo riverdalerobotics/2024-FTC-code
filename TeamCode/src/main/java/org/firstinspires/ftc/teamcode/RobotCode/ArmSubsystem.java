@@ -4,10 +4,10 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class ArmSubsystem {
 
-    static DcMotorEx armMotor;
+    DcMotor armMotor;
     int armMotorPosition;
 
-    public ArmSubsystem(DcMotorEx arm){
+    public ArmSubsystem(DcMotor arm){
         this.armMotor = arm;
     }
 
@@ -19,10 +19,14 @@ public class ArmSubsystem {
         armMotor.setPower(-1);
     }
 
-    public static void moveArm(double angle){
+    public void moveArm(double angle){
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower(1);
         armMotor.setTargetPosition((int)angle);
+    }
+
+    public void moveArmManuel(double speed){
+        armMotor.setPower(speed);
     }
 
 

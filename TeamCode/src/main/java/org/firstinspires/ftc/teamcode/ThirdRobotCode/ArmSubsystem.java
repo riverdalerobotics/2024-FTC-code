@@ -10,7 +10,7 @@ public class ArmSubsystem {
     static DcMotorEx armPivotMotor;
 
     static double integralSum = 0;
-    static double Kp = 0;
+    static double Kp = 0.1;
     static double Ki = 0;
     static double Kd = 0;
 

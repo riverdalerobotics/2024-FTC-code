@@ -1,30 +1,45 @@
 package org.firstinspires.ftc.teamcode.SecondRobotCode;
 
-public class Command {
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-    //Arm Commands
-    public static void armGoesUp() {
-        ArmSubsytem.pivotArmUP((int) Constants.ArmConstants.ARMANGLEUP);
+import java.net.CacheRequest;
+
+public class Command {
+    DcMotor arm;
+    CRServo intake;
+    CRServo upDown;
+
+    public Command(DcMotor arm, CRServo intake, CRServo upDown){
+        this.arm = arm;
+        this.intake = intake;
+        this.upDown = upDown;
     }
-    public static void armGoesDown() {
-        ArmSubsytem.pivotArmtoINTAKE((int) Constants.ArmConstants.ARMANGLEDOWN);
+    IntakeSubsystem intakeSubsystem = new IntakeSubsystem(intake, upDown);
+    ArmSubsytem armSubsytem = new ArmSubsytem(arm);
+    //Arm Commands
+    public void armGoesUp() {
+        armSubsytem.pivotArmUP((int) Constants.ArmConstants.ARMANGLEUP);
+    }
+    public void armGoesDown() {
+        armSubsytem.pivotArmtoINTAKE((int) Constants.ArmConstants.ARMANGLEDOWN);
     }
 
     //Intake Commands
     //yummy, consume the piece
 
-    public static void intake() throws InterruptedException {
-        ArmSubsytem.pivotArmtoINTAKE((int) Constants.ArmConstants.ARMANGLEDOWN);
+    public void intake() throws InterruptedException {
+        armSubsytem.pivotArmtoINTAKE((int) Constants.ArmConstants.ARMANGLEDOWN);
         Thread.sleep(50);
-        IntakeSubsystem.intakeSpin(1);
+        intakeSubsystem.intakeSpin(1);
         Thread.sleep(50);
-        IntakeSubsystem.intakeSpin(0);
+        intakeSubsystem.intakeSpin(0);
         Thread.sleep(50);
-        ArmSubsytem.pivotArmUP((int) Constants.ArmConstants.ARMANGLEUP);
+        armSubsytem.pivotArmUP((int) Constants.ArmConstants.ARMANGLEUP);
         Thread.sleep(50);
-        IntakeSubsystem.intakeSpin(-1);
+        intakeSubsystem.intakeSpin(-1);
         Thread.sleep(50);
-        IntakeSubsystem.intakeSpin(0);
+        intakeSubsystem.intakeSpin(0);
     }
 
 

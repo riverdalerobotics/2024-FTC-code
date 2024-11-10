@@ -8,25 +8,30 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class IntakeSubsystem{
 
-    static CRServo intakeMotor;
-    static CRServo upDownMotor;
+    CRServo intakeMotor;
 
-    public static void intakeSpin(double power) throws InterruptedException {
+    CRServo upDownMotor;
+    public IntakeSubsystem(CRServo intakeMotor, CRServo upDownMotor){
+        this.intakeMotor = intakeMotor;
+        this.upDownMotor = upDownMotor;
+    }
+
+    public void intakeSpin(double power) throws InterruptedException {
 
 
         intakeMotor.setPower(power);
         intakeMotor.wait(1000);
     }
-    public static void intakeNonoSpin(double power) {
+    public void intakeNonoSpin(double power) {
         intakeMotor.setPower(power);
     }
-    public static void intakeSpit(double power) {
+    public void intakeSpit(double power) {
         intakeMotor.setPower(power);
     }
-    public static void Up(double power) {
+    public void Up(double power) {
          upDownMotor.setPower(power);
     }
-    public static void Down(double power) {
+    public void Down(double power) {
         upDownMotor.setPower(power);
     }
     public void hello(){
