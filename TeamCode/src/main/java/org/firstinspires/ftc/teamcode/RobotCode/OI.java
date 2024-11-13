@@ -19,9 +19,14 @@ public class OI{
     }
     public static double moveWrist(){
         return 0.0;
+        //todo: map this to bumpers
     }
     public static double moveIntake(){
         return operatorController.right_stick_y;
+    }
+
+    public static boolean testArmAngle(){
+        return operatorController.b;
     }
 
 }

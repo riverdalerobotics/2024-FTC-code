@@ -17,8 +17,6 @@ public class Commands {
     }
     ArmSubsystem armSubsytem = new ArmSubsystem(arm);
     IntakeSubsystem intake = new IntakeSubsystem(intakeServo, wrist);
-    class teleopCommands {
-
 
 
         public void scoreBucket() {
@@ -40,7 +38,10 @@ public class Commands {
             intake.intakePowerOn(Constants.IntakeConstants.INTAKE_SAMPLE);
         }
 
+        public void moveArm90Degrees(){
+            armSubsytem.moveArm(90);
+        }
 
-    }
+
 }
 
