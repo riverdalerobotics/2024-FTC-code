@@ -20,18 +20,18 @@ import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 public class ChassisSubsystem {
-    private static final TrajectoryAccelerationConstraint ACCEL_CONSTRAINT = getAccelerationConstraint(MAX_ACCEL);
-    private static final TrajectoryVelocityConstraint VEL_CONSTRAINT = SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH);
-    static double rightBackSpeed;
-    static double rightFrontSpeed;
-    static double leftBackSpeed;
-    static double leftFrontSpeed;
-    static SparkFunOTOS myAwtos;
-    static DcMotor frontLeft;
-    static DcMotor backLeft;
-    static DcMotor frontRight;
-    static DcMotor backRight;
-    static IMU gyro;
+    private final TrajectoryAccelerationConstraint ACCEL_CONSTRAINT = getAccelerationConstraint(MAX_ACCEL);
+    private final TrajectoryVelocityConstraint VEL_CONSTRAINT = SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH);
+    double rightBackSpeed;
+    double rightFrontSpeed;
+    double leftBackSpeed;
+    double leftFrontSpeed;
+    SparkFunOTOS myAwtos;
+    DcMotor frontLeft;
+    DcMotor backLeft;
+    DcMotor frontRight;
+    DcMotor backRight;
+    IMU gyro;
 
 
     public ChassisSubsystem(IMU gyro, DcMotor frontLeftDrive, DcMotor frontRightDrive, DcMotor backLeftDrive, DcMotor backRightDrive, SparkFunOTOS otos){
@@ -58,7 +58,7 @@ public class ChassisSubsystem {
      * @param turn spin speed
      * */
 
-    public static void moveRobotMech(double fwd, double strafe, double turn){
+    public void moveRobotMech(double fwd, double strafe, double turn){
         rightBackSpeed = fwd - turn + strafe;
         leftBackSpeed = fwd + turn + strafe;
         rightFrontSpeed = fwd - turn - strafe;
@@ -95,24 +95,24 @@ public class ChassisSubsystem {
      * @param strafe the strafe speed of the robot relative to the field
      * @param turn the spin speed of the robot
      * */
-    public static void fieldOriented(double yaw, double fwd, double strafe, double turn){
+    public void fieldOriented(double yaw, double fwd, double strafe, double turn){
         double rotX = strafe * Math.cos(-yaw) - fwd* Math.sin(-yaw);
         double rotY = strafe * Math.sin(-yaw) + fwd * Math.cos(-yaw);
         moveRobotMech(rotY, rotX, turn);
     }
 
-    public static Pose2d getBotPos(){
+    public Pose2d getBotPos(){
         double x = myAwtos.getPosition().x;
         double y = myAwtos.getPosition().y;
         double h = myAwtos.getPosition().h;
         return new Pose2d(x, y, h);
     }
 
-    public static double pitch(IMU gyro){
+    public double pitch(){
         YawPitchRollAngles yawPitchRollAngles = gyro.getRobotYawPitchRollAngles();
         return yawPitchRollAngles.getPitch(AngleUnit.DEGREES);
     }
-    static public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
+    public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
         return new TrajectoryBuilder(startPose, VEL_CONSTRAINT, ACCEL_CONSTRAINT);
     }
 

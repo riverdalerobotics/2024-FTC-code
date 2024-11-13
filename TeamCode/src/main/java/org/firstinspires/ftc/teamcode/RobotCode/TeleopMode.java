@@ -27,7 +27,7 @@ public class TeleopMode extends LinearOpMode{
 //        wrist = hardwareMap.get(Servo.class, "Wrist");
 //        intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
         ChassisSubsystem chassis = new ChassisSubsystem(left, right);
-        ArmSubsytem arm = new ArmSubsytem(armPivot);
+        ArmSubsystem arm = new ArmSubsystem(armPivot);
         OI oi = new OI(gamepad1, gamepad2);
        // IntakeSubsystem intake = new IntakeSubsystem(intakeServo, wrist);
         while(opModeIsActive()){

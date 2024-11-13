@@ -11,10 +11,15 @@ import android.transition.Slide;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.IntakeSubsystem;
 
 @TeleOp (name = "TestOpMode", group = "Linear OpMode")
 
@@ -35,33 +40,31 @@ public class TeleopMode extends LinearOpMode {
     SlideSubsystem slides;
     SparkFunOTOS otos;
 
-    public void runOpMode(){
-        gyro = hardwareMap.get(IMU.class, "Gyro");
-        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        backRight = hardwareMap.get(DcMotor.class, "backRight");
+    public void runOpMode() throws InterruptedException{
+        CRServo intakeServo;
+        Servo wrist;
+        ColorSensor colorSensor;
+        intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
+        wrist = hardwareMap.get(Servo.class, "wrist");
+        colorSensor = hardwareMap.get(ColorSensor.class, "ColourSensor");
+        IntakeSubsystem intake = new IntakeSubsystem(intakeServo, wrist, colorSensor);
+        waitForStart();
 
-        otos = hardwareMap.get(SparkFunOTOS.class, "OTOS");
-        armPivot = hardwareMap.get(DcMotorEx.class, "armPivot");
+        while(opModeIsActive()) {
+            char colour = intake.getColour();
+            if(colour == 'b'){
+                while(colour == 'b'){
 
-        telemetry.addData("Status", "Initialized");
-        telemetry.addData("ArmEncoder", armPivot.getCurrentPosition());
-
-        chassis = new ChassisSubsystem(gyro, frontLeft, frontRight, backLeft, backRight, otos);
-        arm = new ArmSubsystem(armPivot);
-
-
-        double fwdPwr;
-        double strafePwr;
-        double rotationPwr;
-        double armPwr;
-
-        while(linearOpMode.opModeIsActive()) {
-            fwdPwr = -gamepad1.left_stick_y;
-            strafePwr = -gamepad1.left_stick_x;
-            rotationPwr = -gamepad1.right_stick_x;
-            armPwr = -gamepad2.left_stick_y;
+                }
+                intake.spinIntake(0.1);
+                Thread.sleep(100);
+                intake.spinIntake(0);
+            }
+            else{
+                intake.spinIntake(-0.5);
+            }
+            telemetry.addData("Colour: ", intake.getColour());
+            telemetry.update();
         }
     }
 

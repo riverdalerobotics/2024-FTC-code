@@ -5,25 +5,25 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class IntakeSubsystem {
-    static CRServo intakeServo;
-    static Servo wrist;
-    static ColorSensor colour;
+    CRServo intakeServo;
+    Servo wrist;
+    ColorSensor colour;
     public IntakeSubsystem (CRServo intakeMotor, Servo wristServo, ColorSensor colorSensor){
         this.wrist = wristServo;
         this.intakeServo = intakeMotor;
         this.colour = colorSensor;
     }
-    public static void pivotIntake(double angle){
+    public void pivotIntake(double angle){
         if (angle>180){
             angle = angle-360;
         }
         double newAngle = angle/180;
         wrist.setPosition(newAngle);
     }
-    public static void spinIntake(double power){
+    public void spinIntake(double power){
         intakeServo.setPower(power);
     }
-    public static char getColour(){
+    public char getColour(){
         char color = 'N';
         double distToRed =(255-colour.red());
         double distToYellow = 255-colour.green();
