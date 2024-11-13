@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.ChassisSourceCode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
 public class ChassisSubsystem {
