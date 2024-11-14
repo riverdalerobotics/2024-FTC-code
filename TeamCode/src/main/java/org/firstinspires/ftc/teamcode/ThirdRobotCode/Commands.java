@@ -63,27 +63,27 @@ public class Commands {
             moveSlides(Constants.SlideConstants.CLIMB_UP);
         }
 
-        public void climbPtTwo(IMU gyro) {
-            boolean isClimbing = false;
-            arm.pivotArm(Constants.ArmConstants.CLIMB_UP_ANGLE, Constants.ArmConstants.CLIMB_SPEED);
-            double pitch = chassis.pitch();
-
-            double startPitch = pitch;
-            while (pitch < 45 + startPitch) {
-                pitch = chassis.pitch();
-            }
-            arm.pivotArm(Constants.ArmConstants.CLIMB_DOWN_ANGLE, Constants.ArmConstants.CLIMB_SPEED);
-            telemetry.addData("I'm waiting to climb", isClimbing);
-            while (arm.getPos() < Constants.ArmConstants.START_CLIMB) {
-                isClimbing = true;
-                telemetry.update();
-            }
-            isClimbing = false;
-            telemetry.addLine("IM CLIMBING");
-            telemetry.update();
-            moveSlides(Constants.SlideConstants.CLIMB_DOWN);
-            while(slideThread.isAlive()){}
-        }
+//        public void climbPtTwo(IMU gyro) {
+//            boolean isClimbing = false;
+//            arm.pivotArm(Constants.ArmConstants.CLIMB_UP_ANGLE, Constants.ArmConstants.CLIMB_SPEED);
+//            double pitch = chassis.pitch();
+//
+//            double startPitch = pitch;
+//            while (pitch < 45 + startPitch) {
+//                pitch = chassis.pitch();
+//            }
+//            arm.pivotArm(Constants.ArmConstants.CLIMB_DOWN_ANGLE, Constants.ArmConstants.CLIMB_SPEED);
+//            telemetry.addData("I'm waiting to climb", isClimbing);
+//            while (arm.getPos() < Constants.ArmConstants.START_CLIMB) {
+//                isClimbing = true;
+//                telemetry.update();
+//            }
+//            isClimbing = false;
+//            telemetry.addLine("IM CLIMBING");
+//            telemetry.update();
+//            moveSlides(Constants.SlideConstants.CLIMB_DOWN);
+//            while(slideThread.isAlive()){}
+//        }
 
         public void scoreBucket() {
             telemetry.addLine("Im Scoring");

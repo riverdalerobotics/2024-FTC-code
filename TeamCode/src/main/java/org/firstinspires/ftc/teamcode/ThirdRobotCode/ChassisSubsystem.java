@@ -31,24 +31,24 @@ public class ChassisSubsystem {
     DcMotor backLeft;
     DcMotor frontRight;
     DcMotor backRight;
-    IMU gyro;
+    //IMU gyro;
 
 
-    public ChassisSubsystem(IMU gyro, DcMotor frontLeftDrive, DcMotor frontRightDrive, DcMotor backLeftDrive, DcMotor backRightDrive, SparkFunOTOS otos){
+    public ChassisSubsystem(DcMotor frontLeftDrive, DcMotor frontRightDrive, DcMotor backLeftDrive, DcMotor backRightDrive, SparkFunOTOS otos){
 
         this.frontLeft = frontLeftDrive;
         this.frontRight = frontRightDrive;
         this.backRight = backRightDrive;
         this.backLeft = backLeftDrive;
-        this.gyro = gyro;
+        //this.gyro = gyro;
         myAwtos = otos;
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
-        ));
-        gyro.initialize(parameters);
+//        frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+//        backLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+//        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+//                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+//                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+//        ));
+//        gyro.initialize(parameters);
 
     }
     /**
@@ -108,10 +108,10 @@ public class ChassisSubsystem {
         return new Pose2d(x, y, h);
     }
 
-    public double pitch(){
-        YawPitchRollAngles yawPitchRollAngles = gyro.getRobotYawPitchRollAngles();
-        return yawPitchRollAngles.getPitch(AngleUnit.DEGREES);
-    }
+//    public double pitch(){
+//        YawPitchRollAngles yawPitchRollAngles = gyro.getRobotYawPitchRollAngles();
+//        return yawPitchRollAngles.getPitch(AngleUnit.DEGREES);
+//    }
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
         return new TrajectoryBuilder(startPose, VEL_CONSTRAINT, ACCEL_CONSTRAINT);
     }

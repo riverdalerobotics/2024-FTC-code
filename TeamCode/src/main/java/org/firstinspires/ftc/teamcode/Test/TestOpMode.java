@@ -11,11 +11,22 @@ public class TestOpMode extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         DcMotor testMotor;
         testMotor = hardwareMap.get(DcMotor.class, "TestMotor");
+        testMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
         waitForStart();
         while(opModeIsActive()){
             double power = gamepad1.left_stick_y;
-            testMotor.setPower(power*0.3);
-            telemetry.addData("Motor Position", testMotor.getCurrentPosition()/537.6);
+            if(gamepad1.a){
+                testMotor.setPower(-0.3);
+                testMotor.setTargetPosition((int)(-100*537.6/(38.2*Math.PI)));
+                testMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            }
+
+
+            telemetry.addData("Motor Position", testMotor.getCurrentPosition()/(537.6)*38.2*Math.PI);
             telemetry.update();
         }
     }
