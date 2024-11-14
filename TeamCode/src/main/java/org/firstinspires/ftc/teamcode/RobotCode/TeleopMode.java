@@ -24,18 +24,26 @@ public class TeleopMode extends LinearOpMode{
         left = hardwareMap.get(DcMotor.class, "LeftMotor");
         right = hardwareMap.get(DcMotor.class, "RightMotor");
         armPivot = hardwareMap.get(DcMotor.class, "ArmPivot");
-//        wrist = hardwareMap.get(Servo.class, "Wrist");
-//        intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
+        wrist = hardwareMap.get(Servo.class, "Wrist");
+        intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
         ChassisSubsystem chassis = new ChassisSubsystem(left, right);
         ArmSubsystem arm = new ArmSubsystem(armPivot);
+        Commands commands = new Commands(armPivot, wrist, intakeServo);
         OI oi = new OI(gamepad1, gamepad2);
        // IntakeSubsystem intake = new IntakeSubsystem(intakeServo, wrist);
         while(opModeIsActive()){
            // IntakeSubsystem.intakePowerOn(0);
-            arm.armMotor.setPower(OI.moveArm()*0.1);
+//
+//            if(OI.testArmAngle()){
+//               commands.moveArm90Degrees();
+//
+//            }
+//
+//            double power = gamepad1.left_stick_y;
+//            armPivot.setPower(power*0.3);
+            telemetry.addData("Motor Position", armPivot.getCurrentPosition()/(537.6*360*5));
+            telemetry.update();
 
-            chassis.drive(OI.speed(), OI.turn());
-            telemetry.addData("Arm pos", arm.armMotor.getCurrentPosition());
 
         }
 

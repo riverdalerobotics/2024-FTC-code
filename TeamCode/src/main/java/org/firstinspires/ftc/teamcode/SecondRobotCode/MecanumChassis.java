@@ -21,20 +21,25 @@ public class MecanumChassis extends LinearOpMode {
 
     public void moveMecChassis() {
         double speed = -gamepad1.left_stick_y;
-        double strafe = gamepad1.left_stick_x;
-        double turn = gamepad1.right_stick_x;
+        double strafe = -gamepad1.left_stick_x;
+        double turn = -gamepad1.right_stick_x;
 
-        leftFront = speed+turn -strafe;
-        rightFront = speed-turn-strafe;
-        leftBack = speed+turn+strafe;
-        rightBack = speed-turn+strafe;
+        leftFront = speed-turn-strafe;
+        rightFront = speed+turn+strafe;
+        leftBack = speed-turn+strafe;
+        rightBack = speed+turn-strafe;
 
+        //frontLeftSpeed = fwdSpeed - strafeSpeed - turnSpeed;
+       // backLeftSpeed = fwdSpeed + strafeSpeed - turnSpeed;
+        //frontRightSpeed = fwdSpeed + strafeSpeed + turnSpeed;
+       // backRightSpeed= fwdSpeed -strafeSpeed + turnSpeed;
+
+        motorRightB.setDirection(DcMotor.Direction.REVERSE);
+        motorRightF.setDirection(DcMotor.Direction.REVERSE);
         motorLeftF.setPower(leftFront);
         motorLeftB.setPower(leftBack);
         motorRightF.setPower(rightFront);
         motorRightB.setPower(rightBack);
-
-        //**
 
     }
 

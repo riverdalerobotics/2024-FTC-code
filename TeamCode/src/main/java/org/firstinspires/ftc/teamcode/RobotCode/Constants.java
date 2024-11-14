@@ -22,6 +22,7 @@ public class Constants {
         public static final double BUCKET_ANGLE = 0; //TODO: find angle
         public static final double BAR_ANGLE = 0; //TODO: find angle
         public static final double INTAKE_ANGLE = 0; //TODO: find angle
+        public static final double DEFAULT_ANGLE = 0;
 
     }
 
@@ -43,7 +44,7 @@ public class Constants {
 
         //TODO: Change these Names Later (Currently just a place holder) - Emmanuel
         public static final double DISTANCE_TO_AUTO_SAMPLE_1 = 0; // TODO: find distance to the first sample
-
+        public static final double DISTANCE_TO_BAR = 0; // TODO: find distance to bar
     }
     /**
      * Teleop constants needed for teleop

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.SecondRobotCode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+//import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class ChassisSubsystem {
     double rightBackSpeed;
@@ -9,20 +10,22 @@ public class ChassisSubsystem {
     double leftBackSpeed;
     double leftFrontSpeed;
 
-    DcMotor frontLeft;
-    DcMotor backLeft;
-    DcMotor frontRight;
-    DcMotor backRight;
+    DcMotorSimple frontLeft;
+    DcMotorSimple backLeft;
+    DcMotorSimple frontRight;
+    DcMotorSimple backRight;
 
-    public ChassisSubsystem(DcMotor frontLeftDrive, DcMotor frontRightDrive, DcMotor backLeftDrive, DcMotor backRightDrive){
+    //backRight.
+
+    public ChassisSubsystem(DcMotorSimple frontLeftDrive, DcMotorSimple frontRightDrive, DcMotorSimple backLeftDrive, DcMotorSimple backRightDrive){
 
         this.frontLeft = frontLeftDrive;
         this.frontRight = frontRightDrive;
         this.backRight = backRightDrive;
         this.backLeft = backLeftDrive;
-
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        //this.FLspeed  = 0.5;
+        //frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        //backLeft.setDirection(DcMotor.Direction.REVERSE);
     }
 
 
