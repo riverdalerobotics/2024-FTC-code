@@ -5,21 +5,22 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 //impo
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
-@TeleOp (name = "Yes Teleop", group = "Linear OpMode")
+@TeleOp (name = "Sana's Teleop", group = "Linear OpMode")
 
 public class TeleopMode extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     // Mech drive
-    private DcMotor frontLeftDrive;
-    private DcMotor backLeftDrive;
-    private DcMotor frontRightDrive;
-    private DcMotor backRightDrive;
+    private DcMotorSimple frontLeftDrive;
+    private DcMotorSimple backLeftDrive;
+    private DcMotorSimple frontRightDrive;
+    private DcMotorSimple backRightDrive;
 
 
     // what is this for??
@@ -52,16 +53,31 @@ public class TeleopMode extends LinearOpMode {
     armExtender = new armExtender(armExtend);
     intake = new IntakeSubsystem(intakeMotor, liftMotor);
 
-        frontLeftDrive = hardwareMap.get(DcMotor.class ,"motorLeftF");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "motorRightF");
-        backRightDrive = hardwareMap.get(DcMotor.class, "motorRightB");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "motorLeftB");
+        frontLeftDrive = hardwareMap.get(DcMotorSimple.class ,"motorLeftF");
+        frontRightDrive = hardwareMap.get(DcMotorSimple.class, "motorRightF");
+        backRightDrive = hardwareMap.get(DcMotorSimple.class, "motorRightB");
+        backLeftDrive = hardwareMap.get(DcMotorSimple.class, "motorLeftB");
+
+
+
         waitForStart();
 
+        double driveYaxis;
+        double driveXaxis;
+        double rotatePwr;
+        double armSpeed;
+        
         while (opModeIsActive()){
+            driveYaxis= gamepad1.left_stick_y;
+            driveXaxis = gamepad1.left_stick_x;
+            rotatePwr = gamepad1.right_stick_x;
+            chassis.moveRobotMech(driveYaxis, driveXaxis, rotatePwr);
+
 
             telemetry.addData("Status", "wobot is on :3");
             telemetry.update();
+
+
 
         }
 
