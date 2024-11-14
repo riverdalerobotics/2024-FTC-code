@@ -14,12 +14,15 @@ public class ChassisSubsystem {
     DcMotor frontRight;
     DcMotor backRight;
 
+    //backRight.
+
     public ChassisSubsystem(DcMotor frontLeftDrive, DcMotor frontRightDrive, DcMotor backLeftDrive, DcMotor backRightDrive){
 
         this.frontLeft = frontLeftDrive;
         this.frontRight = frontRightDrive;
         this.backRight = backRightDrive;
         this.backLeft = backLeftDrive;
+        //this.FLspeed  = 0.5;
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);

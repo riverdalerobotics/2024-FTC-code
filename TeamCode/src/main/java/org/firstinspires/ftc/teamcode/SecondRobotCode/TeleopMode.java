@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+//impo
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -50,6 +51,23 @@ public class TeleopMode extends LinearOpMode {
     arm = new ArmSubsytem(armMotor);
     armExtender = new armExtender(armExtend);
     intake = new IntakeSubsystem(intakeMotor, liftMotor);
+
+        frontLeftDrive = hardwareMap.get(DcMotor.class ,"motorLeftF");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "motorRightF");
+        backRightDrive = hardwareMap.get(DcMotor.class, "motorRightB");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "motorLeftB");
+        waitForStart();
+
+        while (opModeIsActive()){
+
+            telemetry.addData("Status", "wobot is on :3");
+            telemetry.update();
+
+        }
+
+
+
+
 
 
 

@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class IntakeSubsystem {
+public class ntakeSubsystem {
     CRServo intakeServo;
     Servo wrist;
     ColorSensor colour;
