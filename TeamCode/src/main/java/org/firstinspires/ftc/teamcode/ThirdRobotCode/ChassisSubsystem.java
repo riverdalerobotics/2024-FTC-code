@@ -59,10 +59,11 @@ public class ChassisSubsystem {
      * */
 
     public void moveRobotMech(double fwd, double strafe, double turn){
+        fwd = -fwd;
         rightBackSpeed = fwd - turn + strafe;
-        leftBackSpeed = fwd + turn + strafe;
+        leftBackSpeed = fwd + turn - strafe;
         rightFrontSpeed = fwd - turn - strafe;
-        leftFrontSpeed = fwd + turn - strafe;
+        leftFrontSpeed = fwd + turn + strafe;
 
         //nerf the speed if over absolute 1
         double max = Math.max(Math.abs(rightFrontSpeed), Math.abs(rightBackSpeed));
