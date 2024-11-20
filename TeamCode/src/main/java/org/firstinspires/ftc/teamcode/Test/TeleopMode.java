@@ -1,15 +1,18 @@
-package org.firstinspires.ftc.teamcode.SecondRobotCode;
+package org.firstinspires.ftc.teamcode.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 //impo
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.SecondRobotCode.ArmSubsytem;
+import org.firstinspires.ftc.teamcode.SecondRobotCode.ChassisSubsystem;
+import org.firstinspires.ftc.teamcode.SecondRobotCode.IntakeSubsystem;
+import org.firstinspires.ftc.teamcode.SecondRobotCode.armExtender;
 
 @TeleOp (name = "Sana's Teleop", group = "Linear OpMode")
 
@@ -17,10 +20,12 @@ public class TeleopMode extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     // Mech drive
+    //ChassisSubsystem chassis;
     private DcMotor frontLeftDrive;
     private DcMotor backLeftDrive;
     private DcMotor frontRightDrive;
     private DcMotor backRightDrive;
+
 
 
     // what is this for??
@@ -40,13 +45,11 @@ public class TeleopMode extends LinearOpMode {
 
     ChassisSubsystem chassis;
     ArmSubsytem arm;
-    armExtender armExtender;
+    org.firstinspires.ftc.teamcode.SecondRobotCode.armExtender armExtender;
     IntakeSubsystem intake;
 
 
     public void runOpMode(){
-        //
-        //frontLeftDrive = hardwareMap();
 
     chassis = new ChassisSubsystem(frontLeftDrive, frontRightDrive,backLeftDrive,backRightDrive);
     arm = new ArmSubsytem(armMotor);
@@ -57,8 +60,6 @@ public class TeleopMode extends LinearOpMode {
         frontRightDrive = hardwareMap.get(DcMotor.class, "motorRightF");
         backRightDrive = hardwareMap.get(DcMotor.class, "motorRightB");
         backLeftDrive = hardwareMap.get(DcMotor.class, "motorLeftB");
-
-
 
         waitForStart();
 
@@ -71,13 +72,11 @@ public class TeleopMode extends LinearOpMode {
             driveYaxis= gamepad1.left_stick_y;
             driveXaxis = gamepad1.left_stick_x;
             rotatePwr = gamepad1.right_stick_x;
-            chassis.moveRobotMech(driveYaxis, driveXaxis, rotatePwr);
 
+            chassis.moveMechChassis(driveYaxis, driveXaxis, rotatePwr);
 
             telemetry.addData("Status", "wobot is on :3");
             telemetry.update();
-
-
 
         }
 

@@ -31,15 +31,16 @@ public class ChassisSubsystem {
 
     /**
      * This is kinda source code for mech drive...
-     * @param fwd forward speed
+     * @param speed forward speed
      * @param strafe strafe speed
      * @param turn spin speed
      * */
-    public void moveRobotMech(double fwd, double strafe, double turn){
-        rightBackSpeed = fwd - turn + strafe;
-        leftBackSpeed = fwd + turn + strafe;
-        rightFrontSpeed = fwd - turn - strafe;
-        leftFrontSpeed = fwd + turn - strafe;
+    public void moveMechChassis(double speed, double strafe, double turn){
+        rightBackSpeed = speed + turn - strafe;
+        leftBackSpeed = speed - turn + strafe;
+        rightFrontSpeed = speed + turn + strafe;
+        leftFrontSpeed = speed - turn - strafe;
+
 
         frontLeft.setPower(leftFrontSpeed);
         frontRight.setPower(rightFrontSpeed);
