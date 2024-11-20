@@ -10,14 +10,14 @@ public class ChassisSubsystem {
     double leftBackSpeed;
     double leftFrontSpeed;
 
-    DcMotorSimple frontLeft;
-    DcMotorSimple backLeft;
-    DcMotorSimple frontRight;
-    DcMotorSimple backRight;
+    DcMotor frontLeft;
+    DcMotor backLeft;
+    DcMotor frontRight;
+    DcMotor backRight;
 
     //backRight.
 
-    public ChassisSubsystem(DcMotorSimple frontLeftDrive, DcMotorSimple frontRightDrive, DcMotorSimple backLeftDrive, DcMotorSimple backRightDrive){
+    public ChassisSubsystem(DcMotor frontLeftDrive, DcMotor frontRightDrive, DcMotor backLeftDrive, DcMotor backRightDrive){
 
         this.frontLeft = frontLeftDrive;
         this.frontRight = frontRightDrive;

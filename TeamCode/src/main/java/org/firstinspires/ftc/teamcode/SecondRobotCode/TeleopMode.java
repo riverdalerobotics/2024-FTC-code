@@ -17,10 +17,10 @@ public class TeleopMode extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     // Mech drive
-    private DcMotorSimple frontLeftDrive;
-    private DcMotorSimple backLeftDrive;
-    private DcMotorSimple frontRightDrive;
-    private DcMotorSimple backRightDrive;
+    private DcMotor frontLeftDrive;
+    private DcMotor backLeftDrive;
+    private DcMotor frontRightDrive;
+    private DcMotor backRightDrive;
 
 
     // what is this for??
@@ -53,10 +53,10 @@ public class TeleopMode extends LinearOpMode {
     armExtender = new armExtender(armExtend);
     intake = new IntakeSubsystem(intakeMotor, liftMotor);
 
-        frontLeftDrive = hardwareMap.get(DcMotorSimple.class ,"motorLeftF");
-        frontRightDrive = hardwareMap.get(DcMotorSimple.class, "motorRightF");
-        backRightDrive = hardwareMap.get(DcMotorSimple.class, "motorRightB");
-        backLeftDrive = hardwareMap.get(DcMotorSimple.class, "motorLeftB");
+        frontLeftDrive = hardwareMap.get(DcMotor.class ,"motorLeftF");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "motorRightF");
+        backRightDrive = hardwareMap.get(DcMotor.class, "motorRightB");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "motorLeftB");
 
 
 
