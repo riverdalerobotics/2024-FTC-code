@@ -24,10 +24,9 @@ public class ChassisSubsystem {
         this.backRight = backRightDrive;
         this.backLeft = backLeftDrive;
         //this.FLspeed  = 0.5;
-        //frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        //backLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
     }
-
 
     /**
      * This is kinda source code for mech drive...
