@@ -42,6 +42,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
         motorRightF = hardwareMap.get(DcMotor.class, "motorRightF");
         motorRightB = hardwareMap.get(DcMotor.class, "motorRightB");
         motorLeftB = hardwareMap.get(DcMotor.class, "motorLeftB");
+        armMotor =hardwareMap.get(DcMotor.class, "armMotor");
 
         chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB);
         arm = new ArmSubsytem(armMotor);
@@ -54,15 +55,29 @@ public class TeleOpSecondBot extends  LinearOpMode {
         double armPwr;
 
         while (opModeIsActive()) {
-            speedPwr = -gamepad1.left_stick_y;
-            strafePwr = -gamepad1.left_stick_x;
-            turnPwr = -gamepad1.right_stick_x;
+            speedPwr = (-gamepad1.left_stick_y)*0.5;
+            strafePwr = -gamepad1.left_stick_x*0.5;
+            turnPwr = -gamepad1.right_stick_x*0.5;
             chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
             armPwr = -gamepad2.left_stick_y;
+
             //arm.
+            telemetry.addData("Y axis Speed", speedPwr);
+            telemetry.update();
+            telemetry.addData("Xaxis SPeed", strafePwr);
+
+            if(gamepad2.a){
+                arm.moveArmTest(30);
+               // arm.gotoPos(30);
+                telemetry.addData("Arm Pos", arm.getPos());
+                telemetry.update();
+
+
+            }
         }
 
         telemetry.addData("Status", "wobot is on :3");
+        //telemetry.addData("Y axis Speed", speedPwr);
         telemetry.update();
     }
 

@@ -29,6 +29,12 @@ public class ArmSubsytem {
         armMotor.setPower(ARM_TICK_PER_DEGREE * angle);
 
     }
+    public void moveArmTest(double angle){
+        armMotor.setTargetPosition((int)angle);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotor.setPower(0.2);
+
+    }
 
     public void emergencyStop() {
         armMotor.setPower(0);
