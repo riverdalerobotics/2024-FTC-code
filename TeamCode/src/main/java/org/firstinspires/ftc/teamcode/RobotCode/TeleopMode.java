@@ -51,6 +51,14 @@ public class TeleopMode extends LinearOpMode{
 
             chassis.drive(speed,turn);
 
+            if (gamepad2.start){
+                speed = -speed;
+            }
+
+            if (gamepad2.left_bumper){
+                wrist.setPosition(1);
+            }
+
             if (gamepad2.b){
                 armPivot.setPower(0.8);
                 armPivot.setTargetPosition((int)degToRotation(90.0));

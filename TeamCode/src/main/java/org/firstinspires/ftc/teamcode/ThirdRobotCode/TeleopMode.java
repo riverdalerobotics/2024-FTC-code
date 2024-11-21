@@ -42,40 +42,71 @@ public class TeleopMode extends LinearOpMode {
     SparkFunOTOS otos;
 
     public void runOpMode() throws InterruptedException{
+        double xPos, yPos, heading;
+        SparkFunOTOS.Pose2D pose2D;
         CRServo intakeServo;
         Servo wrist;
         ColorSensor colorSensor;
         IMU imu;
+        SparkFunOTOS.Pose2D startPos = new SparkFunOTOS.Pose2D(0, 0, 180);
+
         SparkFunOTOS otos;
         //imu = hardwareMap.get(IMU.class, "imu");
-    //    otos = hardwareMap.get(SparkFunOTOS.class, "otos");
-//        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-//        backRight = hardwareMap.get(DcMotor.class, "backRight");
-//        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-//        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
-        wrist = hardwareMap.get(Servo.class, "wrist");
-        colorSensor = hardwareMap.get(ColorSensor.class, "ColourSensor");
- //       ChassisSubsystem chassis = new ChassisSubsystem(frontLeft, frontRight, backLeft, backRight, otos);
-        IntakeSubsystem intake = new IntakeSubsystem(intakeServo, wrist, colorSensor);
-//        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-//        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        otos = hardwareMap.get(SparkFunOTOS.class, "otos");
+        otos.calibrateImu();
+        otos.setOffset(startPos);
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+//        intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
+//        wrist = hardwareMap.get(Servo.class, "wrist");
+//        colorSensor = hardwareMap.get(ColorSensor.class, "ColourSensor");
+        ChassisSubsystem chassis = new ChassisSubsystem(frontLeft, frontRight, backLeft, backRight, otos);
+//        IntakeSubsystem intake = new IntakeSubsystem(intakeServo, wrist, colorSensor);
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
         waitForStart();
+        double rotKp = 0.35;
         boolean hasPeice = false;
         while(opModeIsActive()) {
-            double speed = gamepad1.left_stick_y;
-            double strafe = gamepad1.left_stick_x;
-            double turn = gamepad1.right_stick_x;
+            double speed = Math.pow(gamepad1.left_stick_y, 5/3);
+            double strafe = Math.pow(gamepad1.left_stick_x, 5/3);
+            double turn = Math.pow(gamepad1.right_stick_x, 5/3);
+
             //chassis.moveRobotMech(speed, strafe, turn);
-            char colour = intake.getColour();
-            if(colour == 'b'&&!hasPeice){
-                intake.spinIntake(0);
-                hasPeice = true;
+
+//            char colour = intake.getColour();
+//            if(colour == 'b'&&!hasPeice){
+//                intake.spinIntake(0);
+//                hasPeice = true;
+//            }
+//            else if(!hasPeice){
+//                intake.spinIntake(-1);
+//            }
+//            telemetry.addData("Colour: ", intake.getColour());
+
+            pose2D = otos.getPosition();
+            xPos = pose2D.x*(-3.048);
+            yPos = pose2D.y*(-3.048);
+            heading = pose2D.h;
+            if(heading<0){
+                heading+=360;
             }
-            else if(!hasPeice){
-                intake.spinIntake(-1);
+            chassis.fieldOriented(heading, -speed, strafe, turn);
+            if(gamepad1.start){
+                otos.setPosition(startPos);
             }
-            telemetry.addData("Colour: ", intake.getColour());
+
+            if(gamepad1.a){
+                chassis.goToPosition(xPos, yPos, heading, 0.03, rotKp, 0, -100, 0);
+                //chassis.goToPosition(0, yPos, heading, 0.1, 0,0, 180);
+            }
+
+            telemetry.addData("x position:", xPos);
+            telemetry.addData("y position:", yPos);
+            telemetry.addData("heading position:", heading);
+            telemetry.addData("kp:", rotKp);
             telemetry.update();
         }
     }

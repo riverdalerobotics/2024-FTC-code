@@ -9,6 +9,10 @@ public class Constants {
         public static final double WHEEL_CIRCUMFERENCE = WHEELDIAMATER* Math.PI;
         public static final double CHASSIS_WIDTH = 0; //TODO: find this number
         public static final double CHASSIS_LENGTH = 0; // TODO: find this number
+        public static final double DRIVE_KP = 0.3;
+        public static final double ROTATION_KP = 0.35;
+        public static final double[] SCORE_POS = {-60, -35, 180};
+
 
 
     }
