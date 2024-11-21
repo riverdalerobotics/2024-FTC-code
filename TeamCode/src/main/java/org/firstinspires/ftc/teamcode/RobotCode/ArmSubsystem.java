@@ -7,7 +7,6 @@ public class ArmSubsystem {
     DcMotor armMotor;
     int armMotorPosition;
 
-
     public ArmSubsystem(DcMotor arm){
         this.armMotor = arm;
 

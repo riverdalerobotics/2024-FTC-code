@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class armExtender {
     static DcMotor armExtenderMotor;
 
-    armExtender(DcMotor armExtend){
+    public armExtender(DcMotor armExtend){
         this.armExtenderMotor = armExtend;
     }
 

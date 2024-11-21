@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.HelperFunctions;
 public class ArmSubsytem {
     static DcMotor armMotor;
 
-    ArmSubsytem(DcMotor armMotor){
+    public ArmSubsytem(DcMotor armMotor){
       this.armMotor = armMotor;
     }
 

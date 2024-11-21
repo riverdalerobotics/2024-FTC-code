@@ -10,7 +10,7 @@ public class IntakeSubsystem{
 
     static CRServo intakeMotor;
     static CRServo liftMotor;
-    IntakeSubsystem (CRServo intake, CRServo lift){
+    public IntakeSubsystem(CRServo intake, CRServo lift){
         this.intakeMotor = intake;
         this.liftMotor = lift;
 

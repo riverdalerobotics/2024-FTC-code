@@ -36,7 +36,7 @@ public class TeleopMode extends LinearOpMode{
         double armAngle = armPivot.getCurrentPosition()*360/(1425.2*5);
         armPivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         boolean moveServo = false;
-
+        boolean reverseDrive = false;
 
        // IntakeSubsystem intake = new IntakeSubsystem(intakeServo, wrist);
         while(opModeIsActive()){
@@ -48,7 +48,15 @@ public class TeleopMode extends LinearOpMode{
 
             double speed = gamepad2.left_stick_y;
             double turn = gamepad2.right_stick_x;
-
+            if(reverseDrive){
+                speed = -speed;
+            }
+            if(gamepad2.start){
+                reverseDrive = true;
+            }
+            if(gamepad2.back){
+                reverseDrive = false;
+            }
             chassis.drive(speed,turn);
 
             if (gamepad2.start){
@@ -85,13 +93,18 @@ public class TeleopMode extends LinearOpMode{
                 intakeServo.setPower(0);
             }
 
+            if (gamepad2.left_bumper){
+                wrist.setPosition(1);
+            }
+            else{
+                wrist.setPosition(0);
+            }
 
             }
 //            double power = gamepad1.left_stick_y;
 //            armPivot.setPower(power*0.3);
             telemetry.addData("Motor Position", armPivot.getCurrentPosition()*360/(1425.2*5));
             telemetry.update();
-
 
         }
 
