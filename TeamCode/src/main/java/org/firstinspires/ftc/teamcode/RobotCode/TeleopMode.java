@@ -37,7 +37,7 @@ public class TeleopMode extends LinearOpMode{
         armPivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         boolean moveServo = false;
         boolean reverseDrive = false;
-
+        wrist.setPosition(0.1);
        // IntakeSubsystem intake = new IntakeSubsystem(intakeServo, wrist);
         while(opModeIsActive()){
            // IntakeSubsystem.intakePowerOn(0);
@@ -59,17 +59,27 @@ public class TeleopMode extends LinearOpMode{
             }
             chassis.drive(speed,turn);
 
+
+            //Score Low Bucket and High Bar
             if (gamepad2.b){
                 armPivot.setPower(0.8);
-                armPivot.setTargetPosition((int)degToRotation(90.0));
+                armPivot.setTargetPosition((int)degToRotation(160.0));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
+
+            //Intake Position
             if (gamepad2.a){
                 armPivot.setPower(0.8);
                 armPivot.setTargetPosition((int)degToRotation(250.0));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
+            //Climb
+            if (gamepad2.dpad_down){
+                armPivot.setPower(0.8);
+                armPivot.setTargetPosition((int)degToRotation(60));
+                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);            }
 
+            //outake
             if (gamepad2.x){
                 intakeServo.setPower(0.8);
             }
@@ -77,26 +87,31 @@ public class TeleopMode extends LinearOpMode{
                 intakeServo.setPower(0);
 
             }
-
+            //intake
             if (gamepad2.y){
                 intakeServo.setPower(-0.8);
             }
             else{
                 intakeServo.setPower(0);
             }
-
+            //move Wrist
             if (gamepad2.left_bumper){
-                wrist.setPosition(1);
+                wrist.setPosition(0.4);
             }
-            else{
-                wrist.setPosition(0);
+            //reset Wrist
+            if(gamepad2.right_bumper){
+                wrist.setPosition(0.1);
             }
 
+
+
+            telemetry.addData("Motor Position", armPivot.getCurrentPosition()*360/(1425.2*5));
+            telemetry.addData("WRIST POS", wrist.getPosition());
+            telemetry.update();
             }
 //            double power = gamepad1.left_stick_y;
 //            armPivot.setPower(power*0.3);
-            telemetry.addData("Motor Position", armPivot.getCurrentPosition()*360/(1425.2*5));
-            telemetry.update();
+
 
         }
 
