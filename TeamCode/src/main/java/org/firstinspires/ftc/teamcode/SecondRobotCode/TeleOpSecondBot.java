@@ -38,13 +38,11 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
 
-        // bro we have not even configured yet RIP
         motorLeftF = hardwareMap.get(DcMotor.class ,"motorLeftF");
         motorRightF = hardwareMap.get(DcMotor.class, "motorRightF");
         motorRightB = hardwareMap.get(DcMotor.class, "motorRightB");
         motorLeftB = hardwareMap.get(DcMotor.class, "motorLeftB");
 
-        //DcMotor frontLeftDrive, DcMotor frontRightDrive, DcMotor backLeftDrive, DcMotor backRightDrive
         chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB);
         arm = new ArmSubsytem(armMotor);
         intake = new IntakeSubsystem (intakeMotor, liftMotor);
@@ -54,13 +52,15 @@ public class TeleOpSecondBot extends  LinearOpMode {
         double strafePwr;
         double turnPwr;
         double armPwr;
-        speedPwr = -gamepad1.left_stick_y;
-        strafePwr = -gamepad1.left_stick_x;
-        turnPwr = -gamepad1.right_stick_x;
-        chassis.moveMechChassis(speedPwr,strafePwr,turnPwr);
-        armPwr = -gamepad2.left_stick_y;
-        arm.
 
+        while (opModeIsActive()) {
+            speedPwr = -gamepad1.left_stick_y;
+            strafePwr = -gamepad1.left_stick_x;
+            turnPwr = -gamepad1.right_stick_x;
+            chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
+            armPwr = -gamepad2.left_stick_y;
+            //arm.
+        }
 
         telemetry.addData("Status", "wobot is on :3");
         telemetry.update();
