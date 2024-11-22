@@ -3,6 +3,10 @@ package org.firstinspires.ftc.teamcode.SecondRobotCode;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
+
+//TODO: what the hone is the gear ratios and also what are our encoder ticks per revolution - Sana IMPORTANT
+
+//TODO: DETERMING MAX AND MIN FOR THE ARM EXTENDER and the ARM SUBSYSTEM - Sana
 public class Constants {
     /**
      * All constants needed for the chassis

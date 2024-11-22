@@ -38,16 +38,14 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
     //TODO: code specific: configure imu, work on field centric code, copy and paste SampleMecanumDrive into ChassisSubsystem, create an auto, tune pidf for rr.
     //TODO: priotiy list: field centric, intake, arm, slides, road runner, buy coffee
-
     public void runOpMode() throws InterruptedException {
 
-        // bro we have not even configured yet RIP
         motorLeftF = hardwareMap.get(DcMotor.class ,"motorLeftF");
         motorRightF = hardwareMap.get(DcMotor.class, "motorRightF");
         motorRightB = hardwareMap.get(DcMotor.class, "motorRightB");
         motorLeftB = hardwareMap.get(DcMotor.class, "motorLeftB");
+        armMotor =hardwareMap.get(DcMotor.class, "armMotor");
 
-        //DcMotor frontLeftDrive, DcMotor frontRightDrive, DcMotor backLeftDrive, DcMotor backRightDrive
         chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB);
         arm = new ArmSubsytem(armMotor);
         intake = new IntakeSubsystem (intakeMotor, liftMotor);
@@ -57,15 +55,60 @@ public class TeleOpSecondBot extends  LinearOpMode {
         double strafePwr;
         double turnPwr;
         double armPwr;
-        speedPwr = -gamepad1.left_stick_y;
-        strafePwr = -gamepad1.left_stick_x;
-        turnPwr = -gamepad1.right_stick_x;
-        chassis.moveMechChassis(speedPwr,strafePwr,turnPwr);
-        armPwr = -gamepad2.left_stick_y;
-        //arm.
+        double intakePwr;
+        double wristPwr;
+        double slidePwrTemp;
 
+        //TODO: Figure out the controls, most likely to be:
+        /**
+         * A for Intake
+         * B for Spit
+         * D pad Up to lift Arm to max Pos
+         * D pad Down to set Arm to min Pos (basically laying on top of chassis)
+         * Y for Lifting slides???
+         *
+         * Maybe we should use trigger buttons??
+         * arm positons will most liekly be made autonmoous
+         * //TODO: do we need a built in emergence STOP?
+         *
+         */
+        while (opModeIsActive()) {
+            speedPwr = -gamepad1.left_stick_y*0.3;
+            strafePwr = -gamepad1.left_stick_x*0.3;
+            turnPwr = -gamepad1.right_stick_x*0.3;
+            chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
+            slidePwrTemp = -gamepad2.right_stick_y;
+            intakePwr = 0.2;
+            wristPwr = 0.3;
+
+            armExtender.armExt(slidePwrTemp);
+            telemetry.addData("Y axis Speed", speedPwr);
+            telemetry.update();
+            telemetry.addData("Arm Pos", arm.getPos());
+            // telemetry.addData("Xaxis SPeed", strafePwr);
+            //telemetry.addData("ticks", motorLeftB.getCurrentPosition());
+
+            if(gamepad1.a){
+                telemetry.addData("Arm Pos", arm.getPos());
+                telemetry.update();
+                arm.moveArmTest(30);
+               // arm.gotoPos(30);
+                telemetry.addData("Arm Pos", arm.getPos());
+                telemetry.update();
+            }
+            if(gamepad1.b){
+              //  telemetry.addData();
+                intake.intakeSpin(intakePwr);
+            }
+            if(gamepad1.y){
+                intake.Up(0.2);
+            }
+
+
+        }
 
         telemetry.addData("Status", "wobot is on :3");
+        //telemetry.addData("Y axis Speed", speedPwr);
         telemetry.update();
     }
 
