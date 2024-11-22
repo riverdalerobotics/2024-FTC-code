@@ -14,7 +14,8 @@ import org.firstinspires.ftc.teamcode.RobotCode.ArmSubsystem;
 
 public class TeleopMode extends LinearOpMode{
     public double degToRotation(double deg){
-           return deg/360*1425*5;
+
+        return deg/360*1425*5;
     }
     private ElapsedTime runtime = new ElapsedTime();
     public void runOpMode(){

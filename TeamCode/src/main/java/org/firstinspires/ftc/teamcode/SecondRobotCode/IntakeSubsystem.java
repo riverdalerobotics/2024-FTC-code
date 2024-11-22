@@ -8,30 +8,25 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class IntakeSubsystem{
 
-    static CRServo intake;
-    static CRServo lift;
-    public IntakeSubsystem(CRServo intake, CRServo lift){
+
+    //TODO: Intkae shoud use setPower and Lift should use set Pos
+    //TODO: intkae is continous ,
+    CRServo intake;
+    Servo lift;
+
+
+    public IntakeSubsystem(CRServo intake, Servo lift){
         this.intake = intake;
         this.lift = lift;
 
     }
-    public static void intakeSpin(double power) throws InterruptedException {
-
-        intake.setPower(power);
-        intake.wait(1000);
+    public void Up(double pos) {
+        lift.setPosition(pos);
     }
-
-    //What is thsi name?? nonoSpin?
-    public static void intakeNonoSpin() {
-        intake.setPower(0);
+    public void Down(double pos) {
+        lift.setPosition(-pos);
     }
-    public static void intakeSpit(double power) {
-        intake.setPower(power);
-    }
-    public static void Up(double power) {
-        lift.setPower(power);
-    }
-    public static void Down(double power) {
-        lift.setPower(power);
-    }
+//    public void spinTake(double power){
+//        intake.setPower(power);
+//    }
 }

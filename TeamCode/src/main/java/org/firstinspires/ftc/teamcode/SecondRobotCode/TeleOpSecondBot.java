@@ -26,7 +26,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
     // arm extender ??
     private DcMotor armExtend;
 
-    private CRServo liftServo;
+    private Servo liftServo;
     private CRServo intakeServo;
 
     public WebcamName camera;
@@ -48,18 +48,18 @@ public class TeleOpSecondBot extends  LinearOpMode {
         motorLeftB = hardwareMap.get(DcMotor.class, "motorLeftB");
         armMotor =hardwareMap.get(DcMotor.class, "armMotor");
         armExtend = hardwareMap.get(DcMotor.class, "armExtend");
-        liftServo = hardwareMap.get(CRServo.class, "liftServo");
+        liftServo = hardwareMap.get(Servo.class, "liftServo");
         intakeServo = hardwareMap.get(CRServo.class, "intake");
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        // armPivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //imu = hardwareMap.get(imu.class, "imu");
+        //TODO: change the IMU from BNO055IMU to BHI260AP (has a quicker reaction time)
+        //BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        //parameters.angleUnit= BNO055IMU.AngleUnit.DEGREES;
+        //parameters.mode = BNO055IMU.SensorMode.IMU;
+        //parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
 
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit= BNO055IMU.AngleUnit.DEGREES;
-        parameters.mode = BNO055IMU.SensorMode.IMU;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-
-        imu.initialize(parameters);
-
-
+        //imu.initialize(parameters);
 
         chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB);
         arm = new ArmSubsytem(armMotor);
@@ -70,11 +70,8 @@ public class TeleOpSecondBot extends  LinearOpMode {
         double speedPwr;
         double strafePwr;
         double turnPwr;
-        double armPwr;
-        double intakePwr;
-        double wristPwr;
         double slidePwrTemp;
-
+        arm.resetEncoders();
         //TODO: Figure out the controls, most likely to be:
         /**
          * A for Intake
@@ -89,43 +86,52 @@ public class TeleOpSecondBot extends  LinearOpMode {
          *
          */
         while (opModeIsActive()) {
+
             speedPwr = -gamepad1.left_stick_y*0.3;
             strafePwr = -gamepad1.left_stick_x*0.3;
             turnPwr = -gamepad1.right_stick_x*0.3;
-            chassis.fieldOriented(0,speedPwr, strafePwr, turnPwr);
-            slidePwrTemp = -gamepad2.right_stick_y;
-            intakePwr = 0.2;
-            wristPwr = 0.3;
-            //imu.
-            armExtender.armExt(slidePwrTemp);
+            chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
+           // chassis.fieldOriented(0,speedPwr, strafePwr, turnPwr);
+           // slidePwrTemp = -gamepad2.right_stick_y;
 
+           // armExtender.armExt(slidePwrTemp);
 
             telemetry.addData("Y axis Speed", speedPwr);
-            telemetry.update();
-            telemetry.addData("Arm Pos", arm.getPos());
+//            telemetry.update();
+//            telemetry.addData("Arm Pos", arm.getPos());
             // telemetry.addData("Xaxis SPeed", strafePwr);
             //telemetry.addData("ticks", motorLeftB.getCurrentPosition());
 
-            if(gamepad1.a){
-                telemetry.addData("Arm Pos", arm.getPos());
-                telemetry.update();
-                arm.moveArmTest(30);
-               // arm.gotoPos(30);
-                telemetry.addData("Arm Pos", arm.getPos());
-                telemetry.update();
+            //intake servo is spinning lift
+            //THIS IS ACTUALLY INTAKE
+            //TODO: currently set to lift servo but it spins intake??
+            if (gamepad1.a){
+                liftServo.setPosition(-0.3);}
+
+/*            }
+            else{
+                liftServo.setPosition(0);
+
             }
-            if(gamepad1.b){
-              //  telemetry.addData();
-                intake.intakeSpin(intakePwr);
+            //lift servo is spinning intake
+            //THIS IS ACTUALLY LIFT
+            if(gamepad1.b) {
+                intakeServo.setPower(0.5);
             }
-            if(gamepad1.y){
-                intake.Up(0.2);
+            else if(gamepad1.y){
+                intakeServo.setPower(-0.5);
+            } else{
+                    intakeServo.setPower(0);
+
             }
+            */
 
 
-        }
+            }
+            //telemetry.addData();
+            telemetry.addData("Status", "wobot is on :3");
+            telemetry.addData("Current Arm Position:", arm.getPos());
 
-        telemetry.addData("Status", "wobot is on :3");
         //telemetry.addData("Y axis Speed", speedPwr);
         telemetry.update();
     }

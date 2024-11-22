@@ -106,8 +106,8 @@ public class Constants {
         public static final double TOLERANCE = 0; //TODO: find this number
         public static final double GEARRATIO =1425.2*5; //TODO: get this number
         //double armAngle = armPivot.getCurrentPosition()*360/(1425.2*5);
-        public static final double ENCODERTICKPERROTATION = 0; //TODO: Find the amount of ticks per rotation
-        public static final double GEARREDUCTION = (double) 1 /5; //TODO: Find gear reduction
+        public static final double ENCODERTICKPERROTATION = 537.7; //TODO: Find the amount of ticks per rotation
+        public static final double GEARREDUCTION = (double) 20.0/100 ; //TODO: Find gear reduction
         public static final double ARMANGLEUP = 60; //TODO: Find that up arm angle
         public static final double ARMANGLEDOWN = 30 ; //TODO: Find that down arm angle lol
     }

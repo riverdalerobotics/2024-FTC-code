@@ -54,7 +54,7 @@ public class TeleopMode extends LinearOpMode {
     chassis = new ChassisSubsystem(frontLeftDrive, frontRightDrive,backLeftDrive,backRightDrive);
     arm = new ArmSubsytem(armMotor);
     armExtender = new armExtender(armExtend);
-    intake = new IntakeSubsystem(intakeMotor, liftMotor);
+    //intake = new IntakeSubsystem(intakeMotor, liftMotor);
 
         frontLeftDrive = hardwareMap.get(DcMotor.class ,"motorLeftF");
         frontRightDrive = hardwareMap.get(DcMotor.class, "motorRightF");
