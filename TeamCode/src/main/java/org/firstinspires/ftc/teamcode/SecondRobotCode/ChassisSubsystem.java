@@ -41,9 +41,21 @@ public class ChassisSubsystem {
         leftFrontSpeed = speed - turn - strafe;
 
 
-        frontLeft.setPower(leftFrontSpeed);
-        frontRight.setPower(rightFrontSpeed);
-        backRight.setPower(rightBackSpeed);
-        backLeft.setPower(leftBackSpeed);
+        double max = Math.max(Math.abs(rightFrontSpeed), Math.abs(rightBackSpeed));
+        max = Math.max(max,Math.abs(leftFrontSpeed));
+        max = Math.max(max, Math.abs(leftBackSpeed));
+
+        if(max > 1) {
+            rightBackSpeed /= max;
+            rightFrontSpeed /= max;
+            leftBackSpeed /= max;
+            leftFrontSpeed /= max;
+        }
+
+        frontLeft.setPower(leftFrontSpeed/0.5);
+        frontRight.setPower(rightFrontSpeed/0.5);
+        backRight.setPower(rightBackSpeed/0.5);
+        backLeft.setPower(leftBackSpeed/0.5);
+
     }
 }

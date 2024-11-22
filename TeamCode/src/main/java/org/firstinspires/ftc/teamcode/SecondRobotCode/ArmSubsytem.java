@@ -11,7 +11,7 @@ public class ArmSubsytem {
     }
 
     public double getPos() {
-        return armMotor.getCurrentPosition() / 360 * Constants.ArmConstants.GEARRATIO;
+        return armMotor.getCurrentPosition() * 360 * Constants.ArmConstants.GEARRATIO;
     }
 
 
@@ -27,6 +27,12 @@ public class ArmSubsytem {
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setTargetPosition((int) ARM_TICK_PER_DEGREE * angle);
         armMotor.setPower(ARM_TICK_PER_DEGREE * angle);
+
+    }
+    public void moveArmTest(double angle){
+        armMotor.setTargetPosition((int)angle);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotor.setPower(0.2);
 
     }
 

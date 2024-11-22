@@ -26,6 +26,8 @@ public class ArmSubsystem {
         armMotor.setTargetPosition((int)angle);
     }
 
+
+
     public void moveArmManuel(double speed){
         armMotor.setPower(speed);
     }
