@@ -82,6 +82,8 @@ public class TeleOpSecondBot extends  LinearOpMode {
             wristPwr = 0.3;
 
             armExtender.armExt(slidePwrTemp);
+
+
             telemetry.addData("Y axis Speed", speedPwr);
             telemetry.update();
             telemetry.addData("Arm Pos", arm.getPos());
