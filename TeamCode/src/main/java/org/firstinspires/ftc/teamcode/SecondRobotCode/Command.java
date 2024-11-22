@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.SecondRobotCode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import java.net.CacheRequest;
-
 public class Command {
     DcMotor arm;
     CRServo intake;
@@ -15,14 +13,26 @@ public class Command {
         this.intake = intake;
         this.upDown = upDown;
     }
+
+    public double angleConverter(double angle) {
+        angle = angle/360;
+        angle = angle*Constants.ArmConstants.GEARRATIO;
+        return angle;
+    }
+
     IntakeSubsystem intakeSubsystem = new IntakeSubsystem(intake, upDown);
+
+
     ArmSubsytem armSubsytem = new ArmSubsytem(arm);
     //Arm Commands
     public void armGoesUp() {
-        armSubsytem.pivotArmUP((int) Constants.ArmConstants.ARMANGLEUP);
+       double newAngle = angleConverter(Constants.ArmConstants.ARMANGLEUP);
+
+        armSubsytem.pivotArmUP((int) newAngle);
     }
     public void armGoesDown() {
-        armSubsytem.pivotArmtoINTAKE((int) Constants.ArmConstants.ARMANGLEDOWN);
+        double newAngle = angleConverter(Constants.ArmConstants.ARMANGLEDOWN);
+        armSubsytem.pivotArmtoINTAKE((int) newAngle);
     }
 
     //Intake Commands

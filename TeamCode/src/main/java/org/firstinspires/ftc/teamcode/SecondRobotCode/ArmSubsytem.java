@@ -11,7 +11,7 @@ public class ArmSubsytem {
     }
 
     public double getPos() {
-        return armMotor.getCurrentPosition() / 360 * Constants.ArmConstants.GEARRATIO;
+        return armMotor.getCurrentPosition() * 360 * Constants.ArmConstants.GEARRATIO;
     }
 
 

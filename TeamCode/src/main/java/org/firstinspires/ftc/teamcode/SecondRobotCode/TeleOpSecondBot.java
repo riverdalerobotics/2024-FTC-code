@@ -64,9 +64,14 @@ public class TeleOpSecondBot extends  LinearOpMode {
             //arm.
             telemetry.addData("Y axis Speed", speedPwr);
             telemetry.update();
-            telemetry.addData("Xaxis SPeed", strafePwr);
+            telemetry.addData("Arm Pos", arm.getPos());
+            // telemetry.addData("Xaxis SPeed", strafePwr);
+            //telemetry.addData("ticks", motorLeftB.getCurrentPosition());
 
-            if(gamepad2.a){
+
+            if(gamepad1.a){
+                telemetry.addData("Arm Pos", arm.getPos());
+                telemetry.update();
                 arm.moveArmTest(30);
                // arm.gotoPos(30);
                 telemetry.addData("Arm Pos", arm.getPos());

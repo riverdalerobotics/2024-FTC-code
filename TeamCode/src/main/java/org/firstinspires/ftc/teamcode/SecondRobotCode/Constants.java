@@ -13,20 +13,24 @@ public class Constants {
     }
     /**
      * All constants needed for the the arm
+     *
+     * // Drive Encoder Tick per rotatioo: 312RPM
+     * // Arm and arm extender : 117RPM
      * */
     class ArmConstants {
         public static final double Kd = 0; //TODO: find this number
         public static final double Ki = 0; //TODO: find this number
         public static final double Kp = 0; //TODO: find this number
         public static final double TOLERANCE = 0; //TODO: find this number
-        public static final double GEARRATIO = 1; //TODO: get this number
+        public static final double GEARRATIO =1425.2*5; //TODO: get this number
+        //double armAngle = armPivot.getCurrentPosition()*360/(1425.2*5);
         public static final double ENCODERTICKPERROTATION = 0; //TODO: Find the amount of ticks per rotation
-        public static final double GEARREDUCTION = 0; //TODO: Find gear reduction
-        public static final double ARMANGLEUP = 0; //TODO: Find that up arm angle
-        public static final double ARMANGLEDOWN = 0; //TODO: Find that down arm angle lol
+        public static final double GEARREDUCTION = (double) 1 /5; //TODO: Find gear reduction
+        public static final double ARMANGLEUP = 60; //TODO: Find that up arm angle
+        public static final double ARMANGLEDOWN = 30 ; //TODO: Find that down arm angle lol
     }
     public static class ArmExtender {
-       public static final double WHEEDIAMITER = 1; //TODO: Find wheel diameter
+       public static final double WHEEDIAMITER = 10.4; //in cm
     }
     /**
      * Auto constants needed for auto
