@@ -44,7 +44,7 @@ public class TeleopMode extends LinearOpMode {
 
     ChassisSubsystem chassis;
     ArmSubsytem arm;
-    org.firstinspires.ftc.teamcode.SecondRobotCode.armExtender armExtender;
+    //org.firstinspires.ftc.teamcode.SecondRobotCode.armExtender armExtender;
     IntakeSubsystem intake;
 
 
@@ -52,7 +52,7 @@ public class TeleopMode extends LinearOpMode {
 
     chassis = new ChassisSubsystem(frontLeftDrive, frontRightDrive,backLeftDrive,backRightDrive);
     arm = new ArmSubsytem(armMotor);
-    armExtender = new armExtender(armExtend);
+    //armExtender = new armExtender(armExtend);
     //intake = new IntakeSubsystem(intakeMotor, liftMotor);
 
         frontLeftDrive = hardwareMap.get(DcMotor.class ,"motorLeftF");
