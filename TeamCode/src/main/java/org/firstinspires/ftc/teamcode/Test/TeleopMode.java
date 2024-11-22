@@ -12,7 +12,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.SecondRobotCode.ArmSubsytem;
 import org.firstinspires.ftc.teamcode.SecondRobotCode.ChassisSubsystem;
 import org.firstinspires.ftc.teamcode.SecondRobotCode.IntakeSubsystem;
-import org.firstinspires.ftc.teamcode.SecondRobotCode.armExtender;
 
 @TeleOp (name = "Sana's Teleop", group = "Linear OpMode")
 

@@ -36,7 +36,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
     IntakeSubsystem intake;
 
     //TODO: Angus if you see this we have to chane the file to "ArmExtender" because classes have a capitalized name
-    armExtender armExtender;
+    SlidesSubsystem slides;
 
     //TODO: code specific: configure imu, work on field centric code, copy and paste SampleMecanumDrive into ChassisSubsystem, create an auto, tune pidf for rr.
     //TODO: priotiy list: field centric, intake, arm, slides, road runner, buy coffee
@@ -64,7 +64,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
         chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB);
         arm = new ArmSubsytem(armMotor);
         intake = new IntakeSubsystem (intakeServo, liftServo);
-        armExtender = new armExtender(armExtend);
+        slides = new SlidesSubsystem(armExtend);
 
         waitForStart();
         double speedPwr;
@@ -94,7 +94,6 @@ public class TeleOpSecondBot extends  LinearOpMode {
            // chassis.fieldOriented(0,speedPwr, strafePwr, turnPwr);
            // slidePwrTemp = -gamepad2.right_stick_y;
 
-           // armExtender.armExt(slidePwrTemp);
 
             telemetry.addData("Y axis Speed", speedPwr);
 //            telemetry.update();
@@ -125,7 +124,6 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
             }
             */
-
 
             }
             //telemetry.addData();
