@@ -36,6 +36,9 @@ public class TeleOpSecondBot extends  LinearOpMode {
     //Angus if you see this we have to chane the file to "ArmExtender" because classes have a capitalized name
     armExtender armExtender;
 
+    //TODO: code specific: configure imu, work on field centric code, copy and paste SampleMecanumDrive into ChassisSubsystem, create an auto, tune pidf for rr.
+    //TODO: priotiy list: field centric, intake, arm, slides, road runner, buy coffee
+
     public void runOpMode() throws InterruptedException {
 
         // bro we have not even configured yet RIP
@@ -59,7 +62,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
         turnPwr = -gamepad1.right_stick_x;
         chassis.moveMechChassis(speedPwr,strafePwr,turnPwr);
         armPwr = -gamepad2.left_stick_y;
-        arm.
+        //arm.
 
 
         telemetry.addData("Status", "wobot is on :3");
