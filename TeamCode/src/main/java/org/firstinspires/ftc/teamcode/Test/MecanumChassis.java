@@ -3,7 +3,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.SecondRobotCode.ArmSubsytem;
+import org.firstinspires.ftc.teamcode.SecondRobotCode.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.SecondRobotCode.ChassisSubsystem;
 import org.firstinspires.ftc.teamcode.SecondRobotCode.IntakeSubsystem;
 
@@ -16,9 +16,9 @@ public class MecanumChassis extends LinearOpMode {
     public DcMotor motorLeftB;
 
     ChassisSubsystem chassis;
-    ArmSubsytem arm;
+    ArmSubsystem arm;
     IntakeSubsystem intake;
-    org.firstinspires.ftc.teamcode.SecondRobotCode.armExtender armExtender;
+    //org.firstinspires.ftc.teamcode.SecondRobotCode.armExtender armExtender;
 
 
     public void runOpMode() throws InterruptedException {

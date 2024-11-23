@@ -123,7 +123,7 @@ public class Constants {
         public static final double MIN_INTAKE_POSITION = 0; //TODO: Find the MIN Servo position for INTAKE
         public static final double MAX_UP_POSITION = 0; //TODO: Find the ABSOLUTE_LIMIT servo position for moving it UP
         public static final double MIN_DOWN_POSITION = 0; //TODO: Find the MIN servo position for moving it DOWN
-        public static final double START_INTAKE__POSITION = 0; //TODO: Find the starting position for INTAKE
+        public static final double START_INTAKE_POSITION = 0; //TODO: Find the starting position for INTAKE
         public static final double START_MIDDLE_POSITION = 0; //TODO: Find the starting position for the UP/DOWN Servo
     }
     static class AutoConstants{

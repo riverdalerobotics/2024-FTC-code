@@ -32,7 +32,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
     public WebcamName camera;
 
     ChassisSubsystem chassis;
-    ArmSubsytem arm;
+    ArmSubsystem arm;
     IntakeSubsystem intake;
 
     //TODO: Angus if you see this we have to chane the file to "ArmExtender" because classes have a capitalized name
@@ -62,7 +62,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
         //imu.initialize(parameters);
 
         chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB);
-        arm = new ArmSubsytem(armMotor);
+        arm = new ArmSubsystem(armMotor);
         intake = new IntakeSubsystem (intakeServo, liftServo);
         slides = new SlidesSubsystem(armExtend);
 
