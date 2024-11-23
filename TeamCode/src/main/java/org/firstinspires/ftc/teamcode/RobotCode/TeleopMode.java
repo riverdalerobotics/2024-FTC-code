@@ -83,13 +83,6 @@ public class TeleopMode extends LinearOpMode {
 
 
             }
-            //place note on bar
-//            if (gamepad2.dpad_right) {
-//                armPivot.setPower(0.6);
-//                armPivot.setTargetPosition((int) degToRotation(190));
-//                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//                intakeServo.setPower(-0.8);
-//            }
 
 
             //Climb
@@ -113,6 +106,7 @@ public class TeleopMode extends LinearOpMode {
                 //intake
             } else if (gamepad2.y) {
                 intakeServo.setPower(-8.8);
+                //score Bar
             } else if (gamepad2.dpad_right) {
                 armPivot.setPower(0.6);
                 armPivot.setTargetPosition((int) degToRotation(190));
