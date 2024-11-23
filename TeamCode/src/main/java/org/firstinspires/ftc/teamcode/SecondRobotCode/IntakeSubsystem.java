@@ -8,32 +8,25 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class IntakeSubsystem{
 
-    static CRServo intakeMotor;
-    static CRServo liftMotor;
-    public IntakeSubsystem(CRServo intake, CRServo lift){
-        this.intakeMotor = intake;
-        this.liftMotor = lift;
 
-    }
-    public static void intakeSpin(double power) throws InterruptedException {
+    //TODO: Intkae shoud use setPower and Lift should use set Pos
+    //TODO: intkae is continous ,
+    CRServo intake;
+    Servo lift;
 
 
-        intakeMotor.setPower(power);
-        intakeMotor.wait(1000);
-    }
-    public static void intakeNonoSpin(double power) {
-        intakeMotor.setPower(power);
-    }
-    public static void intakeSpit(double power) {
-        intakeMotor.setPower(power);
-    }
-    public static void Up(double power) {
-        liftMotor.setPower(power);
-    }
-    public static void Down(double power) {
-        liftMotor.setPower(power);
-    }
-    public void hello(){
+    public IntakeSubsystem(CRServo intake, Servo lift){
+        this.intake = intake;
+        this.lift = lift;
 
     }
+    public void Up(double pos) {
+        lift.setPosition(pos);
+    }
+    public void Down(double pos) {
+        lift.setPosition(-pos);
+    }
+//    public void spinTake(double power){
+//        intake.setPower(power);
+//    }
 }
