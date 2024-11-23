@@ -2,10 +2,10 @@ package org.firstinspires.ftc.teamcode.RobotCode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+
 public class ArmSubsystem {
 
     DcMotor armMotor;
-    int armMotorPosition;
 
     public ArmSubsystem(DcMotor arm){
         this.armMotor = arm;
@@ -25,6 +25,7 @@ public class ArmSubsystem {
         armMotor.setPower(1);
         armMotor.setTargetPosition((int)angle);
     }
+
 
     public void moveArmManuel(double speed){
         armMotor.setPower(speed);
