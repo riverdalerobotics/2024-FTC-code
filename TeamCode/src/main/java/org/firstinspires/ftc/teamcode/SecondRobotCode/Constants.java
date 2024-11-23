@@ -12,11 +12,6 @@ public class Constants {
      * All constants needed for the chassis
      * */
     static class ChassisConstants{
-//        public static final int WHEELDIAMATER = 0; //TODO: find this number
-//        public static final double WHEELCIRCUMFRANCE = WHEELDIAMATER* Math.PI;
-//        public static final double CHASSISWIDTH = 0; //TODO: find this number
-//        public static final double CHASSISLENGTH = 0; // TODO: find this number
-
 
         /*
          * These are motor constants that should be listed online for your motors.
@@ -44,9 +39,10 @@ public class Constants {
          * angular distances although most angular parameters are wrapped in Math.toRadians() for
          * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
          */
-        public static double WHEEL_RADIUS = 4.09449; // in
+        public static double WHEEL_RADIUS = 4.09449; // inches
         public static double GEAR_RATIO = 19.2; // output (wheel) speed / input (motor) speed
         public static double TRACK_WIDTH = 16.287402; // in  //TODO: double check dis
+        public static double WHEEL_BASE = 16.287402;
 
         /*
          * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -93,32 +89,38 @@ public class Constants {
         }
 
     }
+
     /**
      * All constants needed for the the arm
-     *
-     * // Drive Encoder Tick per rotatioo: 312RPM
-     * // Arm and arm extender : 117RPM
-     * */
+     * Drive Encoder Tick per rotatioo: 312RPM  TODO:HUHHHH????
+     * Arm and arm extender : 117RPM
+     **/
     static class ArmConstants {
         public static final double Kd = 0; //TODO: find this number
         public static final double Ki = 0; //TODO: find this number
         public static final double Kp = 0; //TODO: find this number
         public static final double TOLERANCE = 0; //TODO: find this number
-        public static final double GEARRATIO =1425.2*5; //TODO: get this number
+        public static final double GEAR_RATIO =1425.2*5; //TODO: get this number
         //double armAngle = armPivot.getCurrentPosition()*360/(1425.2*5);
-        public static final double ENCODERTICKPERROTATION = 537.7; //TODO: Find the amount of ticks per rotation
-        public static final double GEARREDUCTION = (double) 20.0/100 ; //TODO: Find gear reduction
-        public static final double ARMANGLEUP = 60; //TODO: Find that up arm angle
-        public static final double ARMANGLEDOWN = 30 ; //TODO: Find that down arm angle lol
-    }
-    public static class ArmExtender {
-       public static final double WHEEDIAMITER = 10.4; //in cm
-    }
-    /**
-     * Auto constants needed for auto
-     * */
+        public static final double ENCODER_TICKS_PER_ROTATION = 537.7; //TODO: Find the amount of ticks per rotation
+        public static final double GEAR_REDUCTION = (double) 20.0/100 ; //TODO: Find gear reduction
 
-    static class intakeConstants {
+        public static final double ARM_ANGLE_HANDOFF = 60; //TODO: Find that up arm angle
+        public static final double ARM_ANGLE_INTAKE= 30 ; //TODO: Find that down arm angle lol
+        public static final double ARM_ANGLE_TEST = 90 ; //TODO: Find that down arm angle lol
+    }
+
+    /**
+     * Intake Constants needed for Intake
+     * */
+    public static class SlidesConstants {
+       public static final double WHEEL_DIAMETER = 10.4; //in cm
+    }
+
+    /**
+     * Intake Constants needed for Intake
+     * */
+    static class IntakeConstants {
         public static final double MAX_INTAKE_POSITION = 0; //TODO: Find the Max Servo position for INTAKE
         public static final double MIN_INTAKE_POSITION = 0; //TODO: Find the MIN Servo position for INTAKE
         public static final double MAX_UP_POSITION = 0; //TODO: Find the ABSOLUTE_LIMIT servo position for moving it UP
@@ -126,13 +128,12 @@ public class Constants {
         public static final double START_INTAKE_POSITION = 0; //TODO: Find the starting position for INTAKE
         public static final double START_MIDDLE_POSITION = 0; //TODO: Find the starting position for the UP/DOWN Servo
     }
+
+    /**
+     * Auto constants needed for auto
+     * */
     static class AutoConstants{
 
     }
-    /**
-     * Teleop constants needed for teleop
-     * */
-    static class TeleopConstants{
 
-    }
 }

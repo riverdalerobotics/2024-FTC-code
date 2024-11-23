@@ -23,29 +23,29 @@
 //    IntakeSubsystem intakeSubsystem = new IntakeSubsystem(intake, upDown);
 //
 //
-//    ArmSubsytem armSubsytem = new ArmSubsytem(arm);
+//    ArmSubsystem armSubsystem = new ArmSubsystem(arm);
 //    //Arm Commands
 //    public void armGoesUp() {
 //       double newAngle = angleConverter(Constants.ArmConstants.ARMANGLEUP);
 //
-//        armSubsytem.pivotArmUP((int) newAngle);
+//        armSubsystem.pivotArmUP((int) newAngle);
 //    }
 //    public void armGoesDown() {
 //        double newAngle = angleConverter(Constants.ArmConstants.ARMANGLEDOWN);
-//        armSubsytem.pivotArmtoINTAKE((int) newAngle);
+//        armSubsystem.pivotArmtoINTAKE((int) newAngle);
 //    }
 //
 //    //Intake Commands
 //    //yummy, consume the piece
 //
 //    //public void intake() throws InterruptedException {
-//      //  armSubsytem.pivotArmtoINTAKE((int) Constants.ArmConstants.ARMANGLEDOWN);
+//      //  armSubsystem.pivotArmtoINTAKE((int) Constants.ArmConstants.ARMANGLEDOWN);
 //        //Thread.sleep(50);
 //        //intakeSubsystem.intakeSpin(1);
 //        //Thread.sleep(50);
 //        //intakeSubsystem.intakeSpin(0);
 //        //Thread.sleep(50);
-//        //armSubsytem.pivotArmUP((int) Constants.ArmConstants.ARMANGLEUP);
+//        //armSubsystem.pivotArmUP((int) Constants.ArmConstants.ARMANGLEUP);
 //        //Thread.sleep(50);
 //        //intakeSubsystem.intakeSpin(-1);
 //        //Thread.sleep(50);
@@ -56,9 +56,9 @@
 ////    public static void score() throws InterruptedException {
 ////        armExtender.armExtends();
 ////
-////        ArmSubsytem.dumpyBucketDeposit();
+////        ArmSubsystem.dumpyBucketDeposit();
 ////
-////        ArmSubsytem.dumpyBucketBackUp();
+////        ArmSubsystem.dumpyBucketBackUp();
 ////
 ////        armExtender.armUnextends();
 ////    }

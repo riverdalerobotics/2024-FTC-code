@@ -11,10 +11,10 @@ public class SlidesSubsystem {
         this.slidesMotor = slide;
     }
 
-    public static void armExtends() {
+    public static void setSlideHeight() {
 
         double encoderValue = slidesMotor.getCurrentPosition();
-        double motorRotation = Constants.ArmExtender.WHEEDIAMITER;
+        double motorRotation = Constants.SlidesConstants.WHEEL_DIAMETER;
 
         double measurement = motorRotation*encoderValue;
 
@@ -26,17 +26,8 @@ public class SlidesSubsystem {
 
     }
 
-    public static void armExt(double power){
+    public static void setSlidePower(double power){
         slidesMotor.setPower(power);
-
-
     }
 
-    public static void armUnextends() {
-        double encoderValue = slidesMotor.getCurrentPosition();
-        double motorRotation = Constants.ArmExtender.WHEEDIAMITER;
-        double measurement = motorRotation*encoderValue;
-        slidesMotor.setTargetPosition((int) measurement);
-        slidesMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
 }
