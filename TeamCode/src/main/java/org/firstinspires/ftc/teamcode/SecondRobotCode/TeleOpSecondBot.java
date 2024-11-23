@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @TeleOp(name="Second bot TeleOp", group="Linear OpMode")
 public class TeleOpSecondBot extends  LinearOpMode {
@@ -22,6 +23,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
     public DcMotorEx motorRightB;
     public DcMotorEx motorLeftB;
     IMU imu;
+
     private DcMotor armMotor;
 
     private DcMotor slideMotor;
@@ -52,12 +54,10 @@ public class TeleOpSecondBot extends  LinearOpMode {
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         imu = hardwareMap.get(IMU.class,"imu");
         //TODO: change the IMU from BNO055IMU to BHI260AP (has a quicker reaction time)
-        //BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        //parameters.angleUnit= BNO055IMU.AngleUnit.DEGREES;
-        //parameters.mode = BNO055IMU.SensorMode.IMU;
-        //parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-
-        //imu.initialize(parameters);
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+        imu.initialize(parameters);
 
         chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu);
         arm = new ArmSubsystem(armMotor);
@@ -85,14 +85,13 @@ public class TeleOpSecondBot extends  LinearOpMode {
          *
          */
         while (opModeIsActive()) {
+            imu.getRobotYawPitchRollAngles();
 
-            speedPwr = -gamepad1.left_stick_y*0.3;
-            strafePwr = -gamepad1.left_stick_x*0.3;
-            turnPwr = -gamepad1.right_stick_x*0.3;
+            speedPwr = -gamepad1.left_stick_y*0.1;
+            strafePwr = -gamepad1.left_stick_x*0.1;
+            turnPwr = -gamepad1.right_stick_x*0.1;
             chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
-           // chassis.fieldOriented(0,speedPwr, strafePwr, turnPwr);
-           // slidePwrTemp = -gamepad2.right_stick_y;
-
+            chassis.fieldOriented(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES),speedPwr, strafePwr, turnPwr);
 
             telemetry.addData("Y axis Speed", speedPwr);
 
