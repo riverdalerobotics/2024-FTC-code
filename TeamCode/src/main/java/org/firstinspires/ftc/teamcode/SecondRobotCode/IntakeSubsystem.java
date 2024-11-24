@@ -8,12 +8,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class IntakeSubsystem{
 
-
-    //TODO: Intkae shoud use setPower and Lift should use set Pos
-    //TODO: intkae is continous ,
     CRServo intake;
     Servo lift;
-
 
     public IntakeSubsystem(CRServo intake, Servo lift){
         this.intake = intake;
@@ -26,7 +22,7 @@ public class IntakeSubsystem{
     public void Down(double pos) {
         lift.setPosition(-pos);
     }
-//    public void spinTake(double power){
-//        intake.setPower(power);
-//    }
+    public void spinTake(double power){
+        intake.setPower(power);
+    }
 }

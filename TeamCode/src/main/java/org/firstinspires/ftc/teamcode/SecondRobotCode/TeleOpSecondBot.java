@@ -17,7 +17,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 @TeleOp(name="Second bot TeleOp", group="Linear OpMode")
 public class TeleOpSecondBot extends  LinearOpMode {
 
-    // What are the ports for the Chassis Motors??
     public DcMotorEx motorLeftF;
     public DcMotorEx motorRightF;
     public DcMotorEx motorRightB;
@@ -53,7 +52,6 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         imu = hardwareMap.get(IMU.class,"imu");
-        //TODO: change the IMU from BNO055IMU to BHI260AP (has a quicker reaction time)
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
@@ -68,56 +66,33 @@ public class TeleOpSecondBot extends  LinearOpMode {
         double speedPwr;
         double strafePwr;
         double turnPwr;
-        double slidePwrTemp;
         arm.resetEncoders();
 
-        //TODO: Figure out the controls, most likely to be:
-        /**
-         * A for Intake
-         * B for Spit
-         * D pad Up to lift Arm to max Pos
-         * D pad Down to set Arm to min Pos (basically laying on top of chassis)
-         * Y for Lifting slides???
-         *
-         * Maybe we should use trigger buttons??
-         * arm positons will most liekly be made autonmoous
-         * //TODO: do we need a built in emergence STOP?
-         *
-         */
+        //TODO: Figure out the controls
         while (opModeIsActive()) {
-            imu.getRobotYawPitchRollAngles();
 
             speedPwr = -gamepad1.left_stick_y*0.1;
             strafePwr = -gamepad1.left_stick_x*0.1;
             turnPwr = -gamepad1.right_stick_x*0.1;
-            chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
+           // chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
             chassis.fieldOriented(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES),speedPwr, strafePwr, turnPwr);
-
-            telemetry.addData("Y axis Speed", speedPwr);
-
-            //intake servo is spinning lift
-            //THIS IS ACTUALLY INTAKE
-            //TODO: currently set to lift servo but it spins intake??
-            if (gamepad1.a){
-                liftServo.setPosition(-0.3);}
-
-/*            }
-            else{
-                liftServo.setPosition(0);
-
+            if (gamepad1.start){
+                imu.resetYaw();
             }
-            //lift servo is spinning intake
-            //THIS IS ACTUALLY LIFT
+            if (gamepad1.x){
+                arm.setArmAngle(90);
+            }
+            if (gamepad1.a){
+                intake.Up(0.5);}
+
             if(gamepad1.b) {
-                intakeServo.setPower(0.5);
+                intake.spinTake(0.5);
             }
             else if(gamepad1.y){
-                intakeServo.setPower(-0.5);
+                intake.spinTake(-0.5);
             } else{
-                    intakeServo.setPower(0);
+                intake.spinTake(0);
             }
-            */
-
             }
             telemetry.addData("Status", "wobot is on :3");
             telemetry.update();

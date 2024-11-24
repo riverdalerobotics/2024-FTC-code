@@ -20,14 +20,17 @@ public class SlidesSubsystem {
 
         slidesMotor.setTargetPosition((int) measurement);
         slidesMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         telemetry.addData("Measurement moved", measurement);
-
 
     }
 
     public static void setSlidePower(double power){
         slidesMotor.setPower(power);
+    }
+
+
+    public void resetEncoder(){
+        slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
 }
