@@ -159,10 +159,10 @@ public class ChassisSubsystem extends MecanumDrive{
             leftFrontSpeed /= max;
         }
 
-        frontLeft.setPower(leftFrontSpeed/0.5);
-        frontRight.setPower(rightFrontSpeed/0.5);
-        backRight.setPower(rightBackSpeed/0.5);
-        backLeft.setPower(leftBackSpeed/0.5);
+        frontLeft.setPower(leftFrontSpeed*0.5);
+        frontRight.setPower(rightFrontSpeed*0.5);
+        backRight.setPower(rightBackSpeed*0.5);
+        backLeft.setPower(leftBackSpeed*0.5);
 
     }
 
@@ -192,7 +192,7 @@ public class ChassisSubsystem extends MecanumDrive{
      * @param strafe strafe speed
      * @param turn spin speed
      * */
-    public void moveMechChassiSlew(double speed, double strafe, double turn){
+    public void moveMechChassisSlew(double speed, double strafe, double turn){
 
         currentSpeed = slew(tempSpeed, speed, 0.03);
         currentStrafe = slew(tempStrafe, strafe, 0.03);

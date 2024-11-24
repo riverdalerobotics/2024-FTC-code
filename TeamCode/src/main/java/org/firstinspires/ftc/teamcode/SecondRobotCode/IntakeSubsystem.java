@@ -9,20 +9,23 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class IntakeSubsystem{
 
     CRServo intake;
-    Servo lift;
+    Servo wrist;
 
     public IntakeSubsystem(CRServo intake, Servo lift){
         this.intake = intake;
-        this.lift = lift;
+        this.wrist = lift;
 
     }
     public void Up(double pos) {
-        lift.setPosition(pos);
+        wrist.setPosition(pos);
     }
     public void Down(double pos) {
-        lift.setPosition(-pos);
+        wrist.setPosition(-pos);
     }
     public void spinTake(double power){
         intake.setPower(power);
+    }
+    public void resetPos(){
+        wrist.setPosition(0);
     }
 }

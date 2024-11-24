@@ -27,7 +27,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
     private DcMotor slideMotor;
 
-    private Servo liftServo;
+    private Servo wristServo;
     private CRServo intakeServo;
 
     public WebcamName camera;
@@ -47,19 +47,19 @@ public class TeleOpSecondBot extends  LinearOpMode {
         motorLeftB = hardwareMap.get(DcMotorEx.class, "motorLeftB");
         armMotor =hardwareMap.get(DcMotor.class, "armMotor");
         slideMotor = hardwareMap.get(DcMotor.class, "slideMotor");
-        liftServo = hardwareMap.get(Servo.class, "liftServo");
+        wristServo = hardwareMap.get(Servo.class, "wristServo");
         intakeServo = hardwareMap.get(CRServo.class, "intake");
 
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         imu = hardwareMap.get(IMU.class,"imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
         imu.initialize(parameters);
 
         chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu);
         arm = new ArmSubsystem(armMotor);
-        intake = new IntakeSubsystem (intakeServo, liftServo);
+        intake = new IntakeSubsystem (intakeServo, wristServo);
         slides = new SlidesSubsystem(slideMotor);
 
         waitForStart();
@@ -76,7 +76,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
             turnPwr = -gamepad1.right_stick_x*0.1;
            // chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
             chassis.fieldOriented(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES),speedPwr, strafePwr, turnPwr);
-            if (gamepad1.start){
+            if (gamepad1.options){
                 imu.resetYaw();
             }
             if (gamepad1.x){

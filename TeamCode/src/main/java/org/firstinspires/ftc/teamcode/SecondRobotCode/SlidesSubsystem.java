@@ -11,6 +11,16 @@ public class SlidesSubsystem {
         this.slidesMotor = slide;
     }
 
+    public double cmToTicks(double cm){
+        return cm/537.7;
+    }
+
+    public void setSlidesDis(double disInCm){
+        slidesMotor.setPower(0.3);
+        slidesMotor.setTargetPosition((int)cmToTicks(disInCm));
+        slidesMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+/*
     public static void setSlideHeight() {
 
         double encoderValue = slidesMotor.getCurrentPosition();
@@ -23,7 +33,7 @@ public class SlidesSubsystem {
         telemetry.addData("Measurement moved", measurement);
 
     }
-
+*/
     public static void setSlidePower(double power){
         slidesMotor.setPower(power);
     }
