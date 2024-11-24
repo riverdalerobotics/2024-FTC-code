@@ -66,6 +66,9 @@ public class ChassisSubsystem extends MecanumDrive{
     DcMotorEx frontRight;
     DcMotorEx backRight;
 
+    public double tempSpeed, tempStrafe, tempTurn;
+    public double currentSpeed, currentStrafe, currentTurn;
+
     IMU imu;
     private List<DcMotorEx> motors;
     private VoltageSensor batteryVoltageSensor;
@@ -182,6 +185,58 @@ public class ChassisSubsystem extends MecanumDrive{
         moveMechChassis(rotY, rotX, turn);
     }
 
+    ///////////////////////////////////////////////////////////////////////
+    /**
+     * Mecanum Logic Slewed (test after everything is done) //TODO: Test this and change for moveMechChassis()
+     * @param speed forward speed
+     * @param strafe strafe speed
+     * @param turn spin speed
+     * */
+    public void moveMechChassiSlew(double speed, double strafe, double turn){
+
+        currentSpeed = slew(tempSpeed, speed, 0.03);
+        currentStrafe = slew(tempStrafe, strafe, 0.03);
+        currentTurn = slew(tempTurn, turn, 0.5); //helped by Jason Wu
+
+        tempSpeed=currentSpeed;
+        tempStrafe=currentStrafe;
+        tempTurn=currentTurn; //basically the previous output variable is obtained from adding 0.05 (the slew rate) to the previous turn speed and this is updated 50 times a second (at least for frc it's something like that)
+
+        rightBackSpeed = tempSpeed + tempTurn - tempStrafe;
+        leftBackSpeed = tempSpeed - tempTurn + tempStrafe;
+        rightFrontSpeed = tempSpeed + tempTurn + tempStrafe;
+        leftFrontSpeed = tempSpeed - tempTurn - tempStrafe;
+
+        double max = Math.max(Math.abs(rightFrontSpeed), Math.abs(rightBackSpeed));
+        max = Math.max(max,Math.abs(leftFrontSpeed));
+        max = Math.max(max, Math.abs(leftBackSpeed));
+
+        if(max > 1) {
+            rightBackSpeed /= max;
+            rightFrontSpeed /= max;
+            leftBackSpeed /= max;
+            leftFrontSpeed /= max;
+        }
+        frontLeft.setPower(leftFrontSpeed/0.5);
+        frontRight.setPower(rightFrontSpeed/0.5);
+        backRight.setPower(rightBackSpeed/0.5);
+        backLeft.setPower(leftBackSpeed/0.5);
+
+    }
+
+
+    //Taken from https://www.reddit.com/r/FTC/comments/3vx37h/motor_acceleration/
+   public double slew (double prev, double input, double slewRate) {
+    if (slewRate < (Math.abs(prev - input))) {
+      if (prev - input < 0) {
+        return ( prev + slewRate);
+      } else return (prev - slewRate);
+    }
+    else return input;
+  }
+
+    /////////////////////////////////////////////////////////////////////////
+
     /**
      * This code allows the robot to return to 0 from where ever on the field as long as there is
      * nothing in the way
@@ -220,6 +275,7 @@ public class ChassisSubsystem extends MecanumDrive{
         double turnSpeed = turnError*kp;
         fieldOriented(yaw, ySpeed, xSpeed, turnSpeed);
     }
+
 
     //pathplanner stuff
 
