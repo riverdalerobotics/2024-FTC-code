@@ -196,7 +196,7 @@ public class ChassisSubsystem extends MecanumDrive{
 
         currentSpeed = slew(tempSpeed, speed, 0.03);
         currentStrafe = slew(tempStrafe, strafe, 0.03);
-        currentTurn = slew(tempTurn, turn, 0.5); //helped by Jason Wu
+        currentTurn = slew(tempTurn, turn, 0.03); //helped by Jason Wu
 
         tempSpeed=currentSpeed;
         tempStrafe=currentStrafe;
@@ -227,6 +227,11 @@ public class ChassisSubsystem extends MecanumDrive{
 
     //Taken from https://www.reddit.com/r/FTC/comments/3vx37h/motor_acceleration/
    public double slew (double prev, double input, double slewRate) {
+
+        //caution: reassigning parameter
+   if (Math.abs(prev-input)>1.1 || input == 0) { //if quickly pushing another direction, take a short cut, so u don't gotta wait for deceleration
+       prev = 0;
+   }
     if (slewRate < (Math.abs(prev - input))) {
       if (prev - input < 0) {
         return ( prev + slewRate);
