@@ -51,6 +51,8 @@ public class TeleOpSecondBot extends  LinearOpMode {
         intakeServo = hardwareMap.get(CRServo.class, "intake");
 
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         imu = hardwareMap.get(IMU.class,"imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
@@ -67,24 +69,37 @@ public class TeleOpSecondBot extends  LinearOpMode {
         double strafePwr;
         double turnPwr;
         arm.resetEncoders();
+        slides.resetEncoder();
 
         //TODO: Figure out the controls
         while (opModeIsActive()) {
 
+            //chassis
             speedPwr = -gamepad1.left_stick_y*0.1;
             strafePwr = -gamepad1.left_stick_x*0.1;
             turnPwr = -gamepad1.right_stick_x*0.1;
            // chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
             chassis.fieldOriented(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES),speedPwr, strafePwr, turnPwr);
-            if (gamepad1.options){
+            if (gamepad1.start){
                 imu.resetYaw();
             }
+
+            //arm
             if (gamepad1.x){
                 arm.setArmAngle(90);
             }
-            if (gamepad1.a){
-                intake.Up(0.5);}
 
+            //slides
+            if (gamepad1.left_bumper){
+                slides.setHeight(100);
+            }
+
+            //wrist
+            if (gamepad1.a){
+                intake.setWristPosition(0.5);}
+
+
+            //intake
             if(gamepad1.b) {
                 intake.spinTake(0.5);
             }
@@ -94,7 +109,10 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 intake.spinTake(0);
             }
             }
+
             telemetry.addData("Status", "wobot is on :3");
+            telemetry.addData("current arm angle", arm.getPosInDegrees());
+            telemetry.addData("current slide height mm", slides.getCurrentHeight());
             telemetry.update();
     }
 }

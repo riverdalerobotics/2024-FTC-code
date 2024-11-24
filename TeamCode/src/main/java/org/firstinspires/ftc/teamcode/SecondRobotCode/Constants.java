@@ -114,7 +114,13 @@ public class Constants {
      * Intake Constants needed for Intake
      * */
     public static class SlidesConstants {
-       public static final double WHEEL_DIAMETER = 10.4; //in cm
+
+        public static final double PULLEY_RATIO = 60;
+
+        public static final double TICKS_PER_ROTATION = 537.7;
+        public static final double DISTANCE_PER_ROTATION = 120; //mm
+
+
     }
 
     /**

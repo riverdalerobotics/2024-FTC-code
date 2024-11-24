@@ -16,15 +16,15 @@ public class IntakeSubsystem{
         this.wrist = lift;
 
     }
-    public void Up(double pos) {
+
+    public void setWristPosition(double pos){
         wrist.setPosition(pos);
     }
-    public void Down(double pos) {
-        wrist.setPosition(-pos);
-    }
+
     public void spinTake(double power){
         intake.setPower(power);
     }
+
     public void resetPos(){
         wrist.setPosition(0);
     }
