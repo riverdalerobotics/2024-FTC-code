@@ -37,7 +37,6 @@ public class Constants {
         public static final double kf = 1;
 
     }
-
     static class SlideConstants {
         public static final double INTAKE_MIN = 0;//TODO: find this number
         public static final double INTAKE_MAX = 0;//TODO: find this number

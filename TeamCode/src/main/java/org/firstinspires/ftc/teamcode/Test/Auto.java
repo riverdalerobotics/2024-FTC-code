@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.SecondRobotCode;
+package org.firstinspires.ftc.teamcode.Test;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "Hot Dog Wheels Auto", group = "Linear OpMode")
+@Autonomous(name = "Hot Dog Wheels  TEST Auto", group = "Linear OpMode")
 public class Auto extends LinearOpMode{
 
     private DcMotor motorLeftF;
@@ -43,7 +43,7 @@ public class Auto extends LinearOpMode{
             motorRightB.setDirection(DcMotor.Direction.REVERSE);
             motorRightF.setDirection(DcMotor.Direction.REVERSE);
 
-            motorLeftF.setTargetPosition(10000);
+            motorLeftF.setTargetPosition(400);
             motorLeftB.setTargetPosition(10000);
             motorRightB.setTargetPosition(10000);
             motorRightF.setTargetPosition(10000);
@@ -59,6 +59,7 @@ public class Auto extends LinearOpMode{
             motorLeftB.setPower(0.1);
             motorLeftF.setPower(0.1);
             motorRightF.setPower(0.1);
+
             //twwwelemetry.addData(motorRightB.getCurrentPosition());
 
 

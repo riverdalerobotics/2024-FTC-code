@@ -1,10 +1,7 @@
-package org.firstinspires.ftc.teamcode.SecondRobotCode;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+package org.firstinspires.ftc.teamcode.RookieBotCode;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
-
 
 public class IntakeSubsystem{
 
@@ -19,10 +16,6 @@ public class IntakeSubsystem{
 
     public void setWristPosition(double pos){
         wrist.setPosition(pos);
-    }
-
-    public double  getWristPosition(){
-        return wrist.getPosition();
     }
 
     public void spinTake(double power){
