@@ -47,7 +47,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
         motorLeftB = hardwareMap.get(DcMotorEx.class, "motorLeftB");
         armMotor =hardwareMap.get(DcMotor.class, "armMotor");
         slideMotor = hardwareMap.get(DcMotor.class, "slideMotor");
-        wristServo = hardwareMap.get(Servo.class, "wristServo");
+        wristServo = hardwareMap.get(Servo.class, "wrist");
         intakeServo = hardwareMap.get(CRServo.class, "intake");
 
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -83,21 +83,22 @@ public class TeleOpSecondBot extends  LinearOpMode {
             if (gamepad1.start){
                 imu.resetYaw();
             }
-
             //arm
             if (gamepad1.x){
-                arm.setArmAngle(90);
+                arm.setArmAngle(120);
+                telemetry.addData("arm Pos", arm.getPosInDegrees());
             }
 
             //slides
             if (gamepad1.left_bumper){
-                slides.setHeight(100);
+                slides.setHeight(10000);
+
+
             }
 
             //wrist
             if (gamepad1.a){
                 intake.setWristPosition(0.5);}
-
 
             //intake
             if(gamepad1.b) {
@@ -108,11 +109,15 @@ public class TeleOpSecondBot extends  LinearOpMode {
             } else{
                 intake.spinTake(0);
             }
-            }
-
             telemetry.addData("Status", "wobot is on :3");
             telemetry.addData("current arm angle", arm.getPosInDegrees());
             telemetry.addData("current slide height mm", slides.getCurrentHeight());
             telemetry.update();
+
+            //TODO: get wrist position, add the height of the slides to the height we want to go,
+
+        }
+
+
     }
 }

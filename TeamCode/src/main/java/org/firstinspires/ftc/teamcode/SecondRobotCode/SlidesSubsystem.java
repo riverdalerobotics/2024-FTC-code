@@ -11,6 +11,7 @@ public class SlidesSubsystem {
 
     public SlidesSubsystem(DcMotor slide) {
         this.slidesMotor = slide;
+        slidesMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
     //unit conversions
