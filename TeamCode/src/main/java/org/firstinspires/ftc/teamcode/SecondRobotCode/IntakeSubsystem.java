@@ -21,6 +21,10 @@ public class IntakeSubsystem{
         wrist.setPosition(pos);
     }
 
+    public double  getWristPosition(){
+        return wrist.getPosition();
+    }
+
     public void spinTake(double power){
         intake.setPower(power);
     }

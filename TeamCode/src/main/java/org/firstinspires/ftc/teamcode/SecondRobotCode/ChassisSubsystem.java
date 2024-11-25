@@ -159,10 +159,10 @@ public class ChassisSubsystem extends MecanumDrive{
             leftFrontSpeed /= max;
         }
 
-        frontLeft.setPower(leftFrontSpeed*0.5);
-        frontRight.setPower(rightFrontSpeed*0.5);
-        backRight.setPower(rightBackSpeed*0.5);
-        backLeft.setPower(leftBackSpeed*0.5);
+        frontLeft.setPower(leftFrontSpeed);
+        frontRight.setPower(rightFrontSpeed);
+        backRight.setPower(rightBackSpeed);
+        backLeft.setPower(leftBackSpeed);
 
     }
 

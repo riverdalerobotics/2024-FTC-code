@@ -70,54 +70,63 @@ public class TeleOpSecondBot extends  LinearOpMode {
         double turnPwr;
         arm.resetEncoders();
         slides.resetEncoder();
+        boolean armMove = false;
 
         //TODO: Figure out the controls
         while (opModeIsActive()) {
 
             //chassis
-            speedPwr = -gamepad1.left_stick_y*0.1;
-            strafePwr = -gamepad1.left_stick_x*0.1;
-            turnPwr = -gamepad1.right_stick_x*0.1;
+            speedPwr = -gamepad1.left_stick_y*0.2;
+            strafePwr = -gamepad1.left_stick_x*0.2;
+            turnPwr = -gamepad1.right_stick_x*0.2;
            // chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
             chassis.fieldOriented(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES),speedPwr, strafePwr, turnPwr);
             if (gamepad1.start){
                 imu.resetYaw();
             }
-            //arm
             if (gamepad1.x){
-                arm.setArmAngle(120);
-                telemetry.addData("arm Pos", arm.getPosInDegrees());
+                slides.setHeight(500);
             }
+            //arm
+            if(slides.getCurrentHeight()>300){
 
+                if (gamepad1.a){
+                    intake.setWristPosition(0.8);}
+                if(gamepad1.x){
+                    intake.setWristPosition(0.2);
+
+                }
+                //intake
+                if(gamepad2.b) {
+                    intake.spinTake(1);
+                }
+                else if(gamepad2.y){
+                    intake.spinTake(-1);
+                } else{
+                    intake.spinTake(0);
+                }
+
+                if (gamepad2.right_bumper){
+                    arm.setArmAngle(127.76);
+                    telemetry.addData("arm Pos", arm.getPosInDegrees());
+                }
+                else if(gamepad2.left_bumper){
+                    arm.setArmAngle(90);
+
+                }
             //slides
-            if (gamepad1.left_bumper){
-                slides.setHeight(10000);
-
-
-            }
-
-            //wrist
-            if (gamepad1.a){
-                intake.setWristPosition(0.5);}
-
-            //intake
-            if(gamepad1.b) {
-                intake.spinTake(0.5);
-            }
-            else if(gamepad1.y){
-                intake.spinTake(-0.5);
-            } else{
-                intake.spinTake(0);
-            }
-            telemetry.addData("Status", "wobot is on :3");
-            telemetry.addData("current arm angle", arm.getPosInDegrees());
-            telemetry.addData("current slide height mm", slides.getCurrentHeight());
-            telemetry.update();
 
             //TODO: get wrist position, add the height of the slides to the height we want to go,
 
         }
 
+            //wrist
+            // telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
+            telemetry.addData("Status", "wobot is on :3");
+            telemetry.addData("current arm angle", arm.getPosInDegrees());
+            telemetry.addData("current slide height mm", slides.getCurrentHeight());
+            telemetry.addData("wrist current pos", intake.getWristPosition());
+            telemetry.update();
 
-    }
-}
+        }
+}}
