@@ -54,8 +54,8 @@ public class TeleopMode extends LinearOpMode {
 //
 //            }
 
-            double speed = gamepad2.left_stick_y;
-            double turn = gamepad2.right_stick_x;
+            double speed = gamepad1.left_stick_y;
+            double turn = gamepad1.right_stick_x;
             if (reverseDrive) {
                 speed = -speed;
             }
@@ -80,7 +80,7 @@ public class TeleopMode extends LinearOpMode {
                 armPivot.setPower(0.8);
                 armPivot.setTargetPosition((int) degToRotation(253.0));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+                wrist.setPosition(0);
 
             }
 
@@ -112,8 +112,15 @@ public class TeleopMode extends LinearOpMode {
                 armPivot.setTargetPosition((int) degToRotation(190));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 intakeServo.setPower(-0.8);
-
-            } else{
+            //score bucket front position
+            }else if (gamepad2.dpad_left) {
+                armPivot.setPower(0.8);
+                armPivot.setTargetPosition((int) degToRotation(100));
+                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                wrist.setPosition(-0.5);
+                intakeServo.setPower(-8);
+            }
+            else{
                 intakeServo.setPower(0);
             }
 
@@ -133,10 +140,7 @@ public class TeleopMode extends LinearOpMode {
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
-            if (gamepad2.dpad_left) {
-                armPivot.setPower(0.8);
-                armPivot.setTargetPosition((int) degToRotation(115));
-                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
             }
 
 
@@ -149,7 +153,7 @@ public class TeleopMode extends LinearOpMode {
 
 
     }
-}
+
 
 
 
