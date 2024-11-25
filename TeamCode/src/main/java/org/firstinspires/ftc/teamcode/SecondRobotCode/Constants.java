@@ -95,7 +95,7 @@ public class Constants {
      * Drive Encoder Tick per rotatioo: 312RPM  TODO:HUHHHH????
      * Arm and arm extender : 117RPM
      **/
-    static class ArmConstants {
+    public static class ArmConstants {
         public static final double Kd = 0; //TODO: find this number
         public static final double Ki = 0; //TODO: find this number
         public static final double Kp = 0; //TODO: find this number

@@ -29,14 +29,6 @@ public class ArmSubsystem {
     armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-
-
-//    public double degToRotation(double deg){
-//
-//        return deg/360*1425*5;
-//    }
-
-
     public void resetEncoders(){
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }

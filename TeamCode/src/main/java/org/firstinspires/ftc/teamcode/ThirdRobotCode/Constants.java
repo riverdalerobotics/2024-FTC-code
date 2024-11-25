@@ -29,7 +29,6 @@ public class Constants {
         public static final double INTAKE_SPEED = 0;//TODO: find this number
 
     }
-
     static class SlideConstants {
         public static final double INTAKE_MIN = 0;//TODO: find this number
         public static final double INTAKE_MAX = 0;//TODO: find this number
