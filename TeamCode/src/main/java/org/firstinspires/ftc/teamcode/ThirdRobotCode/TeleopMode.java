@@ -17,12 +17,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.IntakeSubsystem;
 
-@TeleOp (name = "Teleopsmodes", group = "Linear OpMode")
+@TeleOp (name = "Pinkie Pie Teleop", group = "Linear OpMode")
 
 public class TeleopMode extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
@@ -33,7 +34,8 @@ public class TeleopMode extends LinearOpMode {
     IMU gyro;
     DcMotor rightSlideExtend;
     DcMotor leftSlideExtend;
-
+    Servo leftIntake;
+    Servo rightIntake;
     DcMotorEx armPivot;
 
     ChassisSubsystem chassis;
@@ -49,7 +51,7 @@ public class TeleopMode extends LinearOpMode {
         ColorSensor colorSensor;
         IMU imu;
         SparkFunOTOS.Pose2D startPos = new SparkFunOTOS.Pose2D(0, 0, 180);
-
+        Commands commands;
         SparkFunOTOS otos;
         //imu = hardwareMap.get(IMU.class, "imu");
         otos = hardwareMap.get(SparkFunOTOS.class, "otos");
@@ -59,17 +61,33 @@ public class TeleopMode extends LinearOpMode {
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-//        intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
-//        wrist = hardwareMap.get(Servo.class, "wrist");
-//        colorSensor = hardwareMap.get(ColorSensor.class, "ColourSensor");
+        intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
+        leftIntake = hardwareMap.get(Servo.class, "leftIntake");
+        rightIntake = hardwareMap.get(Servo.class, "rightIntake");
+        colorSensor = hardwareMap.get(ColorSensor.class, "ColourSensor");
         ChassisSubsystem chassis = new ChassisSubsystem(frontLeft, frontRight, backLeft, backRight, otos);
-//        IntakeSubsystem intake = new IntakeSubsystem(intakeServo, wrist, colorSensor);
+        IntakeSubsystem intake = new IntakeSubsystem(intakeServo, leftIntake, colorSensor, rightIntake);
+
+        armPivot = hardwareMap.get(DcMotorEx.class, "ArmMotor");
+        leftSlideExtend = hardwareMap.get(DcMotor.class, "leftExtends");
+        rightSlideExtend = hardwareMap.get(DcMotor.class, "rightExtends");
+        ArmSubsystem arm = new ArmSubsystem(armPivot);
+        SlideSubsystem slides = new SlideSubsystem(rightSlideExtend, leftSlideExtend);
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         waitForStart();
         double rotKp = 0.35;
         boolean hasPeice = false;
-        while(opModeIsActive()) {
+        armPivot.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        armPivot.setDirection(DcMotorEx.Direction.REVERSE);
+        armPivot.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        leftSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        PIDFCoefficients pidfCoefficients = new PIDFCoefficients(10, 0, 0, 0);
+        commands = new Commands(arm, slides, chassis, pidfCoefficients);
+        slides.runUsingEncoders();
+
+    while(opModeIsActive()) {
             double speed = Math.pow(gamepad1.left_stick_y, 5/3);
             double strafe = Math.pow(gamepad1.left_stick_x, 5/3);
             double turn = Math.pow(gamepad1.right_stick_x, 5/3);
@@ -102,11 +120,35 @@ public class TeleopMode extends LinearOpMode {
                 chassis.goToPosition(xPos, yPos, heading, 0.03, rotKp, 0, -100, 0);
                 //chassis.goToPosition(0, yPos, heading, 0.1, 0,0, 180);
             }
+            if(gamepad2.y){
+                commands.scoreBucket();
+            }
+            if(gamepad2.b){
+                commands.intake('b');
+            }
+            if(gamepad2.x){
+                slides.goToPosWithSpeed(0, 1);
+                while(slides.rightSlideExtend.isBusy()){}
+                arm.pivotArmUsingBuiltInStuffs(1, 1, pidfCoefficients);
 
-            telemetry.addData("x position:", xPos);
-            telemetry.addData("y position:", yPos);
-            telemetry.addData("heading position:", heading);
-            telemetry.addData("kp:", rotKp);
+            }
+            if(gamepad2.a){
+                while(intake.getColour() != 'b'){
+                    intake.spinIntake(0.5);
+                }
+            }
+
+
+            telemetry.addData("Arm pos",arm.getPos());
+            telemetry.addData("true arm position", armPivot.getCurrentPosition());
+            telemetry.addData("Arm Target", armPivot.getTargetPosition());
+            telemetry.addData("Arm Power", armPivot.getPower());
+            telemetry.addData("SlidesPos", slides.getSlidePos());
+
+//            telemetry.addData("x position:", xPos);
+//            telemetry.addData("y position:", yPos);
+//            telemetry.addData("heading position:", heading);
+//            telemetry.addData("kp:", rotKp);
             telemetry.update();
         }
     }

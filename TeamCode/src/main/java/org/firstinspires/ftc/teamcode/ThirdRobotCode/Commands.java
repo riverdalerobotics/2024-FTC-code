@@ -5,11 +5,13 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 
-class moveSlides implements  Runnable{
+class moveSlides extends Thread{
     double distance;
     ArmSubsystem arm;
     SlideSubsystem slides;
@@ -23,45 +25,51 @@ class moveSlides implements  Runnable{
         this.arm = armSubsystem;
         this.slides = slideSubsystem;
     }
-    public void run(){
-        slides.newGoToPos(distance);
-        while(slides.leftSlideExtend.isBusy()) {
-            if (slides.pidfController.getTargetPosition() > slides.slideLimit(arm.getPos())) {
-                slides.newGoToPos(slides.slideLimit(arm.getPos()));
-            }
-            else if(slides.pidfController.getTargetPosition() > Constants.SlideConstants.ABSOLUTE_LIMIT){
-                slides.newGoToPos(Constants.SlideConstants.ABSOLUTE_LIMIT);
-            }
-            else{
-                slides.newGoToPos(distance);
-            }
+    public void run() {
+        slides.rightSlideExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slides.leftSlideExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slides.newGoToPos(50);
+        while(slides.pidfController.getLastError()>=0.5||slides.pidfController.getLastError()<=-0.5) {
+            slides.newGoToPos(50);
+            telemetry.addData("Slides power", slides.leftSlideExtend.getPower());
+            telemetry.addData("Slides goal", slides.pidfController.getLastError());
+            telemetry.addData("Slides output", slides.pidfController.getTargetPosition());
+        }
+        slides.leftSlideExtend.setTargetPosition(slides.leftSlideExtend.getCurrentPosition());
+        slides.rightSlideExtend.setTargetPosition(slides.rightSlideExtend.getCurrentPosition());
+        slides.moveSlide(0.2);
+        slides.rightSlideExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slides.leftSlideExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
     }
-}
+
+
 public class Commands {
     ArmSubsystem arm;
     SlideSubsystem slideSubsystem;
     ChassisSubsystem chassis;
     IntakeSubsystem intakeSubsystem;
-    public Commands(ArmSubsystem arm, SlideSubsystem slideSubsystem, ChassisSubsystem chassis, IntakeSubsystem intake){
+    PIDFCoefficients pidf;
+
+    public Commands(ArmSubsystem arm, SlideSubsystem slideSubsystem, ChassisSubsystem chassis, PIDFCoefficients pidf) {
         this.chassis = chassis;
         this.slideSubsystem = slideSubsystem;
         this.arm = arm;
-        this.intakeSubsystem = intake;
+        //this.intakeSubsystem = intake;
+        this.pidf = pidf;
     }
 
-    class teleopCommands{
-        moveSlides slides;
-        Thread slideThread = new Thread(slides);
+    moveSlides slides;
 
-        public void moveSlides(double target){
-            slides = new moveSlides(target, arm, slideSubsystem);
-            slideThread.start();
-        }
+    Thread slideThread;
+    public void moveSlides(double target) {
+        slides = new moveSlides(target, arm, slideSubsystem);
+        slides.start();
+    }
 
-        public  void climbPtOne() {
-            moveSlides(Constants.SlideConstants.CLIMB_UP);
-        }
+    public void climbPtOne() {
+        moveSlides(Constants.SlideConstants.CLIMB_UP);
+    }
 
 //        public void climbPtTwo(IMU gyro) {
 //            boolean isClimbing = false;
@@ -85,51 +93,17 @@ public class Commands {
 //            while(slideThread.isAlive()){}
 //        }
 
-        public void scoreBucket() {
-            telemetry.addLine("Im Scoring");
-            telemetry.update();
-            arm.pivotArmUsingBuiltInStuffs(Constants.ArmConstants.BUCKET_ANGLE, Constants.ArmConstants.SCORE_SPEED);
-            moveSlides(Constants.SlideConstants.SCORE_BUCKET);
-            while(slideThread.isAlive()){}
-            intakeSubsystem.pivotIntake(Constants.IntakeConstants.SCORE_POSITION);
-            intakeSubsystem.spinIntake(Constants.IntakeConstants.SCORE_SPEED);
-            telemetry.addLine("SCORE!!!!!");
-            telemetry.update();
-            moveSlides(Constants.SlideConstants.INTAKE_POSITION);
-            arm.pivotArmUsingBuiltInStuffs(Constants.ArmConstants.INTAKE_ANGLE, Constants.ArmConstants.INTAKE_SPEED);
-        }
-
-        public void intake(char teamColour) throws InterruptedException {
-            arm.pivotArmUsingBuiltInStuffs(Constants.ArmConstants.INTAKE_ANGLE, Constants.ArmConstants.INTAKE_SPEED);
-            slideSubsystem.newGoToPos(slideSubsystem.slideLimit(arm.getPos()));
-            slideSubsystem.pidfController.setOutputBounds(Constants.SlideConstants.INTAKE_MIN, Constants.SlideConstants.INTAKE_MAX);
-            intakeSubsystem.pivotIntake(Constants.IntakeConstants.INTAKE_POSITION);
-            while ((intakeSubsystem.getColour() != teamColour || intakeSubsystem.getColour() != 'y')&&slideSubsystem.leftSlideExtend.isBusy()) {
-                intakeSubsystem.spinIntake(Constants.IntakeConstants.INTAKE_SPEED);
-                slideSubsystem.newGoToPos(slideSubsystem.slideLimit(arm.getPos()));
-                //This avoids noise wait time should be relativity small
-                if(intakeSubsystem.getColour() == teamColour || intakeSubsystem.getColour() == 'y'){
-                    Thread.sleep(Constants.IntakeConstants.WAIT_TIME);
-                }
-            }
-            intakeSubsystem.spinIntake(0);
-            moveSlides(Constants.SlideConstants.INTAKE_POSITION);
-            arm.pivotArmUsingBuiltInStuffs(Constants.ArmConstants.BUCKET_ANGLE, Constants.ArmConstants.SCORE_SPEED);
-            telemetry.addLine("I HAVE A PIECE");
-            slideSubsystem.pidfController.setOutputBounds(1,1);
-        }
-
-
-
+    public void scoreBucket() {
+        slideSubsystem.goToPosWithSpeed(0, 1);
+        arm.pivotArmUsingBuiltInStuffs(95, 1, pidf);
+        while(arm.getPos()<45){}
+        slideSubsystem.goToPosWithSpeed(90, 1);
     }
-    class Autos{
-        public final double[] SCORE_POS = Constants.AutoConstants.SCORE_POS;
-        Vector2d scorePos = new Vector2d(SCORE_POS[0], SCORE_POS[1]);
-        Pose2d score = new Pose2d(scorePos, SCORE_POS[2]);
-        public void autoGoToScore(){
-            chassis.trajectoryBuilder(chassis.getBotPos())
-                    .splineTo(scorePos, score.getHeading())
-                    .build();
-        }
-    }
-}
+
+    public void intake(char teamColour) throws InterruptedException {
+        slideSubsystem.goToPosWithSpeed(0, 1);
+        arm.pivotArmUsingBuiltInStuffs(0, 1, pidf);
+        while(arm.getPos()>45){}
+        slideSubsystem.goToPosWithSpeed(50, 1);
+
+    }}

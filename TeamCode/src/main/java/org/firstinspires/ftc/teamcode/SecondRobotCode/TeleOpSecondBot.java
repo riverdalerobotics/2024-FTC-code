@@ -59,7 +59,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
         turnPwr = -gamepad1.right_stick_x;
         chassis.moveMechChassis(speedPwr,strafePwr,turnPwr);
         armPwr = -gamepad2.left_stick_y;
-        arm.
+
 
 
         telemetry.addData("Status", "wobot is on :3");
