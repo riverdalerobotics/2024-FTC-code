@@ -14,6 +14,8 @@ public class SlidesSubsystem {
         slidesMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
+    //slides length:
+
     //unit conversions
     public double ticksToMillimeter(double ticks) {
         return ticks * (Constants.SlidesConstants.DISTANCE_PER_ROTATION/Constants.SlidesConstants.TICKS_PER_ROTATION);
