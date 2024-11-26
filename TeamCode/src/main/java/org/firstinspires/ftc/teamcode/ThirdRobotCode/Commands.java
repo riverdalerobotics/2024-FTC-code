@@ -104,6 +104,6 @@ public class Commands {
         slideSubsystem.goToPosWithSpeed(0, 1);
         arm.pivotArmUsingBuiltInStuffs(0, 1, pidf);
         while(arm.getPos()>45){}
-        slideSubsystem.goToPosWithSpeed(50, 1);
+        slideSubsystem.goToPosWithSpeed(50, 0.3);
 
     }}

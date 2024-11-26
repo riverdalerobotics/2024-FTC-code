@@ -14,10 +14,11 @@ public class IntakeSubsystem {
         this.rightWrist = rightWrist;
         this.intakeServo = intakeMotor;
         this.colour = colorSensor;
+        rightWrist.setDirection(Servo.Direction.REVERSE);
     }
     public void pivotIntake(double angle){
         leftWrist.setPosition(angle);
-        rightWrist.setPosition(-angle);
+        rightWrist.setPosition(angle);
     }
     public void spinIntake(double power){
         intakeServo.setPower(power);
@@ -25,7 +26,7 @@ public class IntakeSubsystem {
 
     public char getColour(){
         char color = 'N';
-        double distToWhite = Math.sqrt(Math.pow(255-colour.red(), 2)+Math.pow(255-colour.blue(), 2)+Math.pow(255-colour.green(), 2));
+        double distToWhite = Math.sqrt(Math.pow(50-colour.red(), 2)+Math.pow(50-colour.blue(), 2)+Math.pow(50-colour.green(), 2));
         double distToRed = Math.sqrt(Math.pow(255-colour.red(), 2)+Math.pow(0-colour.blue(), 2)+Math.pow(0-colour.green(), 2));
         double distToYellow = Math.sqrt(Math.pow(255-colour.red(), 2)+Math.pow(0-colour.blue(), 2)+Math.pow(255-colour.green(), 2));
         double distToBlue = Math.sqrt(Math.pow(0-colour.red(), 2)+Math.pow(255-colour.blue(), 2)+Math.pow(0-colour.green(), 2));

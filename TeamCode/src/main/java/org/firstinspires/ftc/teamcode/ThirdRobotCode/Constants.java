@@ -21,7 +21,7 @@ public class Constants {
      * */
     static class ArmConstants{
         public static final double START_CLIMB = 0; // TODO: find this number
-        public static final double GEAR_RATIO = (81/7)*537.7; //TODO: get this number
+        public static final double  GEAR_RATIO = (81/7)*537.7; //TODO: get this number
         public static final double CLAW_SERVO_START_POSITION = 0; //TODO: get this number
         public static final double WHEEL_DIAMETER = 0; //TODO: get this number
         public static final double CLIMB_UP_ANGLE = 0; //TODO: find this number

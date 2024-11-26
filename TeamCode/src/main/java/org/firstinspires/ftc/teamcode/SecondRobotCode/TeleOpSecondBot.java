@@ -97,20 +97,20 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
                 }
                 //intake
-                if(gamepad2.b) {
+                if(gamepad1.b) {
                     intake.spinTake(1);
                 }
-                else if(gamepad2.y){
+                else if(gamepad1.y){
                     intake.spinTake(-1);
                 } else{
                     intake.spinTake(0);
                 }
 
-                if (gamepad2.right_bumper){
+                if (gamepad1.right_bumper){
                     arm.setArmAngle(127.76);
                     telemetry.addData("arm Pos", arm.getPosInDegrees());
                 }
-                else if(gamepad2.left_bumper){
+                else if(gamepad1.left_bumper){
                     arm.setArmAngle(90);
 
                 }
@@ -123,7 +123,6 @@ public class TeleOpSecondBot extends  LinearOpMode {
             //wrist
             // telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
             telemetry.addData("Status", "wobot is on :3");
-            telemetry.addData("current arm angle", arm.getPosInDegrees());
             telemetry.addData("current slide height mm", slides.getCurrentHeight());
             telemetry.addData("wrist current pos", intake.getWristPosition());
             telemetry.update();

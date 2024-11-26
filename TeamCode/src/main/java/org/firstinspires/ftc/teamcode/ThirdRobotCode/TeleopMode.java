@@ -127,15 +127,31 @@ public class TeleopMode extends LinearOpMode {
                 commands.intake('b');
             }
             if(gamepad2.x){
+                intake.pivotIntake(0);
                 slides.goToPosWithSpeed(0, 1);
                 while(slides.rightSlideExtend.isBusy()){}
-                arm.pivotArmUsingBuiltInStuffs(1, 1, pidfCoefficients);
+                arm.pivotArmUsingBuiltInStuffs(0, 1, pidfCoefficients);
+
 
             }
             if(gamepad2.a){
+                commands.intake('b');
+                while(slides.getSlidePos()<6){}
+                intake.pivotIntake(0.5);
                 while(intake.getColour() != 'b'){
-                    intake.spinIntake(0.5);
+                    intake.spinIntake(-0.25);
                 }
+                intake.spinIntake(0);
+                intake.pivotIntake(0);
+                slides.goToPosWithSpeed(0, 1);
+                while(slides.rightSlideExtend.isBusy()){}
+                arm.pivotArmUsingBuiltInStuffs(0, 1, pidfCoefficients);
+            }
+            if(gamepad2.right_bumper){
+                while(intake.getColour() == 'b'){
+                    intake.spinIntake(1);
+                }
+            intake.spinIntake(0);
             }
 
 
@@ -144,7 +160,10 @@ public class TeleopMode extends LinearOpMode {
             telemetry.addData("Arm Target", armPivot.getTargetPosition());
             telemetry.addData("Arm Power", armPivot.getPower());
             telemetry.addData("SlidesPos", slides.getSlidePos());
-
+            telemetry.addData("colour", intake.getColour());
+            telemetry.addData("R", colorSensor.red());
+            telemetry.addData("G", colorSensor.green());
+            telemetry.addData("B", colorSensor.blue());
 //            telemetry.addData("x position:", xPos);
 //            telemetry.addData("y position:", yPos);
 //            telemetry.addData("heading position:", heading);
