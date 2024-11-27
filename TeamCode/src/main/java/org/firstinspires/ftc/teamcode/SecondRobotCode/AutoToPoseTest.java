@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.SecondRobotCode;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,8 +12,6 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.SecondRobotCode.ChassisSubsystem;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 
 /*
@@ -35,7 +32,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 @Config
 @Autonomous(group = "drive")
-public class BackAndForth extends LinearOpMode {
+public class AutoToPoseTest extends LinearOpMode {
 
     public static double DISTANCE = 10; //inches
 
@@ -62,7 +59,6 @@ public class BackAndForth extends LinearOpMode {
 
     Pose2d startingPose;
 
-
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -87,30 +83,23 @@ public class BackAndForth extends LinearOpMode {
 
 
         startingPose = new Pose2d(0, 0, Math.toRadians(0));
-
-        Trajectory trajectoryForward = chassis.trajectoryBuilder(startingPose)
-                .forward(DISTANCE)
+        Trajectory gotoPose = chassis.trajectoryBuilder(new Pose2d())
+                .lineToLinearHeading(new Pose2d(10, 10, Math.toRadians(90)))
                 .build();
 
-        Trajectory trajectoryBackward = chassis.trajectoryBuilder(trajectoryForward.end())
-                .back(DISTANCE)
-                .build();
-
-//        Trajectory gotoPose = chassis.trajectoryBuilder(trajectoryBackward.end())
-//                .lineToLinearHeading(new Pose2d(40, 40, Math.toRadians(90)))
-//                .build();
-//
 
 
         waitForStart();
 
         if(isStopRequested()) return;
 
-        chassis.followTrajectory(trajectoryForward);
+        chassis.followTrajectory(gotoPose);
 
        //     slides.setHeight(10);
-           // chassis.followTrajectory(trajectoryBackward);
+
 //slides.setHeight(100);
+
+
 
 
 

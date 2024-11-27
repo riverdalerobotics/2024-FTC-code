@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.SecondRobotCode;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,8 +12,6 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.SecondRobotCode.ChassisSubsystem;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 
 /*
@@ -35,9 +32,8 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 @Config
 @Autonomous(group = "drive")
-public class BackAndForth extends LinearOpMode {
+public class PreloadPlusOne extends LinearOpMode {
 
-    public static double DISTANCE = 10; //inches
 
     public DcMotorEx motorLeftF;
     public DcMotorEx motorRightF;
@@ -62,10 +58,10 @@ public class BackAndForth extends LinearOpMode {
 
     Pose2d startingPose;
 
-
     @Override
     public void runOpMode() throws InterruptedException {
-
+        //8.65 inches length
+        //8.9 inches wide
 
         chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu);
         arm = new ArmSubsystem(armMotor);
@@ -86,31 +82,44 @@ public class BackAndForth extends LinearOpMode {
         slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-        startingPose = new Pose2d(0, 0, Math.toRadians(0));
+        startingPose = new Pose2d(-30, 8.7, Math.toRadians(0));
 
-        Trajectory trajectoryForward = chassis.trajectoryBuilder(startingPose)
-                .forward(DISTANCE)
+        Trajectory trajectoryOneReposition = chassis.trajectoryBuilder(new Pose2d())
+                .forward(10)
+                .build();
+        Trajectory lineUpBasketTrajectoryTwo = chassis.trajectoryBuilder(trajectoryOneReposition.end())
+                .lineToLinearHeading(new Pose2d(-56, 16, Math.toRadians(-45)))
+                .build();
+        Trajectory lineupMiddleSampleTrajectoryThree = chassis.trajectoryBuilder(lineUpBasketTrajectoryTwo.end())
+                .lineToLinearHeading(new Pose2d(-60, 30, Math.toRadians(0)))
+                .build();
+        Trajectory goIntakeSampleTrajectoryFour = chassis.trajectoryBuilder(lineupMiddleSampleTrajectoryThree.end())
+                .lineToLinearHeading(new Pose2d(-60, 40, Math.toRadians(0)))
+                .build();
+        Trajectory lineupBasketTrajectoryFive = chassis.trajectoryBuilder(goIntakeSampleTrajectoryFour.end())
+                .lineToLinearHeading(new Pose2d(-56, 16, Math.toRadians(-45)))
                 .build();
 
-        Trajectory trajectoryBackward = chassis.trajectoryBuilder(trajectoryForward.end())
-                .back(DISTANCE)
-                .build();
 
-//        Trajectory gotoPose = chassis.trajectoryBuilder(trajectoryBackward.end())
-//                .lineToLinearHeading(new Pose2d(40, 40, Math.toRadians(90)))
-//                .build();
-//
+
 
 
         waitForStart();
 
         if(isStopRequested()) return;
 
-        chassis.followTrajectory(trajectoryForward);
+        chassis.followTrajectory(trajectoryOneReposition);
+        chassis.followTrajectory(lineUpBasketTrajectoryTwo);
+        chassis.followTrajectory(lineupMiddleSampleTrajectoryThree);
+        chassis.followTrajectory(goIntakeSampleTrajectoryFour);
+        chassis.followTrajectory(lineupBasketTrajectoryFive);
+
 
        //     slides.setHeight(10);
-           // chassis.followTrajectory(trajectoryBackward);
+
 //slides.setHeight(100);
+
+
 
 
 
