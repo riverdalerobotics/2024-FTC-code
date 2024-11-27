@@ -10,6 +10,7 @@ public class ArmSubsystem {
     public ArmSubsystem(DcMotor arm){
         this.armMotor = arm;
 
+
     }
 
     public void armUp() {

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.ThirdRobotCode;
 
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -9,24 +10,28 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class ArmSubsystem {
     DcMotorEx armPivotMotor;
 
-     double integralSum = 0;
-     double Kp = 0.1;
-     double Ki = 0;
 
-     double Kd = 0;
+     double integralSum = 0;
+     //double Kp = 0.0006; moved to constants
+     //double Ki = 0;
+
+     //double Kd = 0;
+     //double Kf = 1;
 
     ElapsedTime timer = new ElapsedTime();
     private double lastError = 0;
 
     int armPivotMotorPosition;
-    PIDFCoefficients values = new PIDFCoefficients(Kp, Ki, Kd, 0.7);
+    PIDFCoefficients values;
 
     /**
      * The subsystem of the arm
      * @param armPivot the arm motor, must be static and DcMotor<b>EX</b>
      */
     public ArmSubsystem(DcMotorEx armPivot) {
+        values = new PIDFCoefficients(Constants.ArmConstants.kp, Constants.ArmConstants.ki, Constants.ArmConstants.kd, Constants.ArmConstants.kf);
         this.armPivotMotor = armPivot;
+        armPivotMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void pivotArm(double armPivotInput, double power) {
@@ -47,14 +52,15 @@ public class ArmSubsystem {
 //
 //    }
     public double getPos(){
-        return armPivotMotor.getCurrentPosition()* Constants.ArmConstants.GEAR_RATIO /360;
+        return 360*armPivotMotor.getCurrentPosition()/Constants.ArmConstants.GEAR_RATIO;
     }
-    public void pivotArmUsingBuiltInStuffs(double angle, double speed){
-        double rotations = angle*(int) Constants.ArmConstants.GEAR_RATIO /360;
-        armPivotMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        armPivotMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, values);
-        armPivotMotor.setTargetPosition((int)rotations);
+    public void pivotArmUsingBuiltInStuffs(double angle, double speed, PIDFCoefficients pidfCoefficients){
+        double rotations = angle*Constants.ArmConstants.GEAR_RATIO/360;
         armPivotMotor.setPower(speed);
+        armPivotMotor.setTargetPosition((int)rotations);
+        armPivotMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, pidfCoefficients);
+        armPivotMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+
     }
 
 }

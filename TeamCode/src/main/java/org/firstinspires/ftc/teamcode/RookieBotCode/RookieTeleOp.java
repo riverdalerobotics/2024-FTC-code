@@ -18,7 +18,7 @@ public class RookieTeleOp extends LinearOpMode {
         ChassisSubsystem chassis;
         ArmSubsystem armSub;
         IntakeSubsystem intakeSub;
-
+        DcMotor intakeMotor;
     public void runOpMode() throws InterruptedException {
 
         leftDrive  = hardwareMap.get(DcMotor.class, "leftDrive");
@@ -27,6 +27,9 @@ public class RookieTeleOp extends LinearOpMode {
         wrist = hardwareMap.get(DcMotor.class, "wrist");
         claw = hardwareMap.get(Servo.class, "claw");
         intake = hardwareMap.get(CRServo.class, "intake");
+        intakeMotor = hardwareMap.get(DcMotor.class, "IntakeMotor");
+        armSub = new ArmSubsystem(arm);
+        intakeSub = new IntakeSubsystem(intake, claw, intakeMotor);
         waitForStart();
 
         double speed;
@@ -38,6 +41,7 @@ public class RookieTeleOp extends LinearOpMode {
             turn = gamepad1.right_stick_x*0.3;
 
             chassis.drive(speed,turn);
+            telemetry.addData("Arm Position", armSub.getPosInDegrees());
             telemetry.addData("Y axis Pwr", speed);
             telemetry.addData("X axis Pwr", turn);
             telemetry.update();
