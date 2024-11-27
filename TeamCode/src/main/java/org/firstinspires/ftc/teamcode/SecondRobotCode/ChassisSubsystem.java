@@ -106,8 +106,8 @@ public class ChassisSubsystem extends MecanumDrive{
         this.backRight = backRightDrive;
         this.backLeft = backLeftDrive;
 
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        this.backLeft.setDirection(DcMotorEx.Direction.REVERSE);
 
        this.imu = imu;
 
@@ -386,7 +386,7 @@ public class ChassisSubsystem extends MecanumDrive{
         }
     }
 
-    public void setPIDFCoefficients(DcMotor.RunMode runMode, PIDFCoefficients coefficients) {
+    public void setPIDFCoefficients(DcMotorEx.RunMode runMode, PIDFCoefficients coefficients) {
         PIDFCoefficients compensatedCoefficients = new PIDFCoefficients(
                 coefficients.p, coefficients.i, coefficients.d,
                 coefficients.f * 12 / batteryVoltageSensor.getVoltage()

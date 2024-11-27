@@ -105,8 +105,9 @@ public class Constants {
         public static final double ENCODER_TICKS_PER_ROTATION = 537.7; //TODO: Find the amount of ticks per rotation
         public static final double GEAR_REDUCTION = (double) 20.0/100 ; //TODO: Find gear reduction
 
-        public static final double ARM_ANGLE_HANDOFF = 60; //TODO: Find that up arm angle
-        public static final double ARM_ANGLE_INTAKE= 30 ; //TODO: Find that down arm angle lol
+
+        public static final double ARM_ANGLE_HANDOFF = 70; //TODO: Find that up arm angle
+        public static final double ARM_ANGLE_INTAKE= 211.82 ; //TODO: Find that down arm angle lol
         public static final double ARM_ANGLE_TEST = 90 ; //TODO: Find that down arm angle lol
     }
 
@@ -119,14 +120,22 @@ public class Constants {
 
         public static final double TICKS_PER_ROTATION = 537.7;
         public static final double DISTANCE_PER_ROTATION = 120; //mm
-        public static final double FEEDBUCKET = 50;
 
-        public static final double HIGH_BASKET_POSITION = 0;
+
+        public static final double HIGH_BASKET_POSITION = 860;
         public static final double LOW_BASKET_POSITION = 0;
         public static final double HANDOFF_POSITION = 0;
 
+
         public static final double ARM_NEEDS_LEAVE_POSITION = 0;
 
+
+    }
+
+    public static class BucketConstants {
+
+        public static final double BUCKET_SCORE_POSITION = 0.15;
+        public static final double BUCKET_HANDOFF_POSITION = 0.40;
 
     }
 
@@ -135,10 +144,12 @@ public class Constants {
      * */
     static class IntakeConstants {
 
-        public static final double INTAKE_WRIST_POSITION = 0; //TODO:
-        public static final double INTAKE_HAND_POSITION = 0; //TODO:
-        public static final double INTAKE_SPEED = 0; //TODO:
-        public static final double OUTAKE_SPEED = 0; //TODO:
+        public static final double WRIST_INTAKE_POSITION = 0.71; //TODO:
+        public static final double WRIST_HANDOFF_POSITION = 0; //TODO:
+
+
+        public static final double INTAKE_SPEED = 0.9; //TODO:
+        public static final double OUTAKE_SPEED = -0.6; //TODO:
 
 
     }

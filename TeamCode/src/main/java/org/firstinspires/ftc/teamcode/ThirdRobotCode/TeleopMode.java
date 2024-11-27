@@ -116,10 +116,10 @@ public class TeleopMode extends LinearOpMode {
                 otos.setPosition(startPos);
             }
 
-            if(gamepad1.a){
-                chassis.goToPosition(xPos, yPos, heading, 0.03, rotKp, 0, -100, 0);
-                //chassis.goToPosition(0, yPos, heading, 0.1, 0,0, 180);
-            }
+//            if(gamepad1.a){
+//                chassis.goToPosition(xPos, yPos, heading, 0.03, rotKp, 0, -100, 0);
+//                //chassis.goToPosition(0, yPos, heading, 0.1, 0,0, 180);
+//            }
             if(gamepad2.y){
                 commands.scoreBucket();
             }
