@@ -58,6 +58,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
         slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         imu = hardwareMap.get(IMU.class,"imu");
+
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
                 RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
@@ -84,6 +85,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
             speedPwr = gamepad1.left_stick_y*0.3;
             strafePwr = gamepad1.left_stick_x*0.3;
             turnPwr = gamepad1.right_stick_x*0.3;
+
            // chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
 
             if (gamepad1.start){
@@ -103,7 +105,6 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 fieldOriented=false;
             }
 
-
            while(gamepad1.x){
                 slides.setHeight(400);
                 if(slides.getCurrentHeight()>230){
@@ -115,7 +116,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
                if(slides.getCurrentHeight()<230) {
                    slides.bucketServo.setPosition(0.35);
                }
-
+//HTis is me chahig telelop
                while(gamepad1.dpad_right) {
 
 

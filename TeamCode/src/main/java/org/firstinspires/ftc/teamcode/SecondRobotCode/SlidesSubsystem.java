@@ -28,7 +28,6 @@ public class SlidesSubsystem {
         return mm * (Constants.SlidesConstants.TICKS_PER_ROTATION / Constants.SlidesConstants.DISTANCE_PER_ROTATION);
     }
 
-
     public double getCurrentHeight(){
         return ticksToMillimeter(slidesMotor.getCurrentPosition());
     }
