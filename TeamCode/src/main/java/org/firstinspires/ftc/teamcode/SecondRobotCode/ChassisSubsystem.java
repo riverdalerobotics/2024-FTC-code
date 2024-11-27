@@ -70,8 +70,8 @@ public class ChassisSubsystem extends MecanumDrive{
     public double currentSpeed, currentStrafe, currentTurn;
 
     IMU imu;
-    private List<DcMotorEx> motors;
     private VoltageSensor batteryVoltageSensor;
+    private List<DcMotorEx> motors;
 
     private List<Integer> lastEncPositions = new ArrayList<>();
     private List<Integer> lastEncVels = new ArrayList<>();
@@ -93,13 +93,11 @@ public class ChassisSubsystem extends MecanumDrive{
     private TrajectoryFollower follower;
 
 
-    public ChassisSubsystem(DcMotorEx frontLeftDrive, DcMotorEx frontRightDrive, DcMotorEx backLeftDrive, DcMotorEx backRightDrive, IMU imu){
+    public ChassisSubsystem(DcMotorEx frontLeftDrive, DcMotorEx frontRightDrive, DcMotorEx backLeftDrive, DcMotorEx backRightDrive, IMU imu, VoltageSensor batteryVoltageSensor){
         super(kV, kA, kStatic, TRACK_WIDTH, WHEEL_BASE, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
                 new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
-
-
 
         this.frontLeft = frontLeftDrive;
         this.frontRight = frontRightDrive;
@@ -109,9 +107,9 @@ public class ChassisSubsystem extends MecanumDrive{
         this.frontLeft.setDirection(DcMotor.Direction.REVERSE);
         this.backLeft.setDirection(DcMotor.Direction.REVERSE);
 
-       this.imu = imu;
+        this.batteryVoltageSensor = batteryVoltageSensor;
 
-
+        this.imu = imu;
 
 
         motors = Arrays.asList(frontLeft, frontRight, backRight, backLeft);
@@ -361,8 +359,10 @@ public class ChassisSubsystem extends MecanumDrive{
     public void update() {
         updatePoseEstimate();
         DriveSignal signal = trajectorySequenceRunner.update(getPoseEstimate(), getPoseVelocity());
-        if (signal != null) setDriveSignal(signal);
+        if (signal != null) {setDriveSignal(signal);}
     }
+
+
 
     public void waitForIdle() {
         while (!Thread.currentThread().isInterrupted() && isBusy())

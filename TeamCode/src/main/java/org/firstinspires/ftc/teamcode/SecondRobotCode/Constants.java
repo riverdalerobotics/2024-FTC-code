@@ -41,7 +41,7 @@ public class Constants {
          */
         public static double WHEEL_RADIUS = 4.09449; // inches
         public static double GEAR_RATIO = 19.2; // output (wheel) speed / input (motor) speed
-        public static double TRACK_WIDTH = 16.287402; // in  //TODO: double check dis
+        public static double TRACK_WIDTH = 14.33333333; // in  //TODO: double check dis
         public static double WHEEL_BASE = 16.287402;
 
         /*

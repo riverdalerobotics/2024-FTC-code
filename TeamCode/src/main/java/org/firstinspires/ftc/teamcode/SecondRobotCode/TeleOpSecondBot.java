@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -22,6 +23,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
     public DcMotorEx motorRightB;
     public DcMotorEx motorLeftB;
     IMU imu;
+    private VoltageSensor batteryVoltageSensor;
 
     boolean fieldOriented = true;
 
@@ -64,7 +66,10 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
         imu.initialize(parameters);
 
-        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu);
+        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
+
+
+        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu, batteryVoltageSensor);
         arm = new ArmSubsystem(armMotor);
         intake = new IntakeSubsystem (intakeServo, wristServo);
         slides = new SlidesSubsystem(slideMotor, bucketServo);

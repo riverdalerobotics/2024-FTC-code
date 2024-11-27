@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -11,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.SecondRobotCode.ChassisSubsystem;
@@ -44,6 +46,7 @@ public class BackAndForth extends LinearOpMode {
     public DcMotorEx motorRightB;
     public DcMotorEx motorLeftB;
     IMU imu;
+    private VoltageSensor batteryVoltageSensor;
 
     private DcMotor armMotor;
 
@@ -66,8 +69,6 @@ public class BackAndForth extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-
-
         motorLeftF = hardwareMap.get(DcMotorEx.class ,"motorLeftF");
         motorRightF = hardwareMap.get(DcMotorEx.class, "motorRightF");
         motorRightB = hardwareMap.get(DcMotorEx.class, "motorRightB");
@@ -78,8 +79,16 @@ public class BackAndForth extends LinearOpMode {
         wristServo = hardwareMap.get(Servo.class, "wrist");
         intakeServo = hardwareMap.get(CRServo.class, "intake");
 
+        imu = hardwareMap.get(IMU.class,"imu");
 
-        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu);
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
+        imu.initialize(parameters);
+
+        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
+
+        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu, batteryVoltageSensor);
         arm = new ArmSubsystem(armMotor);
         intake = new IntakeSubsystem (intakeServo, wristServo);
         slides = new SlidesSubsystem(slideMotor, bucketServo);
