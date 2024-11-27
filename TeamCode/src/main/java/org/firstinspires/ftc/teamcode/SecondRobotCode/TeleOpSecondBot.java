@@ -117,6 +117,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
                    slides.bucketServo.setPosition(0.35);
                }
 //HTis is me chahig telelop
+
                while(gamepad1.dpad_right) {
 
 
