@@ -47,7 +47,7 @@ public class SlidesSubsystem {
         slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void receivingBucketAngle(double pos) {
+    public void bucketPos(double pos) {
         bucketServo.setPosition(pos);
 
     }

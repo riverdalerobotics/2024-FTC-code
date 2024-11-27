@@ -91,6 +91,12 @@ public class TeleOpSecondBot extends  LinearOpMode {
             if (gamepad1.start){
                 imu.resetYaw();
             }
+            if(gamepad1.a){
+                slides.bucketPos(0.4);
+            }
+            if(gamepad1.b){
+                slides.bucketPos(0);
+            }
             //chassis.moveMechChassis(speedPwr,strafePwr,turnPwr);
 
            if (fieldOriented) {
@@ -104,48 +110,6 @@ public class TeleOpSecondBot extends  LinearOpMode {
             } else if (gamepad1.right_stick_button){
                 fieldOriented=false;
             }
-
-           while(gamepad1.x){
-                slides.setHeight(400);
-                if(slides.getCurrentHeight()>230){
-                    arm.setArmAngle(87);}
-
-                //Sets the slides to a receiving angle (receives the samples)
-           while(gamepad1.y) {
-               slides.setHeight(50);
-               if(slides.getCurrentHeight()<230) {
-                   slides.bucketServo.setPosition(0.35);
-               }
-//HTis is me chahig telelop
-
-               while(gamepad1.dpad_right) {
-
-
-               }
-           }
-                }
-            if(slides.getCurrentHeight()>=400){
-                slides.setHeight(0);
-
-            }
-//            arm
-//                     if(slides.getCurrentHeight()<300){
-//                       armMove = false;}
-//            /     else{
-//                  armMove = true;
-//                 }
-//            if(armMove == true){
-
-
-            if (slides.getCurrentHeight()<300 || arm.getPosInDegrees()< 66){
-                armMove = false;
-            }
-
-            if (gamepad1.a){
-                intake.setWristPosition(0.71);}
-            if(gamepad1.x){
-                intake.setWristPosition(0.5);
-            }
             if(gamepad1.left_bumper){
                 intake.spinTake(-1);
             }
@@ -155,13 +119,63 @@ public class TeleOpSecondBot extends  LinearOpMode {
             else{
                 intake.spinTake(0);
             }
+           while(gamepad1.x){
+                if(slides.getCurrentHeight()<=230){
+                    slides.setHeight(400);
+                }
+                else if(slides.getCurrentHeight()>230){
+
+                    arm.setArmAngle(211.82);
+                    intake.setWristPosition(0.71);
+                    //intake.spinTake(1);
+
+                }}
+
+                //Sets the slides to a receiving angle (receives the samples)
+           while(gamepad1.y) {
+               slides.setHeight(0);
+               if(slides.getCurrentHeight()<230) {
+                   arm.setArmAngle(70`);
+                   intake.setWristPosition(0);
+                   slides.bucketServo.setPosition(0.35);
+                  // intake.spinTake(-1);
+               }
+
+           }
+
+     //          while(gamepad1.a){
+   //                arm.setArmAngle(90);
+       //            slides.setHeight(400);
+
+         //      }
+
+               // }
+//            arm
+//                     if(slides.getCurrentHeight()<300){
+//                       armMove = false;}
+//            /     else{
+//                  armMove = true;
+//                 }
+//            if(armMove == true){
+
+
+     //       if (slides.getCurrentHeight()<300 || arm.getPosInDegrees()< 66){
+       //         armMove = false;
+         //   }
+
+    //        if (gamepad1.a){
+      //          intake.setWristPosition(0.71);}
+       //     if(gamepad1.x){
+         //       intake.setWristPosition(0.5);
+           // }
+
             //if(gamepad2.)
-            if(gamepad1.dpad_up){
-                intake.setWristPosition(0);
-            }
-            if(gamepad1.b){
-                slides.setHeight(400);
-            }
+    //        if(gamepad1.dpad_up){
+      //          intake.setWristPosition(0);
+        //    }
+          //  if(gamepad1.b){
+            //    slides.setHeight(400);
+            //}
             //intake
 
             if(slides.getCurrentHeight()> 300){
@@ -190,8 +204,8 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
 
 
-            }
+            }}
 
 
         }
-}
+
