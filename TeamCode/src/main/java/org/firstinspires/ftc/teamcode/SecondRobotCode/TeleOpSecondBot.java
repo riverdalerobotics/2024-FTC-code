@@ -135,7 +135,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
            while(gamepad1.y) {
                slides.setHeight(0);
                if(slides.getCurrentHeight()<230) {
-                   arm.setArmAngle(70`);
+                   arm.setArmAngle(70);
                    intake.setWristPosition(0);
                    slides.bucketServo.setPosition(0.35);
                   // intake.spinTake(-1);
