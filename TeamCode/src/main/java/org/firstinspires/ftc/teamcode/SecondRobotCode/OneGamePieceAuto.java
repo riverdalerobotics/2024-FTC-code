@@ -40,13 +40,7 @@
 //    @Override
 //    public void runOpMode() throws InterruptedException {
 //
-//        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorRightB, motorLeftB);
-//
-//        motorLeftF = hardwareMap.get(DcMotorEx.class, "motorLeftF");
-//        motorRightF = hardwareMap.get(DcMotorEx.class, "motorRightF");
-//        motorRightB = hardwareMap.get(DcMotorEx.class, "motorRightB");
-//        motorLeftB = hardwareMap.get(DcMotorEx.class, "motorLeftB");
-//
+
 //        Trajectory trajectoryForward = drive.trajectoryBuilder(new Pose2d())
 //                .forward(DISTANCE)
 //                .build();

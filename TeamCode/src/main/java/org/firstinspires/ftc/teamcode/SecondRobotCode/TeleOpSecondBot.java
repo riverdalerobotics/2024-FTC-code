@@ -23,9 +23,12 @@ public class TeleOpSecondBot extends  LinearOpMode {
     public DcMotorEx motorLeftB;
     IMU imu;
 
+    boolean fieldOriented = true;
+
     private DcMotor armMotor;
 
     private DcMotor slideMotor;
+    private Servo bucketServo;
 
     private Servo wristServo;
     private CRServo intakeServo;
@@ -47,6 +50,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
         motorLeftB = hardwareMap.get(DcMotorEx.class, "motorLeftB");
         armMotor =hardwareMap.get(DcMotor.class, "armMotor");
         slideMotor = hardwareMap.get(DcMotor.class, "slideMotor");
+        bucketServo = hardwareMap.get(Servo.class, "bucket");
         wristServo = hardwareMap.get(Servo.class, "wrist");
         intakeServo = hardwareMap.get(CRServo.class, "intake");
 
@@ -62,7 +66,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
         chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu);
         arm = new ArmSubsystem(armMotor);
         intake = new IntakeSubsystem (intakeServo, wristServo);
-        slides = new SlidesSubsystem(slideMotor);
+        slides = new SlidesSubsystem(slideMotor, bucketServo);
 
         waitForStart();
         double speedPwr;
@@ -70,55 +74,107 @@ public class TeleOpSecondBot extends  LinearOpMode {
         double turnPwr;
         arm.resetEncoders();
         slides.resetEncoder();
-        boolean armMove = false;
+
+        boolean armMove;
 
         //TODO: Figure out the controls
         while (opModeIsActive()) {
 
             //chassis
-            speedPwr = -gamepad1.left_stick_y*0.2;
-            strafePwr = -gamepad1.left_stick_x*0.2;
-            turnPwr = -gamepad1.right_stick_x*0.2;
+            speedPwr = gamepad1.left_stick_y*0.3;
+            strafePwr = gamepad1.left_stick_x*0.3;
+            turnPwr = gamepad1.right_stick_x*0.3;
            // chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
-            chassis.fieldOriented(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES),speedPwr, strafePwr, turnPwr);
+
             if (gamepad1.start){
                 imu.resetYaw();
             }
-            if (gamepad1.x){
-                slides.setHeight(500);
+            //chassis.moveMechChassis(speedPwr,strafePwr,turnPwr);
+
+           if (fieldOriented) {
+               chassis.fieldOriented(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS), speedPwr, strafePwr, turnPwr);
+           } else {
+               chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
             }
-            //arm
-            if(slides.getCurrentHeight()>300){
 
-                if (gamepad1.a){
-                    intake.setWristPosition(0.8);}
-                if(gamepad1.x){
-                    intake.setWristPosition(0.2);
+            if (gamepad1.left_stick_button){
+                fieldOriented=true;
+            } else if (gamepad1.right_stick_button){
+                fieldOriented=false;
+            }
 
-                }
-                //intake
-                if(gamepad2.b) {
-                    intake.spinTake(1);
-                }
-                else if(gamepad2.y){
-                    intake.spinTake(-1);
-                } else{
-                    intake.spinTake(0);
-                }
 
-                if (gamepad2.right_bumper){
-                    arm.setArmAngle(127.76);
-                    telemetry.addData("arm Pos", arm.getPosInDegrees());
-                }
-                else if(gamepad2.left_bumper){
-                    arm.setArmAngle(90);
+           while(gamepad1.x){
+                slides.setHeight(400);
+                if(slides.getCurrentHeight()>230){
+                    arm.setArmAngle(87);}
 
+                //Sets the slides to a receiving angle (receives the samples)
+           while(gamepad1.y) {
+               slides.setHeight(50);
+               if(slides.getCurrentHeight()<230) {
+                   slides.bucketServo.setPosition(0.35);
+               }
+
+               while(gamepad1.dpad_right) {
+
+
+               }
+           }
                 }
+            if(slides.getCurrentHeight()>=400){
+                slides.setHeight(0);
+
+            }
+//            arm
+//                     if(slides.getCurrentHeight()<300){
+//                       armMove = false;}
+//            /     else{
+//                  armMove = true;
+//                 }
+//            if(armMove == true){
+
+
+            if (slides.getCurrentHeight()<300 || arm.getPosInDegrees()< 66){
+                armMove = false;
+            }
+
+            if (gamepad1.a){
+                intake.setWristPosition(0.71);}
+            if(gamepad1.x){
+                intake.setWristPosition(0.5);
+            }
+            if(gamepad1.left_bumper){
+                intake.spinTake(-1);
+            }
+            else if(gamepad1.right_bumper){
+                intake.spinTake(1);
+            }
+            else{
+                intake.spinTake(0);
+            }
+            //if(gamepad2.)
+            if(gamepad1.dpad_up){
+                intake.setWristPosition(0);
+            }
+            if(gamepad1.b){
+                slides.setHeight(400);
+            }
+            //intake
+
+            if(slides.getCurrentHeight()> 300){
+            if (gamepad2.right_bumper){
+                arm.setArmAngle(211.82);
+                telemetry.addData("arm Pos", arm.getPosInDegrees());
+            }
+            else if(gamepad2.left_bumper){
+                arm.setArmAngle(67.69);
+
+            }}
+
             //slides
 
             //TODO: get wrist position, add the height of the slides to the height we want to go,
-
-        }
 
             //wrist
             // telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
@@ -126,7 +182,14 @@ public class TeleOpSecondBot extends  LinearOpMode {
             telemetry.addData("current arm angle", arm.getPosInDegrees());
             telemetry.addData("current slide height mm", slides.getCurrentHeight());
             telemetry.addData("wrist current pos", intake.getWristPosition());
+            telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
+            telemetry.addData("robot oriented", fieldOriented);
             telemetry.update();
 
+
+
+            }
+
+
         }
-}}
+}

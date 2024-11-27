@@ -97,7 +97,7 @@ public class ChassisSubsystem {
      * @param turn the spin speed of the robot
      * */
     public void fieldOriented(double yaw, double fwd, double strafe, double turn){
-        double rotX = strafe * Math.cos(-yaw) - fwd* Math.sin(-yaw);
+        double rotX = strafe * Math.cos(-yaw) - fwd * Math.sin(-yaw);
         double rotY = strafe * Math.sin(-yaw) + fwd * Math.cos(-yaw);
         moveRobotMech(rotY, rotX, turn);
     }

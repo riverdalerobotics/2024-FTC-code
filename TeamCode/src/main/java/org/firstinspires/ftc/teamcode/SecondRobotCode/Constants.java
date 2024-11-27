@@ -119,6 +119,7 @@ public class Constants {
 
         public static final double TICKS_PER_ROTATION = 537.7;
         public static final double DISTANCE_PER_ROTATION = 120; //mm
+        public static final double FEEDBUCKET = 50;
 
 
     }

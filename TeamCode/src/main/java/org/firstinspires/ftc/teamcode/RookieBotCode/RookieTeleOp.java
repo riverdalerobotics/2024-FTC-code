@@ -39,7 +39,7 @@ public class RookieTeleOp extends LinearOpMode {
 
             chassis.drive(speed,turn);
             telemetry.addData("Y axis Pwr", speed);
-            telemetry.addData("X axis ", turn);
+            telemetry.addData("X axis Pwr", turn);
             telemetry.update();
         }
 

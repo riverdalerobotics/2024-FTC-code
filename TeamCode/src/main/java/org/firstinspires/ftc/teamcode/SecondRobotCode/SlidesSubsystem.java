@@ -3,14 +3,18 @@ package org.firstinspires.ftc.teamcode.SecondRobotCode;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.apache.commons.math3.analysis.function.Constant;
 
 public class SlidesSubsystem {
-    static DcMotor slidesMotor;
+     DcMotor slidesMotor;
+     Servo bucketServo;
 
-    public SlidesSubsystem(DcMotor slide) {
+
+    public SlidesSubsystem(DcMotor slide, Servo bucketServo) {
         this.slidesMotor = slide;
+        this.bucketServo = bucketServo;
         slidesMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
@@ -44,4 +48,8 @@ public class SlidesSubsystem {
         slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
+    public void receivingBucketAngle(double pos) {
+        bucketServo.setPosition(pos);
+
+    }
 }
