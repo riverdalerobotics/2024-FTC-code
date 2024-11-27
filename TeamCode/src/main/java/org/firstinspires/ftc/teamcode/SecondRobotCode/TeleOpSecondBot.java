@@ -143,7 +143,6 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
                    intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION);
                    slides.bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION);
-                  // intake.spinTake(-1);
                }
 
            }
