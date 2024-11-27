@@ -54,7 +54,7 @@ public class ArmSubsystem {
     public double getPos(){
         return 360*armPivotMotor.getCurrentPosition()/Constants.ArmConstants.GEAR_RATIO;
     }
-    public void pivotArmUsingBuiltInStuffs(double angle, double speed, PIDFCoefficients pidfCoefficients){
+    public void pivotArm(double angle, double speed, PIDFCoefficients pidfCoefficients){
         double rotations = angle*Constants.ArmConstants.GEAR_RATIO/360;
         armPivotMotor.setPower(speed);
         armPivotMotor.setTargetPosition((int)rotations);

@@ -1,13 +1,5 @@
 package org.firstinspires.ftc.teamcode.ThirdRobotCode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.linearOpMode;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
-import android.transition.Slide;
-
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -15,15 +7,12 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.ThirdRobotCode.IntakeSubsystem;
-
-@TeleOp (name = "Pinkie Pie Teleop", group = "Linear OpMode")
+@TeleOp (name = "Blue Pinkie Pie Teleop", group = "Linear OpMode")
 
 public class TeleopMode extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
@@ -84,26 +73,13 @@ public class TeleopMode extends LinearOpMode {
         leftSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(10, 0, 0, 0);
-        commands = new Commands(arm, slides, chassis, pidfCoefficients);
+        commands = new Commands(arm, slides, chassis, intake, pidfCoefficients);
         slides.runUsingEncoders();
 
     while(opModeIsActive()) {
             double speed = Math.pow(gamepad1.left_stick_y, 5/3);
             double strafe = Math.pow(gamepad1.left_stick_x, 5/3);
             double turn = Math.pow(gamepad1.right_stick_x, 5/3);
-
-            //chassis.moveRobotMech(speed, strafe, turn);
-
-//            char colour = intake.getColour();
-//            if(colour == 'b'&&!hasPeice){
-//                intake.spinIntake(0);
-//                hasPeice = true;
-//            }
-//            else if(!hasPeice){
-//                intake.spinIntake(-1);
-//            }
-//            telemetry.addData("Colour: ", intake.getColour());
-
             pose2D = otos.getPosition();
             xPos = pose2D.x*(-3.048);
             yPos = pose2D.y*(-3.048);
@@ -117,7 +93,19 @@ public class TeleopMode extends LinearOpMode {
             }
 
             if(gamepad1.a){
-                chassis.goToPosition(xPos, yPos, heading, 0.03, rotKp, 0, -100, 0);
+                while(chassis.goToPosition(xPos, yPos, heading, 0.03, rotKp, 45, -20, 135)){
+                    pose2D = otos.getPosition();
+                    xPos = pose2D.x*(-3.048);
+                    yPos = pose2D.y*(-3.048);
+                    heading = pose2D.h;
+                    if(heading<0){
+                        heading+=360;
+                    }
+               }
+                commands.scoreBucket();
+                while(slides.leftSlideExtend.isBusy()){
+                }
+                commands.spit();
                 //chassis.goToPosition(0, yPos, heading, 0.1, 0,0, 180);
             }
             if(gamepad2.y){
@@ -127,36 +115,19 @@ public class TeleopMode extends LinearOpMode {
                 commands.intake('b');
             }
             if(gamepad2.x){
-                intake.pivotIntake(0);
-                slides.goToPosWithSpeed(0, 1);
-                while(slides.rightSlideExtend.isBusy()){}
-                arm.pivotArmUsingBuiltInStuffs(0, 1, pidfCoefficients);
+                commands.goToZero();
 
 
             }
             if(gamepad2.a){
                 commands.intake('b');
-                while(slides.getSlidePos()<6){}
-                intake.pivotIntake(0.5);
-                while(intake.getColour() != 'b'){
-                    intake.spinIntake(-0.25);
-                }
-                intake.spinIntake(0);
-                intake.pivotIntake(0);
-                slides.goToPosWithSpeed(0, 1);
-                while(slides.rightSlideExtend.isBusy()){}
-                arm.pivotArmUsingBuiltInStuffs(0, 1, pidfCoefficients);
             }
             if(gamepad2.right_bumper){
-                while(intake.getColour() == 'b'){
-                    intake.spinIntake(1);
-                }
-            intake.spinIntake(0);
+                commands.spit();
             }
 
 
             telemetry.addData("Arm pos",arm.getPos());
-            telemetry.addData("true arm position", armPivot.getCurrentPosition());
             telemetry.addData("Arm Target", armPivot.getTargetPosition());
             telemetry.addData("Arm Power", armPivot.getPower());
             telemetry.addData("SlidesPos", slides.getSlidePos());
@@ -164,10 +135,9 @@ public class TeleopMode extends LinearOpMode {
             telemetry.addData("R", colorSensor.red());
             telemetry.addData("G", colorSensor.green());
             telemetry.addData("B", colorSensor.blue());
-//            telemetry.addData("x position:", xPos);
-//            telemetry.addData("y position:", yPos);
-//            telemetry.addData("heading position:", heading);
-//            telemetry.addData("kp:", rotKp);
+            telemetry.addData("x position:", xPos);
+            telemetry.addData("y position:", yPos);
+            telemetry.addData("heading position:", heading);
             telemetry.update();
         }
     }
