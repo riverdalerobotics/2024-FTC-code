@@ -61,8 +61,8 @@ public class Constants {
          * small and gradually increase them later after everything is working. All distance units are
          * inches.
          */
-        public static double MAX_VEL = 36; //TODO: CHANGE DIS MAYBE
-        public static double MAX_ACCEL = 30;
+        public static double MAX_VEL = 5; //TODO: CHANGE DIS MAYBE, supposed to be 36
+        public static double MAX_ACCEL = 10; //TODO: CHANGE DIS MAYBE, supposed to be 30
         public static double MAX_ANG_VEL = Math.toRadians(60);
         public static double MAX_ANG_ACCEL = Math.toRadians(60);
 
@@ -134,12 +134,11 @@ public class Constants {
      * Intake Constants needed for Intake
      * */
     static class IntakeConstants {
-        public static final double MAX_INTAKE_POSITION = 0; //TODO: Find the Max Servo position for INTAKE
-        public static final double MIN_INTAKE_POSITION = 0; //TODO: Find the MIN Servo position for INTAKE
-        public static final double MAX_UP_POSITION = 0; //TODO: Find the ABSOLUTE_LIMIT servo position for moving it UP
-        public static final double MIN_DOWN_POSITION = 0; //TODO: Find the MIN servo position for moving it DOWN
-        public static final double START_INTAKE_POSITION = 0; //TODO: Find the starting position for INTAKE
-        public static final double START_MIDDLE_POSITION = 0; //TODO: Find the starting position for the UP/DOWN Servo
+
+        public static final double INTAKE_WRIST_POSITION = 0; //TODO:
+        public static final double INTAKE_HAND_POSITION = 0; //TODO:
+        public static final double INTAKE_SPEED = 0; //TODO:
+        public static final double OUTAKE_SPEED = 0; //TODO:
 
 
     }
