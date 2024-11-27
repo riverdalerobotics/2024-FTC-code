@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -22,10 +23,14 @@ public class TeleOpSecondBot extends  LinearOpMode {
     public DcMotorEx motorRightB;
     public DcMotorEx motorLeftB;
     IMU imu;
+    private VoltageSensor batteryVoltageSensor;
+
+    boolean fieldOriented = true;
 
     private DcMotor armMotor;
 
     private DcMotor slideMotor;
+    private Servo bucketServo;
 
     private Servo wristServo;
     private CRServo intakeServo;
@@ -37,8 +42,8 @@ public class TeleOpSecondBot extends  LinearOpMode {
     IntakeSubsystem intake;
     SlidesSubsystem slides;
 
-    //TODO: code specific: configure imu, work on field centric code, copy and paste SampleMecanumDrive into ChassisSubsystem, create an auto, tune pidf for rr.
-    //TODO: priotiy list: field centric, intake, arm, slides, road runner, buy coffee
+    //TODO: code specific:  tune pidf for rr.
+    //TODO: priotiy list:  road runner, buy coffee
     public void runOpMode() throws InterruptedException {
 
         motorLeftF = hardwareMap.get(DcMotorEx.class ,"motorLeftF");
@@ -47,6 +52,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
         motorLeftB = hardwareMap.get(DcMotorEx.class, "motorLeftB");
         armMotor =hardwareMap.get(DcMotor.class, "armMotor");
         slideMotor = hardwareMap.get(DcMotor.class, "slideMotor");
+        bucketServo = hardwareMap.get(Servo.class, "bucket");
         wristServo = hardwareMap.get(Servo.class, "wrist");
         intakeServo = hardwareMap.get(CRServo.class, "intake");
 
@@ -54,15 +60,19 @@ public class TeleOpSecondBot extends  LinearOpMode {
         slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         imu = hardwareMap.get(IMU.class,"imu");
+
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
                 RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
         imu.initialize(parameters);
 
-        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu);
+        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
+
+
+        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu, batteryVoltageSensor);
         arm = new ArmSubsystem(armMotor);
         intake = new IntakeSubsystem (intakeServo, wristServo);
-        slides = new SlidesSubsystem(slideMotor);
+        slides = new SlidesSubsystem(slideMotor, bucketServo);
 
         waitForStart();
         double speedPwr;
@@ -70,62 +80,91 @@ public class TeleOpSecondBot extends  LinearOpMode {
         double turnPwr;
         arm.resetEncoders();
         slides.resetEncoder();
-        boolean armMove = false;
 
         //TODO: Figure out the controls
         while (opModeIsActive()) {
 
-            //chassis
-            speedPwr = -gamepad1.left_stick_y*0.2;
-            strafePwr = -gamepad1.left_stick_x*0.2;
-            turnPwr = -gamepad1.right_stick_x*0.2;
-           // chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
-            chassis.fieldOriented(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES),speedPwr, strafePwr, turnPwr);
-            if (gamepad1.start){
+            //reset the yaw value
+            if (gamepad1.start) {
                 imu.resetYaw();
             }
-            if (gamepad1.x){
-                slides.setHeight(500);
+            speedPwr = gamepad1.left_stick_y * 0.5;
+            strafePwr = gamepad1.left_stick_x * 0.5;
+            turnPwr = gamepad1.right_stick_x * 0.5;
+
+
+            if (gamepad1.left_stick_button) {
+                fieldOriented = true;
+            } else if (gamepad1.right_stick_button) {
+                fieldOriented = false;
             }
-            //arm
-            if(slides.getCurrentHeight()>300){
+            if (fieldOriented) {
+                chassis.fieldOriented(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS), speedPwr, strafePwr, turnPwr);
+            } else {
+                chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
+            }
 
-                if (gamepad1.a){
-                    intake.setWristPosition(0.8);}
-                if(gamepad1.x){
-                    intake.setWristPosition(0.2);
+            //intake and outtake
+            if (gamepad1.left_bumper) {
+                intake.spinTake(Constants.IntakeConstants.OUTAKE_SPEED);
+            } else if (gamepad1.right_bumper) {
+                intake.spinTake(Constants.IntakeConstants.INTAKE_SPEED);
+            } else {
+                intake.spinTake(0);
+            }
 
-                }
-                //intake
-                if(gamepad1.b) {
-                    intake.spinTake(1);
-                }
-                else if(gamepad1.y){
-                    intake.spinTake(-1);
-                } else{
-                    intake.spinTake(0);
-                }
+            //intake
+            if (gamepad1.x) {
+                if (slides.getCurrentHeight() <= 230) {
+                    slides.setHeight(400);
+                } else if (slides.getCurrentHeight() > 230) {
 
-                if (gamepad1.right_bumper){
-                    arm.setArmAngle(127.76);
-                    telemetry.addData("arm Pos", arm.getPosInDegrees());
-                }
-                else if(gamepad1.left_bumper){
-                    arm.setArmAngle(90);
+                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE);
+                    intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
 
                 }
-            //slides
+            }
 
-            //TODO: get wrist position, add the height of the slides to the height we want to go,
+        //basket testing
+        while(gamepad1.a){
+            arm.setArmAngle(90);
+            slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION);
 
         }
+        if(gamepad1.b){
+            bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION);
+        }
 
-            //wrist
+        //Sets the slides to a handoff position (receives the samples)
+           while(gamepad1.y) {
+               slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION);
+               if(slides.getCurrentHeight()<230) {
+                   arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_HANDOFF);
+
+                   intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION);
+                   slides.bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION);
+                  // intake.spinTake(-1);
+               }
+
+           }
+           if(gamepad1.dpad_right){
+               arm.emergencyStop();
+           }
+
             // telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
             telemetry.addData("Status", "wobot is on :3");
+            telemetry.addData("current arm angle", arm.getPosInDegrees());
             telemetry.addData("current slide height mm", slides.getCurrentHeight());
             telemetry.addData("wrist current pos", intake.getWristPosition());
+            telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
+            telemetry.addData("robot oriented", fieldOriented);
             telemetry.update();
 
+
+
+            }
+    }
+
+
         }
-}}
+

@@ -70,8 +70,8 @@ public class ChassisSubsystem extends MecanumDrive{
     public double currentSpeed, currentStrafe, currentTurn;
 
     IMU imu;
-    private List<DcMotorEx> motors;
     private VoltageSensor batteryVoltageSensor;
+    private List<DcMotorEx> motors;
 
     private List<Integer> lastEncPositions = new ArrayList<>();
     private List<Integer> lastEncVels = new ArrayList<>();
@@ -93,25 +93,23 @@ public class ChassisSubsystem extends MecanumDrive{
     private TrajectoryFollower follower;
 
 
-    public ChassisSubsystem(DcMotorEx frontLeftDrive, DcMotorEx frontRightDrive, DcMotorEx backLeftDrive, DcMotorEx backRightDrive, IMU imu){
+    public ChassisSubsystem(DcMotorEx frontLeftDrive, DcMotorEx frontRightDrive, DcMotorEx backLeftDrive, DcMotorEx backRightDrive, IMU imu, VoltageSensor batteryVoltageSensor){
         super(kV, kA, kStatic, TRACK_WIDTH, WHEEL_BASE, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
                 new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
-
-
 
         this.frontLeft = frontLeftDrive;
         this.frontRight = frontRightDrive;
         this.backRight = backRightDrive;
         this.backLeft = backLeftDrive;
 
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.backLeft.setDirection(DcMotor.Direction.REVERSE);
 
-       this.imu = imu;
+        this.batteryVoltageSensor = batteryVoltageSensor;
 
-
+        this.imu = imu;
 
 
         motors = Arrays.asList(frontLeft, frontRight, backRight, backLeft);
@@ -141,12 +139,20 @@ public class ChassisSubsystem extends MecanumDrive{
      * @param speed forward speed
      * @param strafe strafe speed
      * @param turn spin speed
+     *
+     *              speed = -speed;
+     *         rightBackSpeed = speed + turn - strafe;
+     *         leftBackSpeed = speed - turn + strafe;
+     *         rightFrontSpeed = speed + turn + strafe;
+     *         leftFrontSpeed = speed - turn - strafe;
+     *
      * */
     public void moveMechChassis(double speed, double strafe, double turn){
-        rightBackSpeed = speed + turn - strafe;
-        leftBackSpeed = speed - turn + strafe;
-        rightFrontSpeed = speed + turn + strafe;
-        leftFrontSpeed = speed - turn - strafe;
+        speed = -speed;
+        rightBackSpeed = speed - turn + strafe;
+        leftBackSpeed = speed + turn - strafe;
+        rightFrontSpeed = speed - turn - strafe;
+        leftFrontSpeed = speed + turn + strafe;
 
         double max = Math.max(Math.abs(rightFrontSpeed), Math.abs(rightBackSpeed));
         max = Math.max(max,Math.abs(leftFrontSpeed));
@@ -166,6 +172,7 @@ public class ChassisSubsystem extends MecanumDrive{
 
     }
 
+
     /**
      * <p>
      * Field oriented allows the robot to drive relative to a starting position when given the yaw
@@ -180,8 +187,8 @@ public class ChassisSubsystem extends MecanumDrive{
      * @param turn the spin speed of the robot
      * */
     public void fieldOriented(double yaw, double fwd, double strafe, double turn){
-        double rotX = strafe * Math.cos(-yaw) - fwd* Math.sin(-yaw);
-        double rotY = strafe * Math.sin(-yaw) + fwd * Math.cos(-yaw);
+        double rotX = strafe * Math.cos(yaw) - fwd* Math.sin(yaw);
+        double rotY = strafe * Math.sin(yaw) + fwd * Math.cos(yaw);
         moveMechChassis(rotY, rotX, turn);
     }
 
@@ -217,13 +224,12 @@ public class ChassisSubsystem extends MecanumDrive{
             leftBackSpeed /= max;
             leftFrontSpeed /= max;
         }
-        frontLeft.setPower(leftFrontSpeed/0.5);
-        frontRight.setPower(rightFrontSpeed/0.5);
-        backRight.setPower(rightBackSpeed/0.5);
-        backLeft.setPower(leftBackSpeed/0.5);
+        frontLeft.setPower(leftFrontSpeed);
+        frontRight.setPower(rightFrontSpeed);
+        backRight.setPower(rightBackSpeed);
+        backLeft.setPower(leftBackSpeed);
 
     }
-
 
     //Taken from https://www.reddit.com/r/FTC/comments/3vx37h/motor_acceleration/
    public double slew (double prev, double input, double slewRate) {
@@ -240,7 +246,6 @@ public class ChassisSubsystem extends MecanumDrive{
     else return input;
   }
 
-    /////////////////////////////////////////////////////////////////////////
 
     /**
      * This code allows the robot to return to 0 from where ever on the field as long as there is
@@ -258,6 +263,14 @@ public class ChassisSubsystem extends MecanumDrive{
         fieldOriented(yaw, ySpeed, xSpeed, turnSpeed);
 
     }
+
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
 
     /**
      * This code allows you to go to a desired position from anywhere on the field as long as
@@ -346,8 +359,10 @@ public class ChassisSubsystem extends MecanumDrive{
     public void update() {
         updatePoseEstimate();
         DriveSignal signal = trajectorySequenceRunner.update(getPoseEstimate(), getPoseVelocity());
-        if (signal != null) setDriveSignal(signal);
+        if (signal != null) {setDriveSignal(signal);}
     }
+
+
 
     public void waitForIdle() {
         while (!Thread.currentThread().isInterrupted() && isBusy())
@@ -370,7 +385,7 @@ public class ChassisSubsystem extends MecanumDrive{
         }
     }
 
-    public void setPIDFCoefficients(DcMotor.RunMode runMode, PIDFCoefficients coefficients) {
+    public void setPIDFCoefficients(DcMotorEx.RunMode runMode, PIDFCoefficients coefficients) {
         PIDFCoefficients compensatedCoefficients = new PIDFCoefficients(
                 coefficients.p, coefficients.i, coefficients.d,
                 coefficients.f * 12 / batteryVoltageSensor.getVoltage()

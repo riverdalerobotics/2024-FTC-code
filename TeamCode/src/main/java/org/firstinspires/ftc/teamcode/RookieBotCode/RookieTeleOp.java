@@ -19,6 +19,7 @@ public class RookieTeleOp extends LinearOpMode {
         ArmSubsystem armSub;
         IntakeSubsystem intakeSub;
         DcMotor intakeMotor;
+
     public void runOpMode() throws InterruptedException {
 
         leftDrive  = hardwareMap.get(DcMotor.class, "leftDrive");
@@ -43,9 +44,8 @@ public class RookieTeleOp extends LinearOpMode {
             chassis.drive(speed,turn);
             telemetry.addData("Arm Position", armSub.getPosInDegrees());
             telemetry.addData("Y axis Pwr", speed);
-            telemetry.addData("X axis ", turn);
+            telemetry.addData("X axis Pwr", turn);
             telemetry.update();
         }
-
     }
 }
