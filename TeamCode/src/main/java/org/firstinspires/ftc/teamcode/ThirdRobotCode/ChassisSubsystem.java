@@ -109,7 +109,7 @@ public class ChassisSubsystem {
         return new Pose2d(x, y, h);
 
     }
-    public void goToPosition(double xPos, double yPos, double yaw, double kp, double rotationKp, double xResult, double yResult, double turnResult){
+    public boolean goToPosition(double xPos, double yPos, double yaw, double kp, double rotationKp, double xResult, double yResult, double turnResult){
 //        double max = Math.max(Math.abs(rightFrontSpeed), Math.abs(rightBackSpeed));
 //        max = Math.max(max,Math.abs(leftFrontSpeed));
 //        max = Math.max(max, Math.abs(leftBackSpeed));
@@ -124,6 +124,7 @@ public class ChassisSubsystem {
 
         double turnSpeed = turnError*kp*rotationKp;
         fieldOriented(yaw, -ySpeed, -xSpeed, turnSpeed);
+        return -3<=turnError && 3>=turnError && -3<=xError && 3>=xError && -3<=yError && 3>=yError;
     }
 
 //    public double pitch(){
