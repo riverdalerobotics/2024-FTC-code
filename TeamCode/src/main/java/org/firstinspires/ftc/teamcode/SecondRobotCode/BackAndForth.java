@@ -64,10 +64,19 @@ public class BackAndForth extends LinearOpMode {
     SlidesSubsystem slides;
 
     Pose2d startingPose;
-
+    Trajectory trajectoryForward;
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        imu = hardwareMap.get(IMU.class, "imu");
+
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
+        imu.initialize(parameters);
+
+        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
 
         motorLeftF = hardwareMap.get(DcMotorEx.class ,"motorLeftF");
         motorRightF = hardwareMap.get(DcMotorEx.class, "motorRightF");
@@ -79,16 +88,8 @@ public class BackAndForth extends LinearOpMode {
         wristServo = hardwareMap.get(Servo.class, "wrist");
         intakeServo = hardwareMap.get(CRServo.class, "intake");
 
-        imu = hardwareMap.get(IMU.class,"imu");
 
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
-        imu.initialize(parameters);
-
-        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
-
-        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu, batteryVoltageSensor);
+        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu,batteryVoltageSensor);
         arm = new ArmSubsystem(armMotor);
         intake = new IntakeSubsystem (intakeServo, wristServo);
         slides = new SlidesSubsystem(slideMotor, bucketServo);
@@ -99,7 +100,7 @@ public class BackAndForth extends LinearOpMode {
 
         startingPose = new Pose2d(0, 0, Math.toRadians(0));
 
-        Trajectory trajectoryForward = chassis.trajectoryBuilder(startingPose)
+        trajectoryForward = chassis.trajectoryBuilder(startingPose)
                 .forward(DISTANCE)
                 .build();
 
@@ -112,20 +113,22 @@ public class BackAndForth extends LinearOpMode {
 //                .build();
 //
 
-
         waitForStart();
 
         if(isStopRequested()) return;
+        //slides.setHeight(10);
+
+        telemetry.addData("pose", chassis.getPoseEstimate());
+        telemetry.update();
 
         chassis.followTrajectory(trajectoryForward);
 
-       //     slides.setHeight(10);
+
            // chassis.followTrajectory(trajectoryBackward);
 //slides.setHeight(100);
 
 
 
-            telemetry.addData("pose", chassis.getPoseEstimate());
-            telemetry.update();
+
         }
     }
