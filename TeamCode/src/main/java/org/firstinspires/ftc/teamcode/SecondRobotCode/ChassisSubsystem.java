@@ -226,13 +226,12 @@ public class ChassisSubsystem extends MecanumDrive{
             leftBackSpeed /= max;
             leftFrontSpeed /= max;
         }
-        frontLeft.setPower(leftFrontSpeed/0.5);
-        frontRight.setPower(rightFrontSpeed/0.5);
-        backRight.setPower(rightBackSpeed/0.5);
-        backLeft.setPower(leftBackSpeed/0.5);
+        frontLeft.setPower(leftFrontSpeed);
+        frontRight.setPower(rightFrontSpeed);
+        backRight.setPower(rightBackSpeed);
+        backLeft.setPower(leftBackSpeed);
 
     }
-
 
     //Taken from https://www.reddit.com/r/FTC/comments/3vx37h/motor_acceleration/
    public double slew (double prev, double input, double slewRate) {

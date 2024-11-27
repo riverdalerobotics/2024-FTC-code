@@ -33,7 +33,7 @@ public class SlidesSubsystem {
     }
 
     public void setHeight(double heightMillimeter) {
-        slidesMotor.setPower(0.3);
+        slidesMotor.setPower(0.7);
         slidesMotor.setTargetPosition((int) millimeterToTicks(heightMillimeter));
         slidesMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
