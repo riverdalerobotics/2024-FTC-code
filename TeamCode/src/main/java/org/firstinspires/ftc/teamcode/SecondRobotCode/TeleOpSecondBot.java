@@ -109,7 +109,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
             }
 
             //intake
-            while (gamepad1.x) {
+            if (gamepad1.x) {
                 if (slides.getCurrentHeight() <= 230) {
                     slides.setHeight(400);
                 } else if (slides.getCurrentHeight() > 230) {
@@ -122,7 +122,9 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
         //basket testing
         while(gamepad1.a){
+            arm.setArmAngle(90);
             slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION);
+
         }
         if(gamepad1.b){
             bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION);

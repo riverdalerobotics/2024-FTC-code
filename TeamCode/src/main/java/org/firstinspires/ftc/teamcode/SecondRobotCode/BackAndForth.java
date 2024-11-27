@@ -67,10 +67,6 @@ public class BackAndForth extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
 
-        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu);
-        arm = new ArmSubsystem(armMotor);
-        intake = new IntakeSubsystem (intakeServo, wristServo);
-        slides = new SlidesSubsystem(slideMotor, bucketServo);
 
         motorLeftF = hardwareMap.get(DcMotorEx.class ,"motorLeftF");
         motorRightF = hardwareMap.get(DcMotorEx.class, "motorRightF");
@@ -81,6 +77,12 @@ public class BackAndForth extends LinearOpMode {
         bucketServo = hardwareMap.get(Servo.class, "bucket");
         wristServo = hardwareMap.get(Servo.class, "wrist");
         intakeServo = hardwareMap.get(CRServo.class, "intake");
+
+
+        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu);
+        arm = new ArmSubsystem(armMotor);
+        intake = new IntakeSubsystem (intakeServo, wristServo);
+        slides = new SlidesSubsystem(slideMotor, bucketServo);
 
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

@@ -106,8 +106,8 @@ public class ChassisSubsystem extends MecanumDrive{
         this.backRight = backRightDrive;
         this.backLeft = backLeftDrive;
 
-        this.frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
-        this.backLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        this.frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.backLeft.setDirection(DcMotor.Direction.REVERSE);
 
        this.imu = imu;
 
