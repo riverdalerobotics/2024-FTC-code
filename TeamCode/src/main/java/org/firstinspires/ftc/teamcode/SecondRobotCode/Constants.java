@@ -115,11 +115,17 @@ public class Constants {
      * */
     public static class SlidesConstants {
 
-        public static final double PULLEY_RATIO = 60;
+       // public static final double PULLEY_RATIO = 60;
 
         public static final double TICKS_PER_ROTATION = 537.7;
         public static final double DISTANCE_PER_ROTATION = 120; //mm
         public static final double FEEDBUCKET = 50;
+
+        public static final double HIGH_BASKET_POSITION = 0;
+        public static final double LOW_BASKET_POSITION = 0;
+        public static final double HANDOFF_POSITION = 0;
+
+        public static final double ARM_NEEDS_LEAVE_POSITION = 0;
 
 
     }
@@ -134,6 +140,8 @@ public class Constants {
         public static final double MIN_DOWN_POSITION = 0; //TODO: Find the MIN servo position for moving it DOWN
         public static final double START_INTAKE_POSITION = 0; //TODO: Find the starting position for INTAKE
         public static final double START_MIDDLE_POSITION = 0; //TODO: Find the starting position for the UP/DOWN Servo
+
+
     }
 
     /**
