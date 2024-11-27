@@ -98,7 +98,6 @@ public class TeleOpSecondBot extends  LinearOpMode {
             } else if (gamepad1.right_stick_button) {
                 fieldOriented = false;
             }
-
             if (fieldOriented) {
                 chassis.fieldOriented(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS), speedPwr, strafePwr, turnPwr);
             } else {
@@ -119,32 +118,33 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 if (slides.getCurrentHeight() <= 230) {
                     slides.setHeight(400);
                 } else if (slides.getCurrentHeight() > 230) {
-                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_TEST);
+
+                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE);
+                    intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
 
                 }
             }
 
-        // GO TO INTAKE POSITION
+        //basket testing
         while(gamepad1.a){
-            if(arm.getPosInDegrees()>= 66){
-            arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE);
-            intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
-            }
+            arm.setArmAngle(90);
+            slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION);
 
         }
-        if(gamepad2.b){
+        if(gamepad1.b){
             bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION);
         }
 
         //Sets the slides to a handoff position (receives the samples)
-           while(gamepad2.y) {
+           while(gamepad1.y) {
                slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION);
-               arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_HANDOFF);
+               if(slides.getCurrentHeight()<230) {
+                   arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_HANDOFF);
 
-               intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION);
-               slides.bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION);
-
-
+                   intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION);
+                   slides.bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION);
+                  // intake.spinTake(-1);
+               }
 
            }
            if(gamepad1.dpad_right){

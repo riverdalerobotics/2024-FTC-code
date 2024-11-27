@@ -28,7 +28,7 @@ public class Constants {
          * from DriveVelocityPIDTuner.
          */
         public static final boolean RUN_USING_ENCODER = false;
-        public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0,
+        public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(1, 0, 0,
                 getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV)); //TODO: tune thissss
 
         /*
