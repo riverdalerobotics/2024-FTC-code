@@ -55,6 +55,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
         bucketServo = hardwareMap.get(Servo.class, "bucket");
         wristServo = hardwareMap.get(Servo.class, "wrist");
         intakeServo = hardwareMap.get(CRServo.class, "intake");
+        double maxSpeed=1;
 
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -88,9 +89,13 @@ public class TeleOpSecondBot extends  LinearOpMode {
             if (gamepad1.start) {
                 imu.resetYaw();
             }
-            speedPwr = gamepad1.left_stick_y * 0.5;
-            strafePwr = gamepad1.left_stick_x * 0.5;
-            turnPwr = gamepad1.right_stick_x * 0.5;
+            if (gamepad1.left_bumper){
+                maxSpeed = 0.1;
+
+            }
+            speedPwr = gamepad1.left_stick_y *maxSpeed* 0.5;
+            strafePwr = gamepad1.left_stick_x *maxSpeed* 0.5;
+            turnPwr = gamepad1.right_stick_x *maxSpeed* 0.5;
 
 
             if (gamepad1.left_stick_button) {
