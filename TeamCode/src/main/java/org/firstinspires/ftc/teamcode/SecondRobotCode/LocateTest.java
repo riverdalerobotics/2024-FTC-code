@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  * exercise is to ascertain whether the localizer has been configured properly (note: the pure
  * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
-@TeleOp(name="Locate Test", group="Linear OpMode")
+@TeleOp(name="blah blah", group = "drive")
 public class LocateTest extends LinearOpMode {
 
     public DcMotorEx motorLeftF;
