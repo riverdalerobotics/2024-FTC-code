@@ -98,6 +98,8 @@ public class LocateTest extends LinearOpMode {
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
+            telemetry.addData("encoder position", motorLeftB.getCurrentPosition());
+            telemetry.addData("wheel position", chassis.getWheelPositions());
             telemetry.update();
         }
     }

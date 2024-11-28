@@ -97,9 +97,9 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 maxSpeed =1;
             }
 
-            speedPwr = gamepad2.left_stick_y * maxSpeed*0.5;
-            strafePwr = gamepad2.left_stick_x * maxSpeed*0.5;
-            turnPwr = gamepad2.right_stick_x * maxSpeed*0.5;
+            speedPwr = gamepad2.left_stick_y * maxSpeed*0.7;
+            strafePwr = gamepad2.left_stick_x * maxSpeed*0.7;
+            turnPwr = gamepad2.right_stick_x * maxSpeed*0.7;
             chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
 
             if (gamepad2.left_stick_button) {
