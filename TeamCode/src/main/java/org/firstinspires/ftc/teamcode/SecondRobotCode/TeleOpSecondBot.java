@@ -25,7 +25,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
     IMU imu;
     private VoltageSensor batteryVoltageSensor;
 
-    boolean fieldOriented;
+    boolean fieldOriented= true;
 
     private DcMotor armMotor;
 
@@ -69,7 +69,6 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
 
-
         chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu, batteryVoltageSensor);
         arm = new ArmSubsystem(armMotor);
         intake = new IntakeSubsystem (intakeServo, wristServo);
@@ -100,7 +99,6 @@ public class TeleOpSecondBot extends  LinearOpMode {
             speedPwr = gamepad2.left_stick_y * maxSpeed*0.5;
             strafePwr = gamepad2.left_stick_x * maxSpeed*0.5;
             turnPwr = gamepad2.right_stick_x * maxSpeed*0.5;
-            chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
 
             if (gamepad2.left_stick_button) {
                 fieldOriented = true;
@@ -114,9 +112,8 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
             }
 
-
             //BASKET TO SCORING ON DRIVING CONTROLLER
-            if(gamepad2.a){
+            if(gamepad2.a && slides.getCurrentHeight()>= Constants.SlidesConstants.HIGH_BASKET_POSITION){
                 arm.setArmAngle(90);
 
                 if (arm.getPosInDegrees()>88){
@@ -125,7 +122,9 @@ public class TeleOpSecondBot extends  LinearOpMode {
             }
             //TODO: ADD HALF OF MAX SLIDE HEIGHT TO CONSTANTS
             if(gamepad2.right_bumper){
-                slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION/2);
+                if(arm.getPosInDegrees()>85) {
+                    slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION / 2);
+                }
             }
 
             //intake and outtake
@@ -137,7 +136,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 intake.spinTake(0);
             }
 
-            //ONLY NEEDS TO BR RAN ONCE: Arm to Rest Position (ARM TO 90 DEGREES)
+            //ONLY NEEDS TO BE RAN ONCE: Arm to Rest Position (ARM TO 90 DEGREES)
             if (gamepad1.left_stick_button) {
                 if (slides.getCurrentHeight() <= 230) {
                     slides.setHeight(400);
@@ -147,6 +146,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
                 }
             }
+
             //Sets the slides to a handoff position (receives the samples) SLIDES TO 0 ARMS TO 70 DEGREES WRIST TO 0
             if(gamepad1.y) {
                 if(arm.getPosInDegrees()>=80){
@@ -165,13 +165,17 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
             // ARM TO INTAKE ARM TO 211 DEGREES AND WRIST TO 0.71
             if(gamepad1.a){
+                if(arm.getPosInDegrees()>85){
                 arm.setArmAngle(193);
                 intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
+                }
             }
             // ARM TO INTAKE ARM TO 211 DEGREES AND WRIST TO 0.71
             if(gamepad1.x){
+                if(arm.getPosInDegrees()>85){
                 arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE);
                 intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
+                }
             }
 
 
