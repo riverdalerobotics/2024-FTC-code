@@ -75,7 +75,7 @@ public class SlideSubsystem {
     }
     public double slideLimit(double angle){
         if(angle<90){
-            return (Constants.SlideConstants.LIMIT-Constants.SlideConstants.FORWARD_LIMIT)/Math.cos(angle*Math.PI/180)/Constants.SlideConstants.GEARDIAMETER;
+            return (Constants.SlideConstants.LIMIT-Constants.SlideConstants.FORWARD_LIMIT)/Math.cos(Math.toRadians(angle))/Constants.SlideConstants.GEARDIAMETER;
         }
         else{
             return (Constants.SlideConstants.LIMIT- Constants.SlideConstants.BACKWARD_LIMIT)/Math.sin(angle*Math.PI/180)/Constants.SlideConstants.GEARDIAMETER;

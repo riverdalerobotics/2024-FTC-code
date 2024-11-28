@@ -3,11 +3,7 @@ package org.firstinspires.ftc.teamcode.ThirdRobotCode;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 
@@ -51,11 +47,11 @@ public class Commands {
     IntakeSubsystem intakeSubsystem;
     PIDFCoefficients pidf;
 
-    public Commands(ArmSubsystem arm, SlideSubsystem slideSubsystem, ChassisSubsystem chassis, PIDFCoefficients pidf) {
+    public Commands(ArmSubsystem arm, SlideSubsystem slideSubsystem, ChassisSubsystem chassis, IntakeSubsystem intake, PIDFCoefficients pidf) {
         this.chassis = chassis;
         this.slideSubsystem = slideSubsystem;
         this.arm = arm;
-        //this.intakeSubsystem = intake;
+        this.intakeSubsystem = intake;
         this.pidf = pidf;
     }
 
@@ -92,18 +88,60 @@ public class Commands {
 //            moveSlides(Constants.SlideConstants.CLIMB_DOWN);
 //            while(slideThread.isAlive()){}
 //        }
-
-    public void scoreBucket() {
+    public void spit(){
+        intakeSubsystem.spinIntake(0);
+        char colour = intakeSubsystem.getColour();
+        while(colour == 'b'){
+            intakeSubsystem.spinIntake(1);
+            colour = intakeSubsystem.getColour();
+        }
+        intakeSubsystem.spinIntake(0);
+    }
+    public void goToZero(){
+        intakeSubsystem.pivotIntake(0);
+//        intakeSubsystem.spinIntake(0);
         slideSubsystem.goToPosWithSpeed(0, 1);
-        arm.pivotArmUsingBuiltInStuffs(95, 1, pidf);
+        while(slideSubsystem.rightSlideExtend.isBusy()){}
+        arm.pivotArm(0, 1, pidf);
+    }
+    public void scoreBucket() {
+        intakeSubsystem.pivotIntake(0);
+        slideSubsystem.goToPosWithSpeed(0, 1);
+        arm.pivotArm(95, 1, pidf);
         while(arm.getPos()<45){}
+        intakeSubsystem.pivotIntake(-0.5);
         slideSubsystem.goToPosWithSpeed(90, 1);
     }
 
     public void intake(char teamColour) throws InterruptedException {
         slideSubsystem.goToPosWithSpeed(0, 1);
-        arm.pivotArmUsingBuiltInStuffs(0, 1, pidf);
+        arm.pivotArm(0, 1, pidf);
         while(arm.getPos()>45){}
         slideSubsystem.goToPosWithSpeed(50, 0.3);
+        while(slideSubsystem.getSlidePos()<6){
+        }
+        intakeSubsystem.pivotIntake(0.5);
+        while(intakeSubsystem.getColour() != teamColour && intakeSubsystem.getColour() != 'y'){
+            intakeSubsystem.spinIntake(-0.25);
+        }
+        intakeSubsystem.spinIntake(0);
+        goToZero();
+    }
+    public void goToScore(double xPos, double yPos, double heading, double rotKp){
+            chassis.goToPosition(xPos, yPos, heading, 0.03, rotKp, 45, -20, 135);
+    }
 
-    }}
+    public void autoScore(double xPos, double yPos, double heading, double rotKp, boolean canScore){
+        goToScore(xPos, yPos, heading, rotKp);
+        if(canScore) {
+            scoreBucket();
+            while (slideSubsystem.leftSlideExtend.isBusy()) {
+            }
+            while(intakeSubsystem.getColour()!='w'){
+                intakeSubsystem.spinIntake(-1);
+            }
+            intakeSubsystem.spinIntake(0);
+        }
+
+    }
+}

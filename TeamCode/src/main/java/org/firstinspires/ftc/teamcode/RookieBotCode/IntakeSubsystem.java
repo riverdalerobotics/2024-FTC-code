@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.RookieBotCode;
-
+import org.firstinspires.ftc.teamcode.RookieBotCode.Constants;
 import com.acmerobotics.dashboard.DashboardCore;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -19,11 +19,11 @@ public class IntakeSubsystem{
         intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     public double intakeInDeg(){
-        return intakeMotor.getCurrentPosition()*360/Constants.IntakeConstants.GEAR_RATIO;
+        return intakeMotor.getCurrentPosition()*360*Constants.IntakeConstants.GEAR_RATIO;
     }
     public void moveArmToPos(double angle, double speed){
         intakeMotor.setPower(speed);
-        intakeMotor.setTargetPosition((int)(angle/360*Constants.IntakeConstants.GEAR_RATIO));
+        intakeMotor.setTargetPosition((int)(angle/(360*Constants.IntakeConstants.GEAR_RATIO)));
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     public void grabWithClaw(double pos){
