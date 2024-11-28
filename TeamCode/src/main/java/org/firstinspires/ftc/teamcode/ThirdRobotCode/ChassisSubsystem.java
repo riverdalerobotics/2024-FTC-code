@@ -115,16 +115,15 @@ public class ChassisSubsystem {
 //        max = Math.max(max, Math.abs(leftBackSpeed));
 
 
-        double xError = xResult-xPos;
+        double xError = xResult - xPos;
         double yError = yResult - yPos;
-        double turnError = yaw-turnResult;
+        double turnError = turnResult-yaw;
         double xSpeed = xError*kp;
-
         double ySpeed = yError*kp*0.725;
 
         double turnSpeed = turnError*kp*rotationKp;
-        fieldOriented(yaw, -ySpeed, -xSpeed, turnSpeed);
-        return -3<=turnError && 3>=turnError && -3<=xError && 3>=xError && -3<=yError && 3>=yError;
+        fieldOriented(yaw, ySpeed, xSpeed, turnSpeed);
+        return !(-3<=turnError && 3>=turnError && -3<=xError && 3>=xError && -3<=yError && 3>=yError);
     }
 
 //    public double pitch(){

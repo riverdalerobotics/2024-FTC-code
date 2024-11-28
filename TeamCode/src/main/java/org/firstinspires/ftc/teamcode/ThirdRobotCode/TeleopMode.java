@@ -31,9 +31,9 @@ public class TeleopMode extends LinearOpMode {
     ArmSubsystem arm;
     SlideSubsystem slides;
     SparkFunOTOS otos;
-
     public void runOpMode() throws InterruptedException{
         double xPos, yPos, heading;
+        char teamColor ='b';
         SparkFunOTOS.Pose2D pose2D;
         CRServo intakeServo;
         Servo wrist;
@@ -65,7 +65,7 @@ public class TeleopMode extends LinearOpMode {
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         waitForStart();
-        double rotKp = 0.35;
+        double rotKp = 0.45;
         boolean hasPeice = false;
         armPivot.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         armPivot.setDirection(DcMotorEx.Direction.REVERSE);
@@ -93,7 +93,8 @@ public class TeleopMode extends LinearOpMode {
             }
 
             if(gamepad1.a){
-                while(chassis.goToPosition(xPos, yPos, heading, 0.03, rotKp, 45, -20, 135)){
+                while(chassis.goToPosition(xPos, yPos, heading, -0.03, rotKp, 45, -20, 135)){
+                    //chassis.goToPosition(xPos, yPos, heading, -0.03, rotKp, 45, -20, 135);
                     pose2D = otos.getPosition();
                     xPos = pose2D.x*(-3.048);
                     yPos = pose2D.y*(-3.048);
@@ -101,18 +102,58 @@ public class TeleopMode extends LinearOpMode {
                     if(heading<0){
                         heading+=360;
                     }
+                    telemetry.addData("x position:", xPos);
+                    telemetry.addData("y position:", yPos);
+                    telemetry.addData("heading position:", heading);
+                    telemetry.update();
                }
                 commands.scoreBucket();
                 while(slides.leftSlideExtend.isBusy()){
                 }
                 commands.spit();
+                commands.goToZero();
+                while(chassis.goToPosition(xPos, yPos, heading, -0.03, rotKp, 55, -44, 185)){
+                    //chassis.goToPosition(xPos, yPos, heading, -0.03, rotKp, 45, -20, 135);
+                    pose2D = otos.getPosition();
+                    xPos = pose2D.x*(-3.048);
+                    yPos = pose2D.y*(-3.048);
+                    heading = pose2D.h;
+                    if(heading<0){
+                        heading+=360;
+                    }
+                    telemetry.addData("x position:", xPos);
+                    telemetry.addData("y position:", yPos);
+                    telemetry.addData("heading position:", heading);
+                    telemetry.update();
+                }
+                commands.intake(teamColor, gamepad2);
+                commands.goToZero();
+                while(chassis.goToPosition(xPos, yPos, heading, -0.03, rotKp, 45, -20, 130)){
+                    //chassis.goToPosition(xPos, yPos, heading, -0.03, rotKp, 45, -20, 135);
+                    pose2D = otos.getPosition();
+                    xPos = pose2D.x*(-3.048);
+                    yPos = pose2D.y*(-3.048);
+                    heading = pose2D.h;
+                    if(heading<0){
+                        heading+=360;
+                    }
+                    telemetry.addData("x position:", xPos);
+                    telemetry.addData("y position:", yPos);
+                    telemetry.addData("heading position:", heading);
+                    telemetry.update();
+                }
+                commands.scoreBucket();
+                while(slides.leftSlideExtend.isBusy()){
+                }
+                commands.spit();
+                commands.goToZero();
                 //chassis.goToPosition(0, yPos, heading, 0.1, 0,0, 180);
             }
             if(gamepad2.y){
                 commands.scoreBucket();
             }
             if(gamepad2.b){
-                commands.intake('b');
+
             }
             if(gamepad2.x){
                 commands.goToZero();
@@ -120,7 +161,7 @@ public class TeleopMode extends LinearOpMode {
 
             }
             if(gamepad2.a){
-                commands.intake('b');
+                commands.intake(teamColor, gamepad2);
             }
             if(gamepad2.right_bumper){
                 commands.spit();
@@ -135,9 +176,7 @@ public class TeleopMode extends LinearOpMode {
             telemetry.addData("R", colorSensor.red());
             telemetry.addData("G", colorSensor.green());
             telemetry.addData("B", colorSensor.blue());
-            telemetry.addData("x position:", xPos);
-            telemetry.addData("y position:", yPos);
-            telemetry.addData("heading position:", heading);
+
             telemetry.update();
         }
     }

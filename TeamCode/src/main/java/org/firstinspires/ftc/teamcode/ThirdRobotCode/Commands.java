@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.ThirdRobotCode;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 
@@ -91,7 +92,7 @@ public class Commands {
     public void spit(){
         intakeSubsystem.spinIntake(0);
         char colour = intakeSubsystem.getColour();
-        while(colour == 'b'){
+        while(colour != 'w'){
             intakeSubsystem.spinIntake(1);
             colour = intakeSubsystem.getColour();
         }
@@ -113,7 +114,7 @@ public class Commands {
         slideSubsystem.goToPosWithSpeed(90, 1);
     }
 
-    public void intake(char teamColour) throws InterruptedException {
+    public void intake(char teamColour, Gamepad gamepad2) throws InterruptedException {
         slideSubsystem.goToPosWithSpeed(0, 1);
         arm.pivotArm(0, 1, pidf);
         while(arm.getPos()>45){}
@@ -121,8 +122,8 @@ public class Commands {
         while(slideSubsystem.getSlidePos()<6){
         }
         intakeSubsystem.pivotIntake(0.5);
-        while(intakeSubsystem.getColour() != teamColour && intakeSubsystem.getColour() != 'y'){
-            intakeSubsystem.spinIntake(-0.25);
+        while(intakeSubsystem.getColour() != teamColour && intakeSubsystem.getColour() != 'y'&& !(gamepad2.x)){
+            intakeSubsystem.spinIntake(-0.2);
         }
         intakeSubsystem.spinIntake(0);
         goToZero();
