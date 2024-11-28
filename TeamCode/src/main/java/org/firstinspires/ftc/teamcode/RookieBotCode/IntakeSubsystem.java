@@ -21,7 +21,7 @@ public class IntakeSubsystem{
     public double intakeInDeg(){
         return intakeMotor.getCurrentPosition()*360*Constants.IntakeConstants.GEAR_RATIO;
     }
-    public void moveArmToPos(double angle, double speed){
+    public void moveIntakeArmToPos(double angle, double speed){
         intakeMotor.setPower(speed);
         intakeMotor.setTargetPosition((int)(angle/(360*Constants.IntakeConstants.GEAR_RATIO)));
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
