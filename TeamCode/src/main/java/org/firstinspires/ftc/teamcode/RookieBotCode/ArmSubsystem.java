@@ -27,8 +27,8 @@ public class ArmSubsystem {
         return deg/360*Constants.ArmConstants.GEAR_RATIO;
     }
 
-    public void setArmAngle(double angleInDegrees){
-        armMotor.setPower(0.3);
+    public void setArmAngle(double angleInDegrees, double speed){
+        armMotor.setPower(speed);
         armMotor.setTargetPosition((int)degToTicks(angleInDegrees));
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }

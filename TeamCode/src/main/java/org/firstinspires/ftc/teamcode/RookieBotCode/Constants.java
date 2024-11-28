@@ -8,4 +8,7 @@ public class Constants {
 
 
     }
+    static class IntakeConstants{
+        public static final double GEAR_RATIO = (double) 15 /(40*288);
+    }
 }

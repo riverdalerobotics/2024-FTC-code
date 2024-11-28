@@ -6,29 +6,31 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class IntakeSubsystem {
     CRServo intakeServo;
-    Servo wrist;
+    Servo leftWrist;
+    Servo rightWrist;
     ColorSensor colour;
-    public IntakeSubsystem (CRServo intakeMotor, Servo wristServo, ColorSensor colorSensor){
-        this.wrist = wristServo;
+    public IntakeSubsystem (CRServo intakeMotor, Servo leftWrist, ColorSensor colorSensor, Servo rightWrist){
+        this.leftWrist = leftWrist;
+        this.rightWrist = rightWrist;
         this.intakeServo = intakeMotor;
         this.colour = colorSensor;
+        rightWrist.setDirection(Servo.Direction.REVERSE);
     }
     public void pivotIntake(double angle){
-        if (angle>180){
-            angle = angle-360;
-        }
-        double newAngle = angle/180;
-        wrist.setPosition(newAngle);
+        leftWrist.setPosition(angle);
+        rightWrist.setPosition(angle);
     }
     public void spinIntake(double power){
         intakeServo.setPower(power);
     }
+
     public char getColour(){
         char color = 'N';
-        double distToRed =(255-colour.red());
-        double distToYellow = 255-colour.green();
-        double distToBlue = 255-colour.blue();
-        double closestColour = Math.min(distToYellow,Math.min(distToBlue, distToRed));
+        double distToWhite = Math.sqrt(Math.pow(50-colour.red(), 2)+Math.pow(50-colour.blue(), 2)+Math.pow(50-colour.green(), 2));
+        double distToRed = Math.sqrt(Math.pow(255-colour.red(), 2)+Math.pow(0-colour.blue(), 2)+Math.pow(0-colour.green(), 2));
+        double distToYellow = Math.sqrt(Math.pow(255-colour.red(), 2)+Math.pow(0-colour.blue(), 2)+Math.pow(255-colour.green(), 2));
+        double distToBlue = Math.sqrt(Math.pow(0-colour.red(), 2)+Math.pow(255-colour.blue(), 2)+Math.pow(0-colour.green(), 2));
+        double closestColour = Math.min(Math.min(distToYellow, distToWhite),Math.min(distToBlue, distToRed));
         if (closestColour == distToRed){
             color = 'r';
         }
@@ -40,7 +42,7 @@ public class IntakeSubsystem {
             color = 'y';
         }
         else{
-            color = 'N';}
+            color = 'w';}
         return color;
     }
 }

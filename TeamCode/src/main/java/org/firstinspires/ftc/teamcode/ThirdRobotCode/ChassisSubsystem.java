@@ -97,8 +97,8 @@ public class ChassisSubsystem {
      * @param turn the spin speed of the robot
      * */
     public void fieldOriented(double yaw, double fwd, double strafe, double turn){
-        double rotX = strafe * Math.cos(-yaw) - fwd* Math.sin(-yaw);
-        double rotY = strafe * Math.sin(-yaw) + fwd * Math.cos(-yaw);
+        double rotX = strafe * Math.cos(Math.toRadians(yaw)) + fwd* Math.sin(Math.toRadians(yaw));
+        double rotY = strafe * Math.sin(Math.toRadians(yaw)) - fwd * Math.cos(Math.toRadians(yaw));
         moveRobotMech(rotY, rotX, turn);
     }
 
@@ -107,6 +107,24 @@ public class ChassisSubsystem {
         double y = myAwtos.getPosition().y;
         double h = myAwtos.getPosition().h;
         return new Pose2d(x, y, h);
+
+    }
+    public boolean goToPosition(double xPos, double yPos, double yaw, double kp, double rotationKp, double xResult, double yResult, double turnResult){
+//        double max = Math.max(Math.abs(rightFrontSpeed), Math.abs(rightBackSpeed));
+//        max = Math.max(max,Math.abs(leftFrontSpeed));
+//        max = Math.max(max, Math.abs(leftBackSpeed));
+
+
+        double xError = xResult-xPos;
+        double yError = yResult - yPos;
+        double turnError = yaw-turnResult;
+        double xSpeed = xError*kp;
+
+        double ySpeed = yError*kp*0.725;
+
+        double turnSpeed = turnError*kp*rotationKp;
+        fieldOriented(yaw, -ySpeed, -xSpeed, turnSpeed);
+        return -3<=turnError && 3>=turnError && -3<=xError && 3>=xError && -3<=yError && 3>=yError;
     }
 
 //    public double pitch(){

@@ -28,7 +28,7 @@ public class Constants {
          * from DriveVelocityPIDTuner.
          */
         public static final boolean RUN_USING_ENCODER = false;
-        public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0,
+        public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(1, 0, 0,
                 getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV)); //TODO: tune thissss
 
         /*
@@ -41,7 +41,7 @@ public class Constants {
          */
         public static double WHEEL_RADIUS = 4.09449; // inches
         public static double GEAR_RATIO = 19.2; // output (wheel) speed / input (motor) speed
-        public static double TRACK_WIDTH = 16.287402; // in  //TODO: double check dis
+        public static double TRACK_WIDTH = 14.33333333; // in  //TODO: double check dis
         public static double WHEEL_BASE = 16.287402;
 
         /*
@@ -61,8 +61,8 @@ public class Constants {
          * small and gradually increase them later after everything is working. All distance units are
          * inches.
          */
-        public static double MAX_VEL = 36; //TODO: CHANGE DIS MAYBE
-        public static double MAX_ACCEL = 30;
+        public static double MAX_VEL = 5; //TODO: CHANGE DIS MAYBE, supposed to be 36
+        public static double MAX_ACCEL = 10; //TODO: CHANGE DIS MAYBE, supposed to be 30
         public static double MAX_ANG_VEL = Math.toRadians(60);
         public static double MAX_ANG_ACCEL = Math.toRadians(60);
 
@@ -105,8 +105,9 @@ public class Constants {
         public static final double ENCODER_TICKS_PER_ROTATION = 537.7; //TODO: Find the amount of ticks per rotation
         public static final double GEAR_REDUCTION = (double) 20.0/100 ; //TODO: Find gear reduction
 
-        public static final double ARM_ANGLE_HANDOFF = 60; //TODO: Find that up arm angle
-        public static final double ARM_ANGLE_INTAKE= 30 ; //TODO: Find that down arm angle lol
+
+        public static final double ARM_ANGLE_HANDOFF = 70; //TODO: Find that up arm angle
+        public static final double ARM_ANGLE_INTAKE= 211.82 ; //TODO: Find that down arm angle lol
         public static final double ARM_ANGLE_TEST = 90 ; //TODO: Find that down arm angle lol
     }
 
@@ -115,11 +116,26 @@ public class Constants {
      * */
     public static class SlidesConstants {
 
-        public static final double PULLEY_RATIO = 60;
+       // public static final double PULLEY_RATIO = 60;
 
         public static final double TICKS_PER_ROTATION = 537.7;
         public static final double DISTANCE_PER_ROTATION = 120; //mm
 
+
+        public static final double HIGH_BASKET_POSITION = 860;
+        public static final double LOW_BASKET_POSITION = 0;
+        public static final double HANDOFF_POSITION = 0;
+
+
+        public static final double ARM_NEEDS_LEAVE_POSITION = 0;
+
+
+    }
+
+    public static class BucketConstants {
+
+        public static final double BUCKET_SCORE_POSITION = 0.15;
+        public static final double BUCKET_HANDOFF_POSITION = 0.40;
 
     }
 
@@ -127,12 +143,15 @@ public class Constants {
      * Intake Constants needed for Intake
      * */
     static class IntakeConstants {
-        public static final double MAX_INTAKE_POSITION = 0; //TODO: Find the Max Servo position for INTAKE
-        public static final double MIN_INTAKE_POSITION = 0; //TODO: Find the MIN Servo position for INTAKE
-        public static final double MAX_UP_POSITION = 0; //TODO: Find the ABSOLUTE_LIMIT servo position for moving it UP
-        public static final double MIN_DOWN_POSITION = 0; //TODO: Find the MIN servo position for moving it DOWN
-        public static final double START_INTAKE_POSITION = 0; //TODO: Find the starting position for INTAKE
-        public static final double START_MIDDLE_POSITION = 0; //TODO: Find the starting position for the UP/DOWN Servo
+
+        public static final double WRIST_INTAKE_POSITION = 0.71; //TODO:
+        public static final double WRIST_HANDOFF_POSITION = 0; //TODO:
+
+
+        public static final double INTAKE_SPEED = 0.9; //TODO:
+        public static final double OUTAKE_SPEED = -0.6; //TODO:
+
+
     }
 
     /**

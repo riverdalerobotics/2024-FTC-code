@@ -70,14 +70,14 @@ public class ChassisSubsystem extends MecanumDrive{
     public double currentSpeed, currentStrafe, currentTurn;
 
     IMU imu;
-    private List<DcMotorEx> motors;
     private VoltageSensor batteryVoltageSensor;
+    private List<DcMotorEx> motors;
 
     private List<Integer> lastEncPositions = new ArrayList<>();
     private List<Integer> lastEncVels = new ArrayList<>();
 
-    public PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+    public PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(1, 0, 0);
+    public PIDCoefficients HEADING_PID = new PIDCoefficients(1, 0, 0);
 
     public static double LATERAL_MULTIPLIER = 1.0;
 
@@ -93,39 +93,38 @@ public class ChassisSubsystem extends MecanumDrive{
     private TrajectoryFollower follower;
 
 
-    public ChassisSubsystem(DcMotorEx frontLeftDrive, DcMotorEx frontRightDrive, DcMotorEx backLeftDrive, DcMotorEx backRightDrive, IMU imu){
+    public ChassisSubsystem(DcMotorEx frontLeftDrive, DcMotorEx frontRightDrive, DcMotorEx backLeftDrive, DcMotorEx backRightDrive, IMU imu, VoltageSensor batteryVoltageSensor){
         super(kV, kA, kStatic, TRACK_WIDTH, WHEEL_BASE, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
                 new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
-
-
 
         this.frontLeft = frontLeftDrive;
         this.frontRight = frontRightDrive;
         this.backRight = backRightDrive;
         this.backLeft = backLeftDrive;
 
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.backLeft.setDirection(DcMotor.Direction.REVERSE);
 
-       this.imu = imu;
+        this.batteryVoltageSensor = batteryVoltageSensor;
 
-
+        this.imu = imu;
 
 
         motors = Arrays.asList(frontLeft, frontRight, backRight, backLeft);
+
         if (RUN_USING_ENCODER) {
-            setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
-        setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         if (RUN_USING_ENCODER && MOTOR_VELO_PID != null) {
-            setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
+            setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
         }
 
-        // TODO: reverse any motors using DcMotorEx.setDirection()
+        // TODO: reverse any motors using DcMotor.setDirection()
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
@@ -141,12 +140,20 @@ public class ChassisSubsystem extends MecanumDrive{
      * @param speed forward speed
      * @param strafe strafe speed
      * @param turn spin speed
+     *
+     *              speed = -speed;
+     *         rightBackSpeed = speed + turn - strafe;
+     *         leftBackSpeed = speed - turn + strafe;
+     *         rightFrontSpeed = speed + turn + strafe;
+     *         leftFrontSpeed = speed - turn - strafe;
+     *
      * */
     public void moveMechChassis(double speed, double strafe, double turn){
-        rightBackSpeed = speed + turn - strafe;
-        leftBackSpeed = speed - turn + strafe;
-        rightFrontSpeed = speed + turn + strafe;
-        leftFrontSpeed = speed - turn - strafe;
+        speed = -speed;
+        rightBackSpeed = speed - turn + strafe;
+        leftBackSpeed = speed + turn - strafe;
+        rightFrontSpeed = speed - turn - strafe;
+        leftFrontSpeed = speed + turn + strafe;
 
         double max = Math.max(Math.abs(rightFrontSpeed), Math.abs(rightBackSpeed));
         max = Math.max(max,Math.abs(leftFrontSpeed));
@@ -166,6 +173,7 @@ public class ChassisSubsystem extends MecanumDrive{
 
     }
 
+
     /**
      * <p>
      * Field oriented allows the robot to drive relative to a starting position when given the yaw
@@ -180,8 +188,8 @@ public class ChassisSubsystem extends MecanumDrive{
      * @param turn the spin speed of the robot
      * */
     public void fieldOriented(double yaw, double fwd, double strafe, double turn){
-        double rotX = strafe * Math.cos(-yaw) - fwd* Math.sin(-yaw);
-        double rotY = strafe * Math.sin(-yaw) + fwd * Math.cos(-yaw);
+        double rotX = strafe * Math.cos(yaw) - fwd* Math.sin(yaw);
+        double rotY = strafe * Math.sin(yaw) + fwd * Math.cos(yaw);
         moveMechChassis(rotY, rotX, turn);
     }
 
@@ -217,13 +225,12 @@ public class ChassisSubsystem extends MecanumDrive{
             leftBackSpeed /= max;
             leftFrontSpeed /= max;
         }
-        frontLeft.setPower(leftFrontSpeed/0.5);
-        frontRight.setPower(rightFrontSpeed/0.5);
-        backRight.setPower(rightBackSpeed/0.5);
-        backLeft.setPower(leftBackSpeed/0.5);
+        frontLeft.setPower(leftFrontSpeed);
+        frontRight.setPower(rightFrontSpeed);
+        backRight.setPower(rightBackSpeed);
+        backLeft.setPower(leftBackSpeed);
 
     }
-
 
     //Taken from https://www.reddit.com/r/FTC/comments/3vx37h/motor_acceleration/
    public double slew (double prev, double input, double slewRate) {
@@ -240,7 +247,6 @@ public class ChassisSubsystem extends MecanumDrive{
     else return input;
   }
 
-    /////////////////////////////////////////////////////////////////////////
 
     /**
      * This code allows the robot to return to 0 from where ever on the field as long as there is
@@ -258,6 +264,14 @@ public class ChassisSubsystem extends MecanumDrive{
         fieldOriented(yaw, ySpeed, xSpeed, turnSpeed);
 
     }
+
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
 
     /**
      * This code allows you to go to a desired position from anywhere on the field as long as
@@ -346,8 +360,10 @@ public class ChassisSubsystem extends MecanumDrive{
     public void update() {
         updatePoseEstimate();
         DriveSignal signal = trajectorySequenceRunner.update(getPoseEstimate(), getPoseVelocity());
-        if (signal != null) setDriveSignal(signal);
+        if (signal != null) {setDriveSignal(signal);}
     }
+
+
 
     public void waitForIdle() {
         while (!Thread.currentThread().isInterrupted() && isBusy())
@@ -358,14 +374,14 @@ public class ChassisSubsystem extends MecanumDrive{
         return trajectorySequenceRunner.isBusy();
     }
 
-    public void setMode(DcMotorEx.RunMode runMode) {
+    public void setMode(DcMotor.RunMode runMode) {
         for (DcMotorEx motor : motors) {
             motor.setMode(runMode);
         }
     }
 
-    public void setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior zeroPowerBehavior) {
-        for (DcMotorEx motor : motors) {
+    public void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior zeroPowerBehavior) {
+        for (DcMotor motor : motors) {
             motor.setZeroPowerBehavior(zeroPowerBehavior);
         }
     }
@@ -446,14 +462,15 @@ public class ChassisSubsystem extends MecanumDrive{
         return (double) imu.getRobotAngularVelocity(AngleUnit.RADIANS).zRotationRate;
     }
 
-    public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {
+
+    public TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {
         return new MinVelocityConstraint(Arrays.asList(
                 new AngularVelocityConstraint(maxAngularVel),
                 new MecanumVelocityConstraint(maxVel, trackWidth)
         ));
     }
 
-    public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
+    public TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
     }
 }

@@ -1,21 +1,39 @@
 package org.firstinspires.ftc.teamcode.RookieBotCode;
-
+import org.firstinspires.ftc.teamcode.RookieBotCode.Constants;
+import com.acmerobotics.dashboard.DashboardCore;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class IntakeSubsystem{
 
     CRServo intake;
-    Servo wrist;
+    Servo claw;
+    DcMotor intakeMotor;
 
-    public IntakeSubsystem(CRServo intake, Servo lift){
+    public IntakeSubsystem(CRServo intake, Servo lift, DcMotor intakeMotor){
         this.intake = intake;
-        this.wrist = lift;
-
+        this.claw = lift;
+        this.intakeMotor = intakeMotor;
+        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-
-    public void setWristPosition(double pos){
-        wrist.setPosition(pos);
+    public double intakeInDeg(){
+        return intakeMotor.getCurrentPosition()*360*Constants.IntakeConstants.GEAR_RATIO;
+    }
+    public void moveArmToPos(double angle, double speed){
+        intakeMotor.setPower(speed);
+        intakeMotor.setTargetPosition((int)(angle/(360*Constants.IntakeConstants.GEAR_RATIO)));
+        intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+    public void grabWithClaw(double pos){
+        claw.setPosition(pos);
+    }
+    public void openClaw(){
+        claw.setPosition(1);
+    }
+    public void closeClaw(){
+        claw.setPosition(0);
     }
 
     public void spinTake(double power){
@@ -23,6 +41,6 @@ public class IntakeSubsystem{
     }
 
     public void resetPos(){
-        wrist.setPosition(0);
+        claw.setPosition(0);
     }
 }
