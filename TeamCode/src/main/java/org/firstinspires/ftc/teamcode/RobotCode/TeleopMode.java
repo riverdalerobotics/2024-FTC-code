@@ -14,8 +14,13 @@ import org.firstinspires.ftc.teamcode.RobotCode.ArmSubsystem;
 
 public class TeleopMode extends LinearOpMode {
 
+    boolean autoWheels = false;
+
     public double degToRotation(double deg) {
         return deg / 360 * 1425.2 * 5;
+    }
+    public double chassisDistance(double distance){
+        return distance / 537.7;
     }
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -59,10 +64,10 @@ public class TeleopMode extends LinearOpMode {
             if (reverseDrive) {
                 speed = -speed;
             }
-            if (gamepad2.start) {
+            if (gamepad1.start) {
                 reverseDrive = true;
             }
-            if (gamepad2.back) {
+            if (gamepad1.back) {
                 reverseDrive = false;
             }
             chassis.drive(speed, turn);
@@ -101,10 +106,14 @@ public class TeleopMode extends LinearOpMode {
 
 
             //outtake
-            if (gamepad2.x){
+            if (gamepad2.x) {
                 intakeServo.setPower(0.8);
                 //intake
             } else if (gamepad2.y) {
+                armPivot.setPower(0.6);
+                armPivot.setTargetPosition((int) degToRotation(190));
+                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                intakeServo.setPower(-0.8);
                 intakeServo.setPower(-8.8);
                 //score Bar
             } else if (gamepad2.dpad_right) {
@@ -112,15 +121,14 @@ public class TeleopMode extends LinearOpMode {
                 armPivot.setTargetPosition((int) degToRotation(190));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 intakeServo.setPower(-0.8);
-            //score bucket front position
-            }else if (gamepad2.dpad_left) {
+                //score bucket front position
+            } else if (gamepad2.dpad_left) {
                 armPivot.setPower(0.8);
                 armPivot.setTargetPosition((int) degToRotation(100));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 wrist.setPosition(-0.5);
                 intakeServo.setPower(-8);
-            }
-            else{
+            } else {
                 intakeServo.setPower(0);
             }
 
@@ -139,13 +147,47 @@ public class TeleopMode extends LinearOpMode {
                 armPivot.setTargetPosition((int) degToRotation(10));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
+            if (gamepad1.a) {
 
+                armPivot.setPower(0.8);
+                armPivot.setTargetPosition((int) degToRotation(158.0));
+                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+                armPivot.setPower(0.6);
+                armPivot.setTargetPosition((int) degToRotation(190));
+                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                intakeServo.setPower(-0.8);
             }
+
+//            if (gamepad1.x) {
+//                for (int i = 0; i < 900000; i++) {
+//                    chassis.drive(-0.5, 0);
+//
+//                }
+//                chassis.drive(0, 0);
+//
+//
+//            }
+
+            if (gamepad1.x) {
+                autoWheels = true;
+//                chassis.auto(-0.2, 0, 3);
+//                while (left.isBusy()) {
+//                    chassis.auto(-0.2, 0, 3);
+//                }
+                while (autoWheels){
+                    chassis.auto(-0.2,0,3);
+                    sleep(5);
+
+                }
+            }
+            }
+
 
 
             telemetry.addData("Motor Position", armPivot.getCurrentPosition() * 360 / (1425.2 * 5));
             telemetry.addData("WRIST POS", wrist.getPosition());
+            telemetry.addData("left wheel value", left.getCurrentPosition());
             telemetry.update();
         }
 //            double power = gamepad1.left_stick_y;
@@ -153,6 +195,7 @@ public class TeleopMode extends LinearOpMode {
 
 
     }
+
 
 
 

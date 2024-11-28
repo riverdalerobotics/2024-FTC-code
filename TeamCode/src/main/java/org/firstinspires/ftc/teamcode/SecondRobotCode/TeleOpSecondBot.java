@@ -50,7 +50,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
         motorRightF = hardwareMap.get(DcMotorEx.class, "motorRightF");
         motorRightB = hardwareMap.get(DcMotorEx.class, "motorRightB");
         motorLeftB = hardwareMap.get(DcMotorEx.class, "motorLeftB");
-        armMotor =hardwareMap.get(DcMotor.class, "armMotor");
+        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
         slideMotor = hardwareMap.get(DcMotor.class, "slideMotor");
         bucketServo = hardwareMap.get(Servo.class, "bucket");
         wristServo = hardwareMap.get(Servo.class, "wrist");
@@ -119,24 +119,21 @@ public class TeleOpSecondBot extends  LinearOpMode {
                     slides.setHeight(400);
                 } else if (slides.getCurrentHeight() > 230) {
 
-                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE);
+                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_TEST);
                     intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
 
                 }
             }
+            //if(gamepad.a)
 
         //basket testing
         while(gamepad1.a){
             arm.setArmAngle(90);
             slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION);
-
-        }
-        if(gamepad1.b){
-            bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION);
         }
 
         //Sets the slides to a handoff position (receives the samples)
-           while(gamepad1.y) {
+           while(gamepad2.y) {
                slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION);
                if(slides.getCurrentHeight()<230) {
                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_HANDOFF);
@@ -146,6 +143,9 @@ public class TeleOpSecondBot extends  LinearOpMode {
                }
 
            }
+            if(gamepad2.b){
+                bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION);
+            }
            if(gamepad1.dpad_right){
                arm.emergencyStop();
            }

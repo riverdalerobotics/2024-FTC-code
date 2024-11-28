@@ -22,4 +22,17 @@ public class ChassisSubsystem {
         rightDrive.setPower(rightSpeed);
     }
 
+    public void auto(double speed, double turn, double rotations) {
+
+        leftDrive.setPower(speed);
+        rightDrive.setPower(speed);
+
+        leftDrive.setTargetPosition((int)-rotations);
+        rightDrive.setTargetPosition((int)-rotations);
+        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+    }
+
 }
