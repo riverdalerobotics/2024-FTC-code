@@ -31,6 +31,8 @@ public class RookieTeleOp extends LinearOpMode {
         intakeSub = new IntakeSubsystem(intake, claw, intakeMotor);
         chassis = new ChassisSubsystem(leftDrive, rightDrive);
         waitForStart();
+        armSub.resetEncoder();
+        armSub.setArmAngle(10,1);
 
         double speed;
         double turn;
@@ -41,14 +43,14 @@ public class RookieTeleOp extends LinearOpMode {
             turn = gamepad1.right_stick_x;
 
             if(gamepad2.a){
-                armSub.setArmAngle(30, 0.5);
-                intakeSub.moveIntakeArmToPos(150, 0.5);
+                armSub.setArmAngle(30, 1);
+                intakeSub.moveIntakeArmToPos(150, 1);
             }
             if( gamepad2.right_bumper){
-                intakeSub.spinTake(1.5);
+                intakeSub.spinTake(2.5);
             }
             else if(gamepad2.left_bumper){
-                intakeSub.spinTake(-1.5);
+                intakeSub.spinTake(-2.5);
             }
             else{
                 intakeSub.spinTake(0);
@@ -69,7 +71,7 @@ public class RookieTeleOp extends LinearOpMode {
             }
             if(gamepad2.b){
                 intakeSub.moveIntakeArmToPos(0,0.5);
-                armSub.setArmAngle(0,0.5);
+                armSub.setArmAngle(10,0.5);
             }
 
 

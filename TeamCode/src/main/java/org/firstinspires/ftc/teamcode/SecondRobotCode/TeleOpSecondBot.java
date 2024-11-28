@@ -124,7 +124,6 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
                 }
             }
-            //if(gamepad.a)
 
         //basket testing
         while(gamepad1.a){
