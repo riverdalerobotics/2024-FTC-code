@@ -1,12 +1,10 @@
 package org.firstinspires.ftc.teamcode.SecondRobotCode;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -15,31 +13,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.SecondRobotCode.ChassisSubsystem;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-
-/*
- * Op mode for preliminary tuning of the follower PID coefficients (located in the drive base
- * classes). The robot drives back and forth in a straight line indefinitely. Utilization of the
- * dashboard is recommended for this tuning routine. To access the dashboard, connect your computer
- * to the RC's WiFi network. In your browser, navigate to https://192.168.49.1:8080/dash if you're
- * using the RC phone or https://192.168.43.1:8080/dash if you are using the Control Hub. Once
- * you've successfully connected, start the program, and your robot will begin moving forward and
- * backward. You should observe the target position (green) and your pose estimate (blue) and adjust
- * your follower PID coefficients such that you follow the target position as accurately as possible.
- * If you are using SampleMecanumDrive, you should be tuning TRANSLATIONAL_PID and HEADING_PID.
- * If you are using SampleTankDrive, you should be tuning AXIAL_PID, CROSS_TRACK_PID, and HEADING_PID.
- * These coefficients can be tuned live in dashboard.
- *
- * This opmode is designed as a convenient, coarse tuning for the follower PID coefficients. It
- * is recommended that you use the FollowerPIDTuner opmode for further fine tuning.
+/**
+ * This is a simple teleop routine for testing localization. Drive the robot around like a normal
+ * teleop routine and make sure the robot's estimated pose matches the robot's actual pose (slight
+ * errors are not out of the ordinary, especially with sudden drive motions). The goal of this
+ * exercise is to ascertain whether the localizer has been configured properly (note: the pure
+ * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
-@Config
-@Autonomous(group = "drive")
-public class BackAndForth extends LinearOpMode {
-
-    public static double DISTANCE = 10; //inches
+@TeleOp(group = "drive")
+public class LocateTest extends LinearOpMode {
 
     public DcMotorEx motorLeftF;
     public DcMotorEx motorRightF;
@@ -68,7 +52,6 @@ public class BackAndForth extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-
         imu = hardwareMap.get(IMU.class, "imu");
 
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -97,41 +80,25 @@ public class BackAndForth extends LinearOpMode {
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-
-        startingPose = new Pose2d(0, 0, Math.toRadians(0));
-
-        chassis.setPoseEstimate(startingPose);
-
-        trajectoryForward = chassis.trajectoryBuilder(startingPose)
-                .forward(DISTANCE)
-                .build();
-
-        Trajectory trajectoryBackward = chassis.trajectoryBuilder(trajectoryForward.end())
-                .back(DISTANCE)
-                .build();
-
-//        Trajectory gotoPose = chassis.trajectoryBuilder(trajectoryBackward.end())
-//                .lineToLinearHeading(new Pose2d(40, 40, Math.toRadians(90)))
-//                .build();
-//
-
         waitForStart();
 
-        if(isStopRequested()) return;
-        //slides.setHeight(10);
 
-        chassis.followTrajectory(trajectoryForward);
+        while (!isStopRequested()) {
+            chassis.setWeightedDrivePower(
+                    new Pose2d(
+                            -gamepad1.left_stick_y,
+                            -gamepad1.left_stick_x,
+                            -gamepad1.right_stick_x
+                    )
+            );
 
-        telemetry.addData("pose", chassis.getPoseEstimate());
-        telemetry.update();
+            chassis.update();
 
-
-
-           // chassis.followTrajectory(trajectoryBackward);
-//slides.setHeight(100);
-
-
-
-
+            Pose2d poseEstimate = chassis.getPoseEstimate();
+            telemetry.addData("x", poseEstimate.getX());
+            telemetry.addData("y", poseEstimate.getY());
+            telemetry.addData("heading", poseEstimate.getHeading());
+            telemetry.update();
         }
     }
+}
