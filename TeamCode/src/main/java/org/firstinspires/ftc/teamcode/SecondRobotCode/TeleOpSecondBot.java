@@ -150,6 +150,8 @@ public class TeleOpSecondBot extends  LinearOpMode {
                arm.emergencyStop();
            }
 
+           //second bot telel op update
+
             // telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
             telemetry.addData("Status", "wobot is on :3");
             telemetry.addData("current arm angle", arm.getPosInDegrees());
