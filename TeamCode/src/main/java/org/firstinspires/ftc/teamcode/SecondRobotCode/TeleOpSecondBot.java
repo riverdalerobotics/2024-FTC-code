@@ -137,7 +137,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 if (slides.getCurrentHeight() <= 230) {
                     slides.setHeight(400);
                 } else if (slides.getCurrentHeight() > 230) {
-                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_TEST);
+                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_SLIDE_GOING_UP);
                     intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION);
 
                 }

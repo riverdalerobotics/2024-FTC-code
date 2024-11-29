@@ -100,7 +100,7 @@ public class BackAndForth extends LinearOpMode {
 
         startingPose = new Pose2d(0, 0, Math.toRadians(0));
 
-        Pose2d linePose = new Pose2d(10,10, Math.toRadians(90));
+        Pose2d linePose = new Pose2d(5,10, Math.toRadians(90));
 
         chassis.setPoseEstimate(startingPose);
 
