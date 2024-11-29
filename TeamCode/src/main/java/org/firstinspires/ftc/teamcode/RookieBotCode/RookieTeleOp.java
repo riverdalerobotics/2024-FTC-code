@@ -39,18 +39,18 @@ public class RookieTeleOp extends LinearOpMode {
 
         while(opModeIsActive()){
 
-            speed = -gamepad1.left_stick_y;
+            speed = gamepad1.left_stick_y;
             turn = gamepad1.right_stick_x;
 
             if(gamepad2.a){
                 armSub.setArmAngle(30, 1);
-                intakeSub.moveIntakeArmToPos(150, 1);
+                intakeSub.moveIntakeArmToPos(140, 0.8);
             }
             if( gamepad2.right_bumper){
-                intakeSub.spinTake(2.5);
+                intakeSub.spinTake(3.5);
             }
             else if(gamepad2.left_bumper){
-                intakeSub.spinTake(-2.5);
+                intakeSub.spinTake(-3.5);
             }
             else{
                 intakeSub.spinTake(0);
@@ -67,7 +67,7 @@ public class RookieTeleOp extends LinearOpMode {
                 intakeSub.grabWithClaw(0.45);
             }
             if(gamepad2.y){
-                armSub.setArmAngle(112, 1);
+                armSub.setArmAngle(120, 1);
             }
             if(gamepad2.b){
                 intakeSub.moveIntakeArmToPos(0,0.5);

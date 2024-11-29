@@ -106,7 +106,7 @@ public class Constants {
         public static final double GEAR_REDUCTION = (double) 20.0/100 ; //TODO: Find gear reduction
 
 
-        public static final double ARM_ANGLE_HANDOFF = 70; //TODO: Find that up arm angle
+        public static final double ARM_ANGLE_HANDOFF = 75; //TODO: Find that up arm angle
         public static final double ARM_ANGLE_INTAKE= 211.82 ; //TODO: Find that down arm angle lol
         public static final double ARM_ANGLE_TEST = 90 ; //TODO: Find that down arm angle lol
     }
@@ -135,7 +135,7 @@ public class Constants {
     public static class BucketConstants {
 
         public static final double BUCKET_SCORE_POSITION = 0.15;
-        public static final double BUCKET_HANDOFF_POSITION = 0.40;
+        public static final double BUCKET_HANDOFF_POSITION = 0.35;
 
     }
 
@@ -149,7 +149,7 @@ public class Constants {
 
 
         public static final double INTAKE_SPEED = 0.9; //TODO:
-        public static final double OUTAKE_SPEED = -0.6; //TODO:
+        public static final double OUTAKE_SPEED = -0.5; //TODO:
 
 
     }
