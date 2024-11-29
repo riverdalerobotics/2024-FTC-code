@@ -47,11 +47,11 @@ public class TeleOpSecondBot extends  LinearOpMode {
     //TODO: priotiy list:  road runner, buy coffee
     public void runOpMode() throws InterruptedException {
 
-        motorLeftF = hardwareMap.get(DcMotorEx.class ,"motorLeftF");
+        motorLeftF = hardwareMap.get(DcMotorEx.class, "motorLeftF");
         motorRightF = hardwareMap.get(DcMotorEx.class, "motorRightF");
         motorRightB = hardwareMap.get(DcMotorEx.class, "motorRightB");
         motorLeftB = hardwareMap.get(DcMotorEx.class, "motorLeftB");
-        armMotor =hardwareMap.get(DcMotor.class, "armMotor");
+        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
         slideMotor = hardwareMap.get(DcMotor.class, "slideMotor");
         bucketServo = hardwareMap.get(Servo.class, "bucket");
         wristServo = hardwareMap.get(Servo.class, "wrist");
@@ -60,7 +60,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        imu = hardwareMap.get(IMU.class,"imu");
+        imu = hardwareMap.get(IMU.class, "imu");
 
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
@@ -69,9 +69,9 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
 
-        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu, batteryVoltageSensor);
+        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB, motorRightB, imu, batteryVoltageSensor);
         arm = new ArmSubsystem(armMotor);
-        intake = new IntakeSubsystem (intakeServo, wristServo);
+        intake = new IntakeSubsystem(intakeServo, wristServo);
         slides = new SlidesSubsystem(slideMotor, bucketServo);
 
         waitForStart();
@@ -88,17 +88,16 @@ public class TeleOpSecondBot extends  LinearOpMode {
             if (gamepad2.start) {
                 imu.resetYaw();
             }
-            if(gamepad2.left_bumper){
+            if (gamepad2.left_bumper) {
                 maxSpeed = 0.3;
 
-            }
-            else{
-                maxSpeed =1;
+            } else {
+                maxSpeed = 1;
             }
 
-            speedPwr = gamepad2.left_stick_y * maxSpeed*0.5;
-            strafePwr = gamepad2.left_stick_x * maxSpeed*0.5;
-            turnPwr = gamepad2.right_stick_x * maxSpeed*0.5;
+            speedPwr = gamepad2.left_stick_y * maxSpeed * 0.5;
+            strafePwr = gamepad2.left_stick_x * maxSpeed * 0.5;
+            turnPwr = gamepad2.right_stick_x * maxSpeed * 0.5;
 
             if (gamepad2.left_stick_button) {
                 fieldOriented = true;
@@ -108,25 +107,22 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
             if (fieldOriented) {
                 chassis.fieldOriented(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS), speedPwr, strafePwr, turnPwr);
-            } else if(!fieldOriented== false) {
+            } else if (!fieldOriented) {
                 chassis.moveMechChassis(speedPwr, strafePwr, turnPwr);
             }
 
             //BASKET TO SCORING ON DRIVING CONTROLLER
-            if(gamepad2.a && slides.getCurrentHeight()>= Constants.SlidesConstants.HIGH_BASKET_POSITION){
-                arm.setArmAngle(90);
 
-                if (arm.getPosInDegrees()>88){
+            // 260 IS THE HEIGHT SLIDES NEED TO BE FOR ARM TO PASS OFF
+            if (gamepad2.a && slides.getCurrentHeight() <= 260) {
+                arm.setArmAngle(96);
+
+                if (arm.getPosInDegrees() > 88) {
                     slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION);
                 }
             }
-            //TODO: ADD HALF OF MAX SLIDE HEIGHT TO CONSTANTS
-            if(gamepad2.right_bumper){
-                if(arm.getPosInDegrees()>85) {
-                    slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION / 2);
-                }
-            }
 
+            //gamepad1.righ
             //intake and outtake
             if (gamepad1.left_bumper) {
                 intake.spinTake(Constants.IntakeConstants.OUTAKE_SPEED);
@@ -147,14 +143,14 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 }
             }
 
-            //Sets the slides to a handoff position (receives the samples) SLIDES TO 0 ARMS TO 70 DEGREES WRIST TO 0
-            if(gamepad1.y) {
-                if(arm.getPosInDegrees()>=80){
+            //Sets the slides to a handoff position (receivgames the samples) SLIDES TO 0 ARMS TO 70 DEGREES WRIST TO 0
+            if (gamepad1.y) {
+                if (arm.getPosInDegrees() >= 88) {
                     slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION);
                     slides.bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION);
                 }
 
-                if(slides.getCurrentHeight()<Constants.SlidesConstants.HANDOFF_POSITION+10) {
+                if (slides.getCurrentHeight() < Constants.SlidesConstants.HANDOFF_POSITION + 10) {
                     arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_HANDOFF);
 
                     intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION);
@@ -164,40 +160,39 @@ public class TeleOpSecondBot extends  LinearOpMode {
             }
 
             // ARM TO INTAKE ARM TO 211 DEGREES AND WRIST TO 0.71
-            if(gamepad1.a){
-                if(arm.getPosInDegrees()>85){
-                arm.setArmAngle(193);
-                intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
+            if (gamepad1.a) {
+                if (arm.getPosInDegrees() >67 ) {
+                    arm.setArmAngle(193);
+                    intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
                 }
             }
             // ARM TO INTAKE ARM TO 211 DEGREES AND WRIST TO 0.71
-            if(gamepad1.x){
-                if(arm.getPosInDegrees()>85){
-                arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE);
-                intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
+            if (gamepad1.x) {
+                if (arm.getPosInDegrees() > 70) {
+                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE);
+                    intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
+                }
+            }
+
+            if (gamepad2.b) {
+                if (arm.getPosInDegrees() >= 89) {
+                    bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION);
                 }
             }
 
 
-            if(gamepad2.b){
-                bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION);
-            }
+        if (gamepad1.dpad_right) {
+            arm.emergencyStop();
+        }
 
-            if(gamepad1.dpad_right){
-                arm.emergencyStop();
-            }
-
-            // telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
-            telemetry.addData("Status", "wobot is on :3");
-            telemetry.addData("current arm angle", arm.getPosInDegrees());
-            telemetry.addData("current slide height mm", slides.getCurrentHeight());
-            telemetry.addData("wrist current pos", intake.getWristPosition());
-            telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
-            telemetry.addData("Field Oriented is enable?", fieldOriented);
-            telemetry.update();
-
+        // telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
+        telemetry.addData("Status", "wobot is on :3");
+        telemetry.addData("current arm angle", arm.getPosInDegrees());
+        telemetry.addData("current slide height mm", slides.getCurrentHeight());
+        telemetry.addData("wrist current pos", intake.getWristPosition());
+        telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
+        telemetry.addData("Field Oriented is enable?", fieldOriented);
+        telemetry.update();
+    }
         }
     }
-
-
-}
