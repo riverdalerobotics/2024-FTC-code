@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  * exercise is to ascertain whether the localizer has been configured properly (note: the pure
  * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
-@TeleOp(group = "drive")
+@TeleOp(name="blah blah", group = "drive")
 public class LocateTest extends LinearOpMode {
 
     public DcMotorEx motorLeftF;
@@ -98,6 +98,8 @@ public class LocateTest extends LinearOpMode {
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
+            telemetry.addData("encoder position", motorLeftB.getCurrentPosition());
+            telemetry.addData("wheel position", chassis.getWheelPositions());
             telemetry.update();
         }
     }

@@ -89,7 +89,7 @@ public class BackAndForth extends LinearOpMode {
         intakeServo = hardwareMap.get(CRServo.class, "intake");
 
 
-        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB,imu,batteryVoltageSensor);
+        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB, imu,batteryVoltageSensor);
         arm = new ArmSubsystem(armMotor);
         intake = new IntakeSubsystem (intakeServo, wristServo);
         slides = new SlidesSubsystem(slideMotor, bucketServo);
@@ -100,15 +100,19 @@ public class BackAndForth extends LinearOpMode {
 
         startingPose = new Pose2d(0, 0, Math.toRadians(0));
 
+        Pose2d linePose = new Pose2d(5,10, Math.toRadians(90));
+
         chassis.setPoseEstimate(startingPose);
 
         trajectoryForward = chassis.trajectoryBuilder(startingPose)
                 .forward(DISTANCE)
                 .build();
 
-        Trajectory trajectoryBackward = chassis.trajectoryBuilder(trajectoryForward.end())
-                .back(DISTANCE)
+        Trajectory strafe = chassis.trajectoryBuilder(startingPose)
+                .lineToLinearHeading(linePose)
                 .build();
+
+
 
 //        Trajectory gotoPose = chassis.trajectoryBuilder(trajectoryBackward.end())
 //                .lineToLinearHeading(new Pose2d(40, 40, Math.toRadians(90)))
@@ -120,7 +124,7 @@ public class BackAndForth extends LinearOpMode {
         if(isStopRequested()) return;
         //slides.setHeight(10);
 
-        chassis.followTrajectory(trajectoryForward);
+        chassis.followTrajectory(strafe);
 
         telemetry.addData("pose", chassis.getPoseEstimate());
         telemetry.update();

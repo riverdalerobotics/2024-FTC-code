@@ -27,8 +27,8 @@ public class Constants {
          * If using the built-in motor velocity PID, update MOTOR_VELO_PID with the tuned coefficients
          * from DriveVelocityPIDTuner.
          */
-        public static final boolean RUN_USING_ENCODER = false;
-        public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(1, 0, 0,
+        public static final boolean RUN_USING_ENCODER = true;
+        public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(16, 20, 0,
                 getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV)); //TODO: tune thissss
 
         /*
@@ -39,8 +39,8 @@ public class Constants {
          * angular distances although most angular parameters are wrapped in Math.toRadians() for
          * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
          */
-        public static double WHEEL_RADIUS = 4.09449; // inches
-        public static double GEAR_RATIO = 19.2; // output (wheel) speed / input (motor) speed
+        public static double WHEEL_RADIUS = 2.04724; // inches
+        public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
         public static double TRACK_WIDTH = 14.33333333; // in  //TODO: double check dis
         public static double WHEEL_BASE = 16.287402;
 
@@ -61,10 +61,10 @@ public class Constants {
          * small and gradually increase them later after everything is working. All distance units are
          * inches.
          */
-        public static double MAX_VEL = 5; //TODO: CHANGE DIS MAYBE, supposed to be 36
+        public static double MAX_VEL = 20; //TODO: CHANGE DIS MAYBE, supposed to be 36
         public static double MAX_ACCEL = 10; //TODO: CHANGE DIS MAYBE, supposed to be 30
-        public static double MAX_ANG_VEL = Math.toRadians(60);
-        public static double MAX_ANG_ACCEL = Math.toRadians(60);
+        public static double MAX_ANG_VEL = Math.toRadians(40);
+        public static double MAX_ANG_ACCEL = Math.toRadians(40);
 
         /*
          * Adjust the orientations here to match your robot. See the FTC SDK documentation for details.
@@ -106,9 +106,9 @@ public class Constants {
         public static final double GEAR_REDUCTION = (double) 20.0/100 ; //TODO: Find gear reduction
 
 
-        public static final double ARM_ANGLE_HANDOFF = 70; //TODO: Find that up arm angle
+        public static final double ARM_ANGLE_HANDOFF = 75; //TODO: Find that up arm angle
         public static final double ARM_ANGLE_INTAKE= 211.82 ; //TODO: Find that down arm angle lol
-        public static final double ARM_ANGLE_TEST = 90 ; //TODO: Find that down arm angle lol
+        public static final double ARM_ANGLE_SLIDE_GOING_UP = 95 ; //TODO: Find that down arm angle lol
     }
 
     /**
@@ -135,7 +135,7 @@ public class Constants {
     public static class BucketConstants {
 
         public static final double BUCKET_SCORE_POSITION = 0.15;
-        public static final double BUCKET_HANDOFF_POSITION = 0.40;
+        public static final double BUCKET_HANDOFF_POSITION = 0.35;
 
     }
 
@@ -149,7 +149,7 @@ public class Constants {
 
 
         public static final double INTAKE_SPEED = 0.9; //TODO:
-        public static final double OUTAKE_SPEED = -0.6; //TODO:
+        public static final double OUTAKE_SPEED = -0.5; //TODO:
 
 
     }
