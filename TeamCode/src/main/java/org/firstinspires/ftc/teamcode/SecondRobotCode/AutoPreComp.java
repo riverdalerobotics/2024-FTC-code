@@ -130,17 +130,15 @@ public class AutoPreComp extends LinearOpMode {
                         chassis.getVelocityConstraint(7, 7, 14),
                         chassis.getAccelerationConstraint(8)
                 )
-                .waitSeconds(1)
-                .addTemporalMarker(() -> slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION))
                 .waitSeconds(2)
                 .addTemporalMarker(() -> bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION))
                 .back(6,
                         chassis.getVelocityConstraint(7, 7, 14),
                         chassis.getAccelerationConstraint(8)
                 )
-                .addTemporalMarker(() -> slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION))
+                .addTemporalMarker(() -> slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION))
                 .waitSeconds(2)
-                .addTemporalMarker(() -> bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION))
+                .UNSTABLE_addTemporalMarkerOffset(-1,() -> bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION))
                 .build();
 
         TrajectorySequence preIntakeTrajectoryFour = chassis.trajectorySequenceBuilder(driveForwardToBasketScoreTrajectoryThree.end())
@@ -153,7 +151,7 @@ public class AutoPreComp extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-1, () -> arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE))
                 .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION))
                 .build();
-
+// TODO: HOW DO WE INTKAE?
         TrajectorySequence goIntakeMidSampleTrajectoryFive = chassis.trajectorySequenceBuilder(preIntakeTrajectoryFour.end())
                 .lineToLinearHeading(
                         new Pose2d(-24, 35, Math.toRadians(0)),
@@ -170,6 +168,7 @@ public class AutoPreComp extends LinearOpMode {
                         chassis.getAccelerationConstraint(15)
                 )
                 .UNSTABLE_addTemporalMarkerOffset(-1, () -> arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_HANDOFF))
+                .UNSTABLE_addDisplacementMarkerOffset(-1,()-> intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION))
                 .waitSeconds(1) //TODO: probably remove
                 .addTemporalMarker(-2, () -> arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_SLIDE_GOING_UP))
                 .addTemporalMarker(() -> slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION))
@@ -181,17 +180,18 @@ public class AutoPreComp extends LinearOpMode {
                         chassis.getAccelerationConstraint(8)
                 )
                 .addTemporalMarker(() -> bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION))
+                .waitSeconds(2)
                 .back(6,
                         chassis.getVelocityConstraint(7, 7, 14),
                         chassis.getAccelerationConstraint(8)
                 )
-                .addTemporalMarker(() -> slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION))
-                .waitSeconds(2)
-                .addTemporalMarker(() -> bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION))
-                .addTemporalMarker(() -> wristServo.setPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION))
+                .addTemporalMarker(() -> intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION))
                 .addTemporalMarker(() -> arm.setArmAngle(0))
-                .build();
+                .waitSeconds(2)
+                .addTemporalMarker(() -> slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION))
+                .addTemporalMarker(() -> bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION))
 
+                .build();
 
         waitForStart();
 
@@ -204,7 +204,6 @@ public class AutoPreComp extends LinearOpMode {
             telemetry.update();
 
         }
-
 
         if (isStopRequested()) return;
 
