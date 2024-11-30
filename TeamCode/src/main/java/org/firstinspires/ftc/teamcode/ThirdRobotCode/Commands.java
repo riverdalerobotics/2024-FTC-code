@@ -91,27 +91,28 @@ public class Commands {
 //        }
     public void spit(){
         intakeSubsystem.spinIntake(0);
+        intakeSubsystem.pivotIntake(0.6);
         char colour = intakeSubsystem.getColour();
         while(colour != 'w'){
-            intakeSubsystem.spinIntake(1);
+            intakeSubsystem.spinIntake(-0.25);
             colour = intakeSubsystem.getColour();
         }
         intakeSubsystem.spinIntake(0);
     }
     public void goToZero(){
-        intakeSubsystem.pivotIntake(0);
+        intakeSubsystem.pivotIntake(0.6);
 //        intakeSubsystem.spinIntake(0);
         slideSubsystem.goToPosWithSpeed(0, 1);
         while(slideSubsystem.rightSlideExtend.isBusy()){}
         arm.pivotArm(0, 1, pidf);
     }
     public void scoreBucket() {
-        intakeSubsystem.pivotIntake(0);
+        intakeSubsystem.pivotIntake(0.5);
         slideSubsystem.goToPosWithSpeed(0, 1);
         arm.pivotArm(95, 1, pidf);
         while(arm.getPos()<45){}
-        intakeSubsystem.pivotIntake(-0.5);
         slideSubsystem.goToPosWithSpeed(90, 1);
+        intakeSubsystem.pivotIntake(0.6);
     }
 
     public void intake(char teamColour, Gamepad gamepad2) throws InterruptedException {
@@ -119,11 +120,12 @@ public class Commands {
         arm.pivotArm(0, 1, pidf);
         while(arm.getPos()>45){}
         slideSubsystem.goToPosWithSpeed(50, 0.3);
-        while(slideSubsystem.getSlidePos()<6){
+        while(slideSubsystem.getSlidePos()<10){
         }
-        intakeSubsystem.pivotIntake(0.5);
+        intakeSubsystem.pivotIntake(0.16);
         while(intakeSubsystem.getColour() != teamColour && intakeSubsystem.getColour() != 'y'&& !(gamepad2.x)){
-            intakeSubsystem.spinIntake(-0.2);
+            intakeSubsystem.spinIntake(-0.15);
+            arm.pivotArm(0, 0);
         }
         intakeSubsystem.spinIntake(0);
         goToZero();

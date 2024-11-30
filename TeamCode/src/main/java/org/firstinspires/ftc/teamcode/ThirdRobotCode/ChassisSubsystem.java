@@ -4,6 +4,8 @@ package org.firstinspires.ftc.teamcode.ThirdRobotCode;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
 import static org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive.getAccelerationConstraint;
 
+import com.acmerobotics.roadrunner.control.PIDCoefficients;
+import com.acmerobotics.roadrunner.control.PIDFController;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAccelerationConstraint;
@@ -31,6 +33,9 @@ public class ChassisSubsystem {
     DcMotor backLeft;
     DcMotor frontRight;
     DcMotor backRight;
+    PIDFController pidfXController;
+    PIDFController pidfYController;
+    PIDFController pidfYawController;
     //IMU gyro;
 
 
@@ -114,7 +119,6 @@ public class ChassisSubsystem {
 //        max = Math.max(max,Math.abs(leftFrontSpeed));
 //        max = Math.max(max, Math.abs(leftBackSpeed));
 
-
         double xError = xResult - xPos;
         double yError = yResult - yPos;
         double turnError = turnResult-yaw;
@@ -123,7 +127,7 @@ public class ChassisSubsystem {
 
         double turnSpeed = turnError*kp*rotationKp;
         fieldOriented(yaw, ySpeed, xSpeed, turnSpeed);
-        return !(-3<=turnError && 3>=turnError && -3<=xError && 3>=xError && -3<=yError && 3>=yError);
+        return !(-3<=turnError && 3>=turnError && -2.5<=xError && 2.5>=xError && -2.5<=yError && 2.5>=yError);
     }
 
 //    public double pitch(){
