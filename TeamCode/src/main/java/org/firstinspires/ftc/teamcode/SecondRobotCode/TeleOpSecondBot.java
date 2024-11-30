@@ -92,12 +92,12 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 maxSpeed = 0.3;
 
             } else {
-                maxSpeed = 1;
+                maxSpeed = 0.8;
             }
 
-            speedPwr = gamepad2.left_stick_y * maxSpeed * 0.5;
-            strafePwr = gamepad2.left_stick_x * maxSpeed * 0.5;
-            turnPwr = gamepad2.right_stick_x * maxSpeed * 0.5;
+            speedPwr = gamepad2.left_stick_y * maxSpeed;
+            strafePwr = gamepad2.left_stick_x * maxSpeed;
+            turnPwr = gamepad2.right_stick_x * maxSpeed;
 
             if (gamepad2.left_stick_button) {
                 fieldOriented = true;
@@ -159,7 +159,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
             }
 
-            // ARM TO INTAKE ARM TO 211 DEGREES AND WRIST TO 0.71
+            // ARM TO PRE INTAKE ENTER SUBMERSIBLE DEGREES AND WRIST TO 0.71
             if (gamepad1.a) {
                 if (arm.getPosInDegrees() >67 ) {
                     arm.setArmAngle(193);
@@ -174,6 +174,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 }
             }
 
+            // score the basket by clipping bucket servo
             if (gamepad2.b) {
                 if (arm.getPosInDegrees() >= 89) {
                     bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION);
@@ -181,8 +182,23 @@ public class TeleOpSecondBot extends  LinearOpMode {
             }
 
 
-        if (gamepad1.dpad_right) {
-            arm.emergencyStop();
+            //TODO: TEST EMERGENCY CONTROLS
+        if (gamepad1.start) {
+            arm.emergencyStopBrandon(arm.getPosInDegrees());
+            slides.emergencyStopBrandon(slides.getCurrentHeight());
+        }
+
+        if (gamepad1.dpad_right){
+            arm.setArmAngle(arm.getPosInDegrees()+1);
+        }
+        if (gamepad1.dpad_left){
+            arm.setArmAngle(arm.getPosInDegrees()-1);
+        }
+        if (gamepad1.dpad_down){
+            slides.setHeight(slides.getCurrentHeight()-1);
+        }
+        if (gamepad1.dpad_up){
+            slides.setHeight(slides.getCurrentHeight()+1);
         }
 
         // telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());

@@ -29,13 +29,16 @@ public class ArmSubsystem {
     armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+    public void emergencyStopBrandon(double angleInDegrees){
+        armMotor.setPower(0);
+        armMotor.setTargetPosition((int)degToTicks(angleInDegrees));
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
     public void resetEncoders(){
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void emergencyStop() {
-        armMotor.setPower(0);
-    }
 }
 
 
