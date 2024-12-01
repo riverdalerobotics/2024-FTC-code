@@ -117,7 +117,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
             if (gamepad2.a && slides.getCurrentHeight() <= 260) {
                 arm.setArmAngle(96);
 
-                if (arm.getPosInDegrees() > 88) {
+                if (arm.getPosInDegrees() > 90) {
                     slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION);
                 }
             }
@@ -145,7 +145,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
             //Sets the slides to a handoff position (receivgames the samples) SLIDES TO 0 ARMS TO 70 DEGREES WRIST TO 0
             if (gamepad1.y) {
-                if (arm.getPosInDegrees() >= 88) {
+                if (arm.getPosInDegrees() >= 90) {
                     slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION);
                     slides.bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION);
                 }
@@ -161,7 +161,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
             // ARM TO PRE INTAKE ENTER SUBMERSIBLE DEGREES AND WRIST TO 0.71
             if (gamepad1.a) {
-                if (arm.getPosInDegrees() >67 ) {
+                if (arm.getPosInDegrees() >88 ) {
                     arm.setArmAngle(193);
                     intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
                 }
