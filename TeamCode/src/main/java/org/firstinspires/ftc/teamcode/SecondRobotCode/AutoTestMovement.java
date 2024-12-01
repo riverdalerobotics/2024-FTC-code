@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.SecondRobotCode;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -35,7 +34,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
  */
 @Config
 @Autonomous(group = "drive")
-public class AutoPreComp extends LinearOpMode {
+public class AutoTestMovement extends LinearOpMode {
 
     public DcMotorEx motorLeftF;
     public DcMotorEx motorRightF;
@@ -108,9 +107,7 @@ public class AutoPreComp extends LinearOpMode {
                         chassis.getVelocityConstraint(20, 20, 14),
                         chassis.getAccelerationConstraint(20)
                 )
-                .addTemporalMarker(() -> slides.setHeight(400))
-                .addTemporalMarker(() -> arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_SLIDE_GOING_UP))
-                .addTemporalMarker(() -> slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION + 100))
+
                 .build();
 
         TrajectorySequence lineupBucketTrajectoryTwo = chassis.trajectorySequenceBuilder(startingPose)
@@ -120,7 +117,7 @@ public class AutoPreComp extends LinearOpMode {
                         chassis.getAccelerationConstraint(10)
                 )
                 .waitSeconds(1) //TODO: probably remove
-                .addTemporalMarker(() -> slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION))
+
                 .waitSeconds(2)
                 .build();
 
@@ -130,14 +127,13 @@ public class AutoPreComp extends LinearOpMode {
                         chassis.getAccelerationConstraint(8)
                 )
                 .waitSeconds(2)
-                .addTemporalMarker(() -> bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION))
+
                 .back(6,
                         chassis.getVelocityConstraint(7, 7, 14),
                         chassis.getAccelerationConstraint(8)
                 )
-                .addTemporalMarker(() -> slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION))
+
                 .waitSeconds(2)
-                .UNSTABLE_addTemporalMarkerOffset(-1,() -> bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION))
                 .build();
 
         TrajectorySequence preIntakeTrajectoryFour = chassis.trajectorySequenceBuilder(driveForwardToBasketScoreTrajectoryThree.end())
@@ -147,8 +143,7 @@ public class AutoPreComp extends LinearOpMode {
                         chassis.getAccelerationConstraint(20)
                 )
                 .waitSeconds(0.5)
-                .UNSTABLE_addTemporalMarkerOffset(-1, () -> arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE))
-                .UNSTABLE_addTemporalMarkerOffset(-0.5, () -> intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION))
+
                 .build();
 // TODO: HOW DO WE INTKAE?
         TrajectorySequence goIntakeMidSampleTrajectoryFive = chassis.trajectorySequenceBuilder(preIntakeTrajectoryFour.end())
@@ -166,11 +161,8 @@ public class AutoPreComp extends LinearOpMode {
                         chassis.getVelocityConstraint(15, 15, 14),
                         chassis.getAccelerationConstraint(15)
                 )
-                .UNSTABLE_addTemporalMarkerOffset(-1, () -> arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_HANDOFF))
-                .UNSTABLE_addDisplacementMarkerOffset(-1,()-> intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION))
+
                 .waitSeconds(1) //TODO: probably remove
-                .addTemporalMarker(-2, () -> arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_SLIDE_GOING_UP))
-                .addTemporalMarker(() -> slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION))
                 .build();
 
         TrajectorySequence driveForwardToBasketScoreTrajectorySeven = chassis.trajectorySequenceBuilder(lineupBucketTrajectorySix.end())
@@ -178,31 +170,27 @@ public class AutoPreComp extends LinearOpMode {
                         chassis.getVelocityConstraint(7, 7, 14),
                         chassis.getAccelerationConstraint(8)
                 )
-                .addTemporalMarker(() -> bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION))
                 .waitSeconds(2)
                 .back(6,
                         chassis.getVelocityConstraint(7, 7, 14),
                         chassis.getAccelerationConstraint(8)
                 )
-                .addTemporalMarker(() -> intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION))
-                .addTemporalMarker(() -> arm.setArmAngle(0))
-                .waitSeconds(2)
-                .addTemporalMarker(() -> slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION))
-                .addTemporalMarker(() -> bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION))
+
 
                 .build();
 
-        waitForStart();
+//        waitForStart();
 
-        while (opModeIsActive()) {
-            do {
-                intake.spinTake(Constants.IntakeConstants.INTAKE_SPEED);
-            } while(chassis.getPoseEstimate().getY()>20);
+//        while (opModeIsActive()) {
+//            do {
+//                intake.spinTake(Constants.IntakeConstants.INTAKE_SPEED);
+//            } while(chassis.getPoseEstimate().getY()>20);
+//
+//            telemetry.addData("pose", chassis.getPoseEstimate());
+//            telemetry.update();
+//
+//        }
 
-            telemetry.addData("pose", chassis.getPoseEstimate());
-            telemetry.update();
-
-        }   
         if (isStopRequested()) return;
 
         chassis.followTrajectorySequence(moveOutToCollegeTrajectoryOne);
