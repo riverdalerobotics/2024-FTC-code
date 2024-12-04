@@ -122,7 +122,7 @@ public class Constants {
         public static final double DISTANCE_PER_ROTATION = 120; //mm
 
 
-        public static final double HIGH_BASKET_POSITION = 860;
+        public static final double HIGH_BASKET_POSITION = 860-3;
         public static final double LOW_BASKET_POSITION = 0;
         public static final double HANDOFF_POSITION = 0;
 
@@ -135,7 +135,7 @@ public class Constants {
     public static class BucketConstants {
 
         public static final double BUCKET_SCORE_POSITION = 0.15;
-        public static final double BUCKET_HANDOFF_POSITION = 0.35;
+        public static final double BUCKET_HANDOFF_POSITION = 0.40;
 
     }
 

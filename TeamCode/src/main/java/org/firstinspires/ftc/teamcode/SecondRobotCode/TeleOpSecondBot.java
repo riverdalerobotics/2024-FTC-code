@@ -34,7 +34,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
     private Servo wristServo;
     private CRServo intakeServo;
-    private double maxSpeed;
+    private double maxSpeed =1;
 
     public WebcamName camera;
 
@@ -43,8 +43,10 @@ public class TeleOpSecondBot extends  LinearOpMode {
     IntakeSubsystem intake;
     SlidesSubsystem slides;
 
-    //TODO: code specific:  tune pidf for rr.
-    //TODO: priotiy list:  road runner, buy coffee
+    double speedPwr;
+    double strafePwr;
+    double turnPwr;
+
     public void runOpMode() throws InterruptedException {
 
         motorLeftF = hardwareMap.get(DcMotorEx.class, "motorLeftF");
@@ -75,15 +77,10 @@ public class TeleOpSecondBot extends  LinearOpMode {
         slides = new SlidesSubsystem(slideMotor, bucketServo);
 
         waitForStart();
-        double speedPwr;
-        double strafePwr;
-        double turnPwr;
         arm.resetEncoders();
         slides.resetEncoder();
 
-        //TODO: Figure out the controls
         while (opModeIsActive()) {
-
             //reset the yaw value
             if (gamepad2.start) {
                 imu.resetYaw();
@@ -113,16 +110,19 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
             //BASKET TO SCORING ON DRIVING CONTROLLER
 
-            // 260 IS THE HEIGHT SLIDES NEED TO BE FOR ARM TO PASS OFF
-            if (gamepad2.a && slides.getCurrentHeight() <= 260) {
-                arm.setArmAngle(96);
-
-                if (arm.getPosInDegrees() > 88) {
+            //TODO: 260 IS THE HEIGHT SLIDES NEED TO BE FOR ARM TO PASS OFF (STORE AS A CONSTANT)
+            if (gamepad2.a) {
+                if (arm.getPosInDegrees() >= 88) {
+                    arm.setArmAngle(96);
                     slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION);
                 }
             }
 
-            //gamepad1.righ
+            // score the basket by clipping bucket servo
+            if (gamepad2.b) {
+                bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION);
+            }
+
             //intake and outtake
             if (gamepad1.left_bumper) {
                 intake.spinTake(Constants.IntakeConstants.OUTAKE_SPEED);
@@ -148,12 +148,6 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 if (arm.getPosInDegrees() >= 88) {
                     slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION);
                     slides.bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION);
-                }
-
-                if (slides.getCurrentHeight() < Constants.SlidesConstants.HANDOFF_POSITION + 10) {
-                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_HANDOFF);
-
-                    intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION);
 
                 }
 
@@ -166,6 +160,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
                     intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
                 }
             }
+
             // ARM TO INTAKE ARM TO 211 DEGREES AND WRIST TO 0.71
             if (gamepad1.x) {
                 if (arm.getPosInDegrees() > 70) {
@@ -174,32 +169,24 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 }
             }
 
-            // score the basket by clipping bucket servo
-            if (gamepad2.b) {
-                if (arm.getPosInDegrees() >= 89) {
-                    bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION);
-                }
-            }
-
-
-            //TODO: TEST EMERGENCY CONTROLS
-        if (gamepad1.start) {
-            arm.emergencyStopBrandon(arm.getPosInDegrees());
-            slides.emergencyStopBrandon(slides.getCurrentHeight());
-        }
-
-        if (gamepad1.dpad_right){
-            arm.setArmAngle(arm.getPosInDegrees()+1);
-        }
-        if (gamepad1.dpad_left){
-            arm.setArmAngle(arm.getPosInDegrees()-1);
-        }
-        if (gamepad1.dpad_down){
-            slides.setHeight(slides.getCurrentHeight()-1);
-        }
-        if (gamepad1.dpad_up){
-            slides.setHeight(slides.getCurrentHeight()+1);
-        }
+//            //TODO: TEST EMERGENCY CONTROLS
+//        if (gamepad1.start) {
+//            arm.emergencyStopBrandon(arm.getPosInDegrees());
+//            slides.emergencyStopBrandon(slides.getCurrentHeight());
+//        }
+//
+//        if (gamepad1.dpad_right){
+//            arm.setArmAngle(arm.getPosInDegrees()+1);
+//        }
+//        if (gamepad1.dpad_left){
+//            arm.setArmAngle(arm.getPosInDegrees()-1);
+//        }
+//        if (gamepad1.dpad_down){
+//            slides.setHeight(slides.getCurrentHeight()-1);
+//        }
+//        if (gamepad1.dpad_up){
+//            slides.setHeight(slides.getCurrentHeight()+1);
+//        }
 
         // telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
         telemetry.addData("Status", "wobot is on :3");
