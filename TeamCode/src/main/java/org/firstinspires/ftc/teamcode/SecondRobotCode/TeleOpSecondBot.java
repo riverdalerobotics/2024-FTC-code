@@ -160,7 +160,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
                     intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
                 }
             }
-
+//for exmaple
             // ARM TO INTAKE ARM TO 211 DEGREES AND WRIST TO 0.71
             if (gamepad1.x) {
                 if (arm.getPosInDegrees() > 70) {
