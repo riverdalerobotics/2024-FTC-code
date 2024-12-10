@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.SecondRobotCode;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -15,8 +13,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.SecondRobotCode.ChassisSubsystem;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 
 /*
@@ -37,9 +34,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 @Config
 @Autonomous(group = "drive")
-public class BackAndForth extends LinearOpMode {
-
-    public static double DISTANCE = 10; //inches
+public class AutoPark extends LinearOpMode {
 
     public DcMotorEx motorLeftF;
     public DcMotorEx motorRightF;
@@ -64,10 +59,12 @@ public class BackAndForth extends LinearOpMode {
     SlidesSubsystem slides;
 
     Pose2d startingPose;
-    Trajectory trajectoryForward;
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        //8.65 inches length from middle
+        //8.9 inches wide from middle
 
         imu = hardwareMap.get(IMU.class, "imu");
 
@@ -78,64 +75,54 @@ public class BackAndForth extends LinearOpMode {
 
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
 
-        motorLeftF = hardwareMap.get(DcMotorEx.class ,"motorLeftF");
+        motorLeftF = hardwareMap.get(DcMotorEx.class, "motorLeftF");
         motorRightF = hardwareMap.get(DcMotorEx.class, "motorRightF");
         motorRightB = hardwareMap.get(DcMotorEx.class, "motorRightB");
         motorLeftB = hardwareMap.get(DcMotorEx.class, "motorLeftB");
-        armMotor =hardwareMap.get(DcMotor.class, "armMotor");
+        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
         slideMotor = hardwareMap.get(DcMotor.class, "slideMotor");
         bucketServo = hardwareMap.get(Servo.class, "bucket");
         wristServo = hardwareMap.get(Servo.class, "wrist");
         intakeServo = hardwareMap.get(CRServo.class, "intake");
 
 
-        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB,motorRightB, imu,batteryVoltageSensor);
+        chassis = new ChassisSubsystem(motorLeftF, motorRightF, motorLeftB, motorRightB, imu, batteryVoltageSensor);
         arm = new ArmSubsystem(armMotor);
-        intake = new IntakeSubsystem (intakeServo, wristServo);
+        intake = new IntakeSubsystem(intakeServo, wristServo);
         slides = new SlidesSubsystem(slideMotor, bucketServo);
 
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-
+        //starting pose, NOT RELATIVE TO FIELD, RELATIVE TO BOT'S STARTING POINT
         startingPose = new Pose2d(0, 0, Math.toRadians(0));
-
-        Pose2d linePose = new Pose2d(5,10, Math.toRadians(90));
 
         chassis.setPoseEstimate(startingPose);
 
-        trajectoryForward = chassis.trajectoryBuilder(startingPose)
-                .forward(DISTANCE)
+
+        TrajectorySequence strafeToPark = chassis.trajectorySequenceBuilder(startingPose)
+                .strafeRight(10,
+                        chassis.getVelocityConstraint(7, 7, 14),
+                        chassis.getAccelerationConstraint(8)
+                )
+
                 .build();
 
-        Trajectory strafe = chassis.trajectoryBuilder(startingPose)
-                .lineToLinearHeading(linePose)
-                .build();
+//        waitForStart();
 
-
-
-//        Trajectory gotoPose = chassis.trajectoryBuilder(trajectoryBackward.end())
-//                .lineToLinearHeading(new Pose2d(40, 40, Math.toRadians(90)))
-//                .build();
+//        while (opModeIsActive()) {
+//            do {
+//                intake.spinTake(Constants.IntakeConstants.INTAKE_SPEED);
+//            } while(chassis.getPoseEstimate().getY()>20);
 //
+//            telemetry.addData("pose", chassis.getPoseEstimate());
+//            telemetry.update();
+//
+//        }
 
-        waitForStart();
+        if (isStopRequested()) return;
 
-        if(isStopRequested()) return;
-        //slides.setHeight(10);
+       chassis.followTrajectorySequence(strafeToPark);
 
-        chassis.followTrajectory(strafe);
-
-        telemetry.addData("pose", chassis.getPoseEstimate());
-        telemetry.update();
-
-
-
-           // chassis.followTrajectory(trajectoryBackward);
-//slides.setHeight(100);
-
-
-
-
-        }
     }
+}

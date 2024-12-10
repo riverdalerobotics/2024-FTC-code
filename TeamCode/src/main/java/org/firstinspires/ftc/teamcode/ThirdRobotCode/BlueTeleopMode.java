@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp (name = "Blue Pinkie Pie Teleop", group = "Linear OpMode")
 
-public class TeleopMode extends LinearOpMode {
+public class BlueTeleopMode extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     DcMotor frontLeft;
     DcMotor frontRight;
@@ -27,13 +27,9 @@ public class TeleopMode extends LinearOpMode {
     Servo rightIntake;
     DcMotorEx armPivot;
 
-    ChassisSubsystem chassis;
-    ArmSubsystem arm;
-    SlideSubsystem slides;
-    SparkFunOTOS otos;
-
     public void runOpMode() throws InterruptedException{
         double xPos, yPos, heading;
+        char teamColor ='b';
         SparkFunOTOS.Pose2D pose2D;
         CRServo intakeServo;
         Servo wrist;
@@ -53,6 +49,7 @@ public class TeleopMode extends LinearOpMode {
         intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
         leftIntake = hardwareMap.get(Servo.class, "leftIntake");
         rightIntake = hardwareMap.get(Servo.class, "rightIntake");
+        double rotKp = 0.5;
         colorSensor = hardwareMap.get(ColorSensor.class, "ColourSensor");
         ChassisSubsystem chassis = new ChassisSubsystem(frontLeft, frontRight, backLeft, backRight, otos);
         IntakeSubsystem intake = new IntakeSubsystem(intakeServo, leftIntake, colorSensor, rightIntake);
@@ -65,7 +62,7 @@ public class TeleopMode extends LinearOpMode {
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         waitForStart();
-        double rotKp = 0.35;
+
         boolean hasPeice = false;
         armPivot.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         armPivot.setDirection(DcMotorEx.Direction.REVERSE);
@@ -93,26 +90,17 @@ public class TeleopMode extends LinearOpMode {
             }
 
             if(gamepad1.a){
-                while(chassis.goToPosition(xPos, yPos, heading, 0.03, rotKp, 45, -20, 135)){
-                    pose2D = otos.getPosition();
-                    xPos = pose2D.x*(-3.048);
-                    yPos = pose2D.y*(-3.048);
-                    heading = pose2D.h;
-                    if(heading<0){
-                        heading+=360;
-                    }
-               }
-                commands.scoreBucket();
-                while(slides.leftSlideExtend.isBusy()){
-                }
-                commands.spit();
-                //chassis.goToPosition(0, yPos, heading, 0.1, 0,0, 180);
+                chassis.goToPosition(xPos, yPos, heading, -0.03, rotKp, 43, -15, 135);
+
+            }
+            if(gamepad2.left_bumper){
+                intake.pivotIntake(0.6);
             }
             if(gamepad2.y){
                 commands.scoreBucket();
             }
             if(gamepad2.b){
-                commands.intake('b');
+
             }
             if(gamepad2.x){
                 commands.goToZero();
@@ -120,13 +108,15 @@ public class TeleopMode extends LinearOpMode {
 
             }
             if(gamepad2.a){
-                commands.intake('b');
+                commands.intake(teamColor, gamepad2);
             }
             if(gamepad2.right_bumper){
                 commands.spit();
             }
 
-
+            telemetry.addData("x position:", xPos);
+            telemetry.addData("y position:", yPos);
+            telemetry.addData("heading position:", heading);
             telemetry.addData("Arm pos",arm.getPos());
             telemetry.addData("Arm Target", armPivot.getTargetPosition());
             telemetry.addData("Arm Power", armPivot.getPower());
@@ -135,9 +125,7 @@ public class TeleopMode extends LinearOpMode {
             telemetry.addData("R", colorSensor.red());
             telemetry.addData("G", colorSensor.green());
             telemetry.addData("B", colorSensor.blue());
-            telemetry.addData("x position:", xPos);
-            telemetry.addData("y position:", yPos);
-            telemetry.addData("heading position:", heading);
+
             telemetry.update();
         }
     }

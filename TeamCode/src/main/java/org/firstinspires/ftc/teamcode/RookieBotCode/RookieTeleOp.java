@@ -31,32 +31,49 @@ public class RookieTeleOp extends LinearOpMode {
         intakeSub = new IntakeSubsystem(intake, claw, intakeMotor);
         chassis = new ChassisSubsystem(leftDrive, rightDrive);
         waitForStart();
+        armSub.resetEncoder();
+        armSub.setArmAngle(10,1);
 
         double speed;
         double turn;
 
         while(opModeIsActive()){
 
-            speed = -gamepad1.left_stick_y;
+            speed = gamepad1.left_stick_y;
             turn = gamepad1.right_stick_x;
-            if(gamepad1.a){
-                armSub.setArmAngle(30, 0.2);
-                intakeSub.moveArmToPos(150, 0.2);
+
+            if(gamepad2.a){
+                armSub.setArmAngle(30, 1);
+                intakeSub.moveIntakeArmToPos(140, 0.8);
             }
-            if(gamepad1.b){
-                intakeSub.spinTake(1);
+            if( gamepad2.right_bumper){
+                intakeSub.spinTake(3.5);
+            }
+            else if(gamepad2.left_bumper){
+                intakeSub.spinTake(-3.5);
             }
             else{
                 intakeSub.spinTake(0);
+
             }
-            if(gamepad1.right_bumper){
-                intakeSub.moveArmToPos(0, 1);
+            if(gamepad2.x){
+                intakeSub.moveIntakeArmToPos(0, 1);
                 armSub.setArmAngle(80, 1);
+            }
+            if(gamepad2.dpad_up){
                 intakeSub.grabWithClaw(0.35);
             }
-            if(gamepad1.left_bumper){
+            else{
                 intakeSub.grabWithClaw(0.45);
             }
+            if(gamepad2.y){
+                armSub.setArmAngle(120, 1);
+            }
+            if(gamepad2.b){
+                intakeSub.moveIntakeArmToPos(0,0.5);
+                armSub.setArmAngle(10,0.5);
+            }
+
 
             chassis.drive(speed,turn);
             telemetry.addData("Intake pos", intakeSub.intakeInDeg());

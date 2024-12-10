@@ -33,7 +33,7 @@ public class ArmSubsystem {
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public void resetEncoders(){
+    public void resetEncoder(){
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
