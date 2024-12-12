@@ -144,8 +144,8 @@ public class Constants {
      * */
     static class IntakeConstants {
 
-        public static final double WRIST_INTAKE_POSITION = 0.71; //TODO:
-        public static final double WRIST_HANDOFF_POSITION = 0; //TODO:
+        public static final double WRIST_INTAKE_POSITION = 0.0; //TODO:
+        public static final double WRIST_HANDOFF_POSITION = -0.1; //TODO:
 
 
         public static final double INTAKE_SPEED = 0.9; //TODO:
