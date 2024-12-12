@@ -177,6 +177,7 @@ public class TestTeleopMode extends LinearOpMode {
                     telemetry.addData("y position:", yPos);
                     telemetry.addData("heading position:", heading);
                     telemetry.update();
+
                 }
                 commands.scoreBucket();
                 commands.spit();
