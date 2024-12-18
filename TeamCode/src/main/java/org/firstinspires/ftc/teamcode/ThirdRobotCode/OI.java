@@ -34,6 +34,7 @@ public class OI {
     public static boolean fancyScore(){
         return operatorController.right_bumper;
     }
+    public static boolean spit(){return operatorController.left_trigger>0.3;}
     public static boolean fancyIntake(){
         return operatorController.left_bumper;
     }

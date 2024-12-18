@@ -64,11 +64,11 @@ public class BlueTeleopMode extends LinearOpMode {
         waitForStart();
 
         boolean hasPeice = false;
-        armPivot.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//        armPivot.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         armPivot.setDirection(DcMotorEx.Direction.REVERSE);
         armPivot.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        leftSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        leftSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        rightSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(10, 0, 0, 0);
         commands = new Commands(arm, slides, chassis, intake, pidfCoefficients);
         slides.runUsingEncoders();
@@ -89,32 +89,35 @@ public class BlueTeleopMode extends LinearOpMode {
                 otos.setPosition(startPos);
             }
 
-            if(gamepad1.a){
-                chassis.goToPosition(xPos, yPos, heading, -0.03, rotKp, 43, -15, 135);
+        if(gamepad1.right_bumper){
+            chassis.goToPosition(xPos, yPos, heading, -0.03, rotKp, 43, -15, 135);
+        }
+        if(gamepad2.left_bumper){
+            commands.scoreBucket();
+        }
+        if(gamepad2.right_trigger>=0.3){
+            commands.goToZero();
+        }
+        if(gamepad2.left_trigger>=0.3){
+            commands.intake(teamColor, gamepad2, gamepad1);
+        }
+        if(gamepad2.right_bumper){
+            commands.spit();
+        }
 
-            }
-            if(gamepad2.left_bumper){
-                intake.pivotIntake(0.6);
-            }
-            if(gamepad2.y){
-                commands.scoreBucket();
-            }
-            if(gamepad2.b){
-
-            }
-            if(gamepad2.x){
-                commands.goToZero();
+        if(gamepad1.a){
+            commands.climb();
+        }
+        if(gamepad2.left_stick_button){
+            armPivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            armPivot.setPower(gamepad2.right_stick_y);
+        }
+        if(gamepad2.back){
+            armPivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
 
 
-            }
-            if(gamepad2.a){
-                commands.intake(teamColor, gamepad2);
-            }
-            if(gamepad2.right_bumper){
-                commands.spit();
-            }
-
-            telemetry.addData("x position:", xPos);
+        telemetry.addData("x position:", xPos);
             telemetry.addData("y position:", yPos);
             telemetry.addData("heading position:", heading);
             telemetry.addData("Arm pos",arm.getPos());

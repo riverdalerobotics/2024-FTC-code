@@ -73,6 +73,9 @@ public class SlideSubsystem {
         leftSlideExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightSlideExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+    public void slidesIn(){
+
+    }
     public double slideLimit(double angle){
         if(angle<90){
             return (Constants.SlideConstants.LIMIT-Constants.SlideConstants.FORWARD_LIMIT)/Math.cos(Math.toRadians(angle))/Constants.SlideConstants.GEARDIAMETER;

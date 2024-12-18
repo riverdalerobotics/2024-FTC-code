@@ -53,6 +53,7 @@ public class RedTeleopMode extends LinearOpMode {
         colorSensor = hardwareMap.get(ColorSensor.class, "ColourSensor");
         ChassisSubsystem chassis = new ChassisSubsystem(frontLeft, frontRight, backLeft, backRight, otos);
         IntakeSubsystem intake = new IntakeSubsystem(intakeServo, leftIntake, colorSensor, rightIntake);
+        OI oi = new OI(gamepad1, gamepad2);
 
         armPivot = hardwareMap.get(DcMotorEx.class, "ArmMotor");
         leftSlideExtend = hardwareMap.get(DcMotor.class, "leftExtends");
@@ -64,11 +65,11 @@ public class RedTeleopMode extends LinearOpMode {
         waitForStart();
 
         boolean hasPeice = false;
-        armPivot.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//        armPivot.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         armPivot.setDirection(DcMotorEx.Direction.REVERSE);
         armPivot.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        leftSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        leftSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        rightSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(10, 0, 0, 0);
         commands = new Commands(arm, slides, chassis, intake, pidfCoefficients);
         slides.runUsingEncoders();
@@ -76,7 +77,7 @@ public class RedTeleopMode extends LinearOpMode {
     while(opModeIsActive()) {
             double speed = Math.pow(gamepad1.left_stick_y, 5/3);
             double strafe = Math.pow(gamepad1.left_stick_x, 5/3);
-            double turn = Math.pow(gamepad1.right_stick_x, 5/3);
+            double turn = 0.8*Math.pow(gamepad1.right_stick_x, 5/3);
             pose2D = otos.getPosition();
             xPos = pose2D.x*(-3.048);
             yPos = pose2D.y*(-3.048);
@@ -89,27 +90,39 @@ public class RedTeleopMode extends LinearOpMode {
                 otos.setPosition(startPos);
             }
 
-            if(gamepad1.a){
+            if(gamepad1.right_bumper){
                 chassis.goToPosition(xPos, yPos, heading, -0.03, rotKp, 43, -15, 135);
             }
             if(gamepad2.left_bumper){
-                intake.pivotIntake(0.6);
-            }
-            if(gamepad2.y){
                 commands.scoreBucket();
             }
-            if(gamepad2.b){
-
-            }
-            if(gamepad2.x){
+            if(gamepad2.right_trigger>=0.3){
                 commands.goToZero();
             }
-            if(gamepad2.a){
-                commands.intake(teamColor, gamepad2);
+            if(gamepad2.left_trigger>=0.3){
+                commands.intake(teamColor, gamepad2, gamepad1);
             }
             if(gamepad2.right_bumper){
                 commands.spit();
             }
+            if(gamepad2.a){
+                slides.moveSlide(-0.5);
+            }
+            if (gamepad2.start){
+                slides.leftSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                slides.leftSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            }
+            if(gamepad1.a){
+                commands.climb();
+            }
+            if(gamepad2.left_stick_button){
+                armPivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                armPivot.setPower(gamepad2.right_stick_y);
+            }
+            if(gamepad2.back){
+                armPivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            }
+
 
             telemetry.addData("x position:", xPos);
             telemetry.addData("y position:", yPos);
@@ -122,7 +135,6 @@ public class RedTeleopMode extends LinearOpMode {
             telemetry.addData("R", colorSensor.red());
             telemetry.addData("G", colorSensor.green());
             telemetry.addData("B", colorSensor.blue());
-
             telemetry.update();
         }
     }
