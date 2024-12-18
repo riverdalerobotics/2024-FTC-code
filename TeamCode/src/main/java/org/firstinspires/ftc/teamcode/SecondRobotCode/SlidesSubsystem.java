@@ -42,7 +42,6 @@ public class SlidesSubsystem {
 //        slidesMotor.setPower(power);
 //  }
 
-
     public void resetEncoder(){
         slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
@@ -50,5 +49,11 @@ public class SlidesSubsystem {
     public void bucketPos(double pos) {
         bucketServo.setPosition(pos);
 
+    }
+
+    public void emergencyStopBrandon(double heightMillimeter){
+        slidesMotor.setPower(0);
+        slidesMotor.setTargetPosition((int) millimeterToTicks(heightMillimeter));
+        slidesMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 }

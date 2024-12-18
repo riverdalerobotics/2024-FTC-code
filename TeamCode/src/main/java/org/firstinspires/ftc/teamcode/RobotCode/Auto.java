@@ -55,12 +55,54 @@ public class Auto extends LinearOpMode{
         armPivot.setPower(0.8);
         armPivot.setTargetPosition((int) degToRotation(10));
         armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        while(opModeIsActive()){
+        if (opModeIsActive()) {
+
+            left.setDirection(DcMotor.Direction.REVERSE);
+            right.setDirection(DcMotor.Direction.REVERSE);
+
+
+            while (left.getCurrentPosition() > -3000 || right.getCurrentPosition() < 3000) {
+                right.setTargetPosition(300);
+                left.setTargetPosition(300);
+                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right.setPower(0.2);
+                left.setPower(0.2);
+
+                armPivot.setPower(0.8);
+                armPivot.setTargetPosition((int) degToRotation(158.0));
+                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                wrist.setPosition(0.45);
+
+                armPivot.setPower(0.6);
+                armPivot.setTargetPosition((int) degToRotation(190));
+                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                intakeServo.setPower(-0.8);
+
+            }
+
+
             armPivot.setPower(0.8);
-            armPivot.setTargetPosition((int) degToRotation(90));
+            armPivot.setTargetPosition((int) degToRotation(158.0));
             armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            wrist.setPosition(0.45);
+
+            armPivot.setTargetPosition((int) degToRotation(190));
+            armPivot.setPower(0.6);
+            armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            intakeServo.setPower(-0.8);
+
+            telemetry.addData("left wheel value", left.getCurrentPosition());
+            telemetry.addData("right wheel value", right.getCurrentPosition());
+            telemetry.update();
         }
+    }
 
     }
-}

@@ -19,7 +19,8 @@ public class TeleopMode extends LinearOpMode {
     public double degToRotation(double deg) {
         return deg / 360 * 1425.2 * 5;
     }
-    public double chassisDistance(double distance){
+
+    public double chassisDistance(double distance) {
         return distance / 537.7;
     }
 
@@ -76,7 +77,7 @@ public class TeleopMode extends LinearOpMode {
             //Score Low Bucket and High Bar
             if (gamepad2.b) {
                 armPivot.setPower(0.8);
-                armPivot.setTargetPosition((int) degToRotation(158.0));
+                armPivot.setTargetPosition((int) degToRotation(159.0));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
@@ -89,9 +90,16 @@ public class TeleopMode extends LinearOpMode {
 
             }
 
+//            if (gamepad1.left_bumper){
+//                speed = speed - 0.7;
+//            }
+//            if (gamepad1.right_bumper){
+//                speed = speed + 0.7;
+//            }
+
 
             //Climb
-            if (gamepad2.dpad_down) {
+            if (gamepad1.dpad_down) {
 
 
                 while (armPivot.isBusy()) {
@@ -105,20 +113,19 @@ public class TeleopMode extends LinearOpMode {
             }
 
 
+
             //outtake
             if (gamepad2.x) {
                 intakeServo.setPower(0.8);
                 //intake
             } else if (gamepad2.y) {
-                armPivot.setPower(0.6);
-                armPivot.setTargetPosition((int) degToRotation(190));
-                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 intakeServo.setPower(-0.8);
-                intakeServo.setPower(-8.8);
-                //score Bar
-            } else if (gamepad2.dpad_right) {
+            }
+
+            //score Bar
+            else if (gamepad2.dpad_right) {
                 armPivot.setPower(0.6);
-                armPivot.setTargetPosition((int) degToRotation(190));
+                armPivot.setTargetPosition((int) degToRotation(178));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 intakeServo.setPower(-0.8);
                 //score bucket front position
@@ -126,7 +133,7 @@ public class TeleopMode extends LinearOpMode {
                 armPivot.setPower(0.8);
                 armPivot.setTargetPosition((int) degToRotation(100));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                wrist.setPosition(-0.5);
+                wrist.setPosition(-0.4);
                 intakeServo.setPower(-8);
             } else {
                 intakeServo.setPower(0);
@@ -147,40 +154,11 @@ public class TeleopMode extends LinearOpMode {
                 armPivot.setTargetPosition((int) degToRotation(10));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
-            if (gamepad1.a) {
 
+            if (gamepad2.dpad_down){
                 armPivot.setPower(0.8);
-                armPivot.setTargetPosition((int) degToRotation(158.0));
+                armPivot.setTargetPosition((int) degToRotation(240));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                armPivot.setPower(0.6);
-                armPivot.setTargetPosition((int) degToRotation(190));
-                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                intakeServo.setPower(-0.8);
-            }
-
-//            if (gamepad1.x) {
-//                for (int i = 0; i < 900000; i++) {
-//                    chassis.drive(-0.5, 0);
-//
-//                }
-//                chassis.drive(0, 0);
-//
-//
-//            }
-
-            if (gamepad1.x) {
-                autoWheels = true;
-//                chassis.auto(-0.2, 0, 3);
-//                while (left.isBusy()) {
-//                    chassis.auto(-0.2, 0, 3);
-//                }
-                while (autoWheels){
-                    chassis.auto(-0.2,0,3);
-                    sleep(5);
-
-                }
-            }
             }
 
 
@@ -190,11 +168,10 @@ public class TeleopMode extends LinearOpMode {
             telemetry.addData("left wheel value", left.getCurrentPosition());
             telemetry.update();
         }
-//            double power = gamepad1.left_stick_y;
-//            armPivot.setPower(power*0.3);
 
 
     }
+}
 
 
 
