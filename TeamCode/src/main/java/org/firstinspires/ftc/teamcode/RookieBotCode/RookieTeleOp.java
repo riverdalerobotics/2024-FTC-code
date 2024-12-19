@@ -9,15 +9,15 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp (name="Rookie Bot TeleOP")
 public class RookieTeleOp extends LinearOpMode {
 
-        DcMotor leftDrive;
-        DcMotor rightDrive  ;
-        DcMotor arm;
-        Servo claw;
-        CRServo intake;
-        ChassisSubsystem chassis;
-        ArmSubsystem armSub;
-        IntakeSubsystem intakeSub;
-        DcMotor intakeMotor;
+    DcMotor leftDrive;
+    DcMotor rightDrive  ;
+    DcMotor arm;
+    Servo claw;
+    CRServo intake;
+    ChassisSubsystem chassis;
+    ArmSubsystem armSub;
+    IntakeSubsystem intakeSub;
+    DcMotor intakeMotor;
 
     public void runOpMode() throws InterruptedException {
 
@@ -39,7 +39,17 @@ public class RookieTeleOp extends LinearOpMode {
 
         while(opModeIsActive()){
 
-            speed = gamepad1.left_stick_y;
+            //driver
+
+            if(gamepad1.right_bumper){
+                speed = gamepad1.left_stick_y/2;
+            }
+            else {
+                speed = gamepad1.left_stick_y;
+            }
+            if(gamepad1.right_bumper){
+                turn = gamepad1.right_stick_x/2;
+            }
             turn = gamepad1.right_stick_x;
 
             if(gamepad2.a){
@@ -56,10 +66,15 @@ public class RookieTeleOp extends LinearOpMode {
                 intakeSub.spinTake(0);
 
             }
-            if(gamepad2.x){
+
+            //operator
+
+            if(gamepad2.x) {
                 intakeSub.moveIntakeArmToPos(0, 1);
+
                 armSub.setArmAngle(80, 1);
             }
+
             if(gamepad2.dpad_up){
                 intakeSub.grabWithClaw(0.35);
             }
@@ -72,6 +87,15 @@ public class RookieTeleOp extends LinearOpMode {
             if(gamepad2.b){
                 intakeSub.moveIntakeArmToPos(0,0.5);
                 armSub.setArmAngle(10,0.5);
+            }
+
+            if(gamepad2.dpad_left){
+                armSub.setArmAngle(52, 0.5);
+            }
+
+            if(gamepad2.left_trigger > 0.5){
+                armSub.setArmAngle(170, 0.5);
+                intakeSub.moveIntakeArmToPos(80, 0.5);
             }
 
 
