@@ -104,7 +104,7 @@ public class AutoTestMovement extends LinearOpMode {
         TrajectorySequence moveOutToCollegeTrajectoryOne = chassis.trajectorySequenceBuilder(startingPose)
                 .lineToLinearHeading(
                         new Pose2d(-20, 16, Math.toRadians(-135)),
-                        chassis.getVelocityConstraint(20, 20, 14),
+                        chassis.getVelocityConstraint(20, 20, Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(20)
                 )
 
@@ -113,7 +113,7 @@ public class AutoTestMovement extends LinearOpMode {
         TrajectorySequence lineupBucketTrajectoryTwo = chassis.trajectorySequenceBuilder(startingPose)
                 .lineToLinearHeading(
                         new Pose2d(-24, 4, Math.toRadians(-135)),
-                        chassis.getVelocityConstraint(20, 20, 14),
+                        chassis.getVelocityConstraint(20, 20, Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(10)
                 )
                 .waitSeconds(1) //TODO: probably remove
@@ -123,13 +123,13 @@ public class AutoTestMovement extends LinearOpMode {
 
         TrajectorySequence driveForwardToBasketScoreTrajectoryThree = chassis.trajectorySequenceBuilder(lineupBucketTrajectoryTwo.end())
                 .forward(4,
-                        chassis.getVelocityConstraint(7, 7, 14),
+                        chassis.getVelocityConstraint(7, 7, Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(8)
                 )
                 .waitSeconds(2)
 
                 .back(6,
-                        chassis.getVelocityConstraint(7, 7, 14),
+                        chassis.getVelocityConstraint(7, 7, Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(8)
                 )
 
@@ -139,7 +139,7 @@ public class AutoTestMovement extends LinearOpMode {
         TrajectorySequence preIntakeTrajectoryFour = chassis.trajectorySequenceBuilder(driveForwardToBasketScoreTrajectoryThree.end())
                 .lineToLinearHeading(
                         new Pose2d(-24, 16, Math.toRadians(0)),
-                        chassis.getVelocityConstraint(15, 15, 14),
+                        chassis.getVelocityConstraint(15, 15, Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(20)
                 )
                 .waitSeconds(0.5)
@@ -149,7 +149,7 @@ public class AutoTestMovement extends LinearOpMode {
         TrajectorySequence goIntakeMidSampleTrajectoryFive = chassis.trajectorySequenceBuilder(preIntakeTrajectoryFour.end())
                 .lineToLinearHeading(
                         new Pose2d(-24, 35, Math.toRadians(0)),
-                        chassis.getVelocityConstraint(15, 15, 14),
+                        chassis.getVelocityConstraint(15, 15, Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(15)
                 )
 
@@ -158,7 +158,7 @@ public class AutoTestMovement extends LinearOpMode {
         TrajectorySequence lineupBucketTrajectorySix = chassis.trajectorySequenceBuilder(goIntakeMidSampleTrajectoryFive.end())
                 .lineToLinearHeading(
                         new Pose2d(-24, 4, Math.toRadians(-135)),
-                        chassis.getVelocityConstraint(15, 15, 14),
+                        chassis.getVelocityConstraint(15, 15, Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(15)
                 )
 
@@ -167,12 +167,12 @@ public class AutoTestMovement extends LinearOpMode {
 
         TrajectorySequence driveForwardToBasketScoreTrajectorySeven = chassis.trajectorySequenceBuilder(lineupBucketTrajectorySix.end())
                 .forward(5,
-                        chassis.getVelocityConstraint(7, 7, 14),
+                        chassis.getVelocityConstraint(7, 7, Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(8)
                 )
                 .waitSeconds(2)
                 .back(6,
-                        chassis.getVelocityConstraint(7, 7, 14),
+                        chassis.getVelocityConstraint(7, 7, Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(8)
                 )
 

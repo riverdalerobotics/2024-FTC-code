@@ -39,8 +39,10 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @Autonomous(group = "drive")
 public class BackAndForth extends LinearOpMode {
 
-    public static double XDISTANCE = 10; //inches
+
+    public static double XDISTANCE = 20; //inches
     public static double YDISTANCE = 10; //inches
+    public static double rotation = 90;
 
 
     public DcMotorEx motorLeftF;
@@ -113,22 +115,29 @@ public class BackAndForth extends LinearOpMode {
 
 
         Trajectory strafe = chassis.trajectoryBuilder(startingPose)
-                .lineToLinearHeading(linePose)
+                .strafeLeft(10)
                 .build();
 
 
 
-//        Trajectory gotoPose = chassis.trajectoryBuilder(trajectoryBackward.end())
-//                .lineToLinearHeading(new Pose2d(40, 40, Math.toRadians(90)))
-//                .build();
-//
+        Trajectory gotoPose = chassis.trajectoryBuilder(startingPose)
+                .lineToLinearHeading(
+                        new Pose2d(XDISTANCE, YDISTANCE, rotation),
+                        chassis.getVelocityConstraint(30, 200, Constants.ChassisConstants.TRACK_WIDTH),
+                        chassis.getAccelerationConstraint(30)
+                )
+                .build();
+
 
         waitForStart();
 
         if(isStopRequested()) return;
         //slides.setHeight(10);
 
-//        chassis.followTrajectory(linePose);
+        chassis.followTrajectory(gotoPose);
+
+
+
 
         telemetry.addData("pose", chassis.getPoseEstimate());
         telemetry.update();

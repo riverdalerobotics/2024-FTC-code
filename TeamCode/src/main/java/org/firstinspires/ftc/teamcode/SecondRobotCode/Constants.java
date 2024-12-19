@@ -31,7 +31,7 @@ public class Constants {
          * from DriveVelocityPIDTuner.
          */
         public static final boolean RUN_USING_ENCODER = true;
-        public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0,
+        public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 3,
                 getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV)); //TODO: tune thissss
 
         /*
@@ -53,8 +53,8 @@ public class Constants {
          * motor encoders or have elected not to use them for velocity control, these values should be
          * empirically tuned.
          */
-        public static double kV = 0.01776;
-        public static double kA = 0.005;
+        public static double kV = 0.0189;
+        public static double kA = 0.0039;
         public static double kStatic = 0;
 
         /*
