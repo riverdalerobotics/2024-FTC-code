@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Config
 public class ChassisSubsystem extends MecanumDrive{
     double rightBackSpeed;
     double rightFrontSpeed;
@@ -75,10 +76,11 @@ public class ChassisSubsystem extends MecanumDrive{
     private List<Integer> lastEncPositions = new ArrayList<>();
     private List<Integer> lastEncVels = new ArrayList<>();
 
-    public PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
 
-    public static double LATERAL_MULTIPLIER = 1.0;
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(4.5, 1.5, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+
+    public static double LATERAL_MULTIPLIER = 1.052; //1.48 //1.336
 
     public double VX_WEIGHT = 1;
     public double VY_WEIGHT = 1;

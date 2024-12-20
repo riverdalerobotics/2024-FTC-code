@@ -115,7 +115,7 @@ public class BackAndForth extends LinearOpMode {
 
 
         Trajectory strafe = chassis.trajectoryBuilder(startingPose)
-                .strafeLeft(10)
+                .strafeLeft(70)
                 .build();
 
 
@@ -124,7 +124,7 @@ public class BackAndForth extends LinearOpMode {
                 .lineToLinearHeading(
                         new Pose2d(XDISTANCE, YDISTANCE, rotation),
                         chassis.getVelocityConstraint(30, 200, Constants.ChassisConstants.TRACK_WIDTH),
-                        chassis.getAccelerationConstraint(30)
+                        chassis.getAccelerationConstraint(20)
                 )
                 .build();
 
@@ -134,12 +134,13 @@ public class BackAndForth extends LinearOpMode {
         if(isStopRequested()) return;
         //slides.setHeight(10);
 
+        telemetry.addData("pose", chassis.getPoseEstimate());
         chassis.followTrajectory(gotoPose);
 
 
 
 
-        telemetry.addData("pose", chassis.getPoseEstimate());
+
         telemetry.update();
 
 

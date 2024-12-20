@@ -103,8 +103,8 @@ public class AutoTestMovement extends LinearOpMode {
         //all trajectories used
         TrajectorySequence moveOutToCollegeTrajectoryOne = chassis.trajectorySequenceBuilder(startingPose)
                 .lineToLinearHeading(
-                        new Pose2d(-20, 16, Math.toRadians(-135)),
-                        chassis.getVelocityConstraint(20, 20, Constants.ChassisConstants.TRACK_WIDTH),
+                        new Pose2d(6.54, 15, Math.toRadians(135)),
+                        chassis.getVelocityConstraint(40, 30, Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(20)
                 )
 
@@ -179,7 +179,7 @@ public class AutoTestMovement extends LinearOpMode {
 
                 .build();
 
-//        waitForStart();
+        waitForStart();
 
 //        while (opModeIsActive()) {
 //            do {
@@ -194,12 +194,12 @@ public class AutoTestMovement extends LinearOpMode {
         if (isStopRequested()) return;
 
         chassis.followTrajectorySequence(moveOutToCollegeTrajectoryOne);
-        chassis.followTrajectorySequence(lineupBucketTrajectoryTwo);
-        chassis.followTrajectorySequence(driveForwardToBasketScoreTrajectoryThree);
-        chassis.followTrajectorySequence(preIntakeTrajectoryFour);
-        chassis.followTrajectorySequence(goIntakeMidSampleTrajectoryFive);
-        chassis.followTrajectorySequence(lineupBucketTrajectorySix);
-        chassis.followTrajectorySequence(driveForwardToBasketScoreTrajectorySeven);
+//        chassis.followTrajectorySequence(lineupBucketTrajectoryTwo);
+//        chassis.followTrajectorySequence(driveForwardToBasketScoreTrajectoryThree);
+//        chassis.followTrajectorySequence(preIntakeTrajectoryFour);
+//        chassis.followTrajectorySequence(goIntakeMidSampleTrajectoryFive);
+//        chassis.followTrajectorySequence(lineupBucketTrajectorySix);
+//        chassis.followTrajectorySequence(driveForwardToBasketScoreTrajectorySeven);
 
     }
 }
