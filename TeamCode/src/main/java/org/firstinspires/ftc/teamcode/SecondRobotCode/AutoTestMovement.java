@@ -112,7 +112,7 @@ public class AutoTestMovement extends LinearOpMode {
 
         TrajectorySequence lineupBucketTrajectoryTwo = chassis.trajectorySequenceBuilder(startingPose)
                 .lineToLinearHeading(
-                        new Pose2d(-24, 4, Math.toRadians(-135)),
+                        new Pose2d(-2.21, 19.9, Math.toRadians(-135)),
                         chassis.getVelocityConstraint(20, 20, Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(10)
                 )
