@@ -138,7 +138,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
 //            // ARM TO PRE INTAKE ENTER SUBMERSIBLE DEGREES AND WRIST TO 0.71
             if (gamepad1.a) {
                 if (arm.getPosInDegrees() >67 ) {
-                    arm.setArmAngle(193);
+                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_PRE_INTAKE);
                     intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
                 }
             }

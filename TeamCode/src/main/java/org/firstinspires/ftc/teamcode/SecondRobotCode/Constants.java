@@ -110,6 +110,7 @@ public class Constants {
 
 
         public static final double ARM_ANGLE_HANDOFF = 75; //TODO: Find that up arm angle
+        public static final double ARM_ANGLE_PRE_INTAKE = 193;
         public static final double ARM_ANGLE_INTAKE= 211.82 ; //TODO: Find that down arm angle lol
         public static final double ARM_ANGLE_SLIDE_GOING_UP = 95 ; //TODO: Find that down arm angle lol
     }
