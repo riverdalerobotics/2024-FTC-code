@@ -7,6 +7,11 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 //TODO: what the hone is the gear ratios and also what are our encoder ticks per revolution - Sana IMPORTANT
 
+
+//TODO: CHANGE EVERYTHING BACK TO FINAL CAUSE U HAVE TO HAVE IT AS NONFINAL TO ACCCESS VALUES IN FTC DASHBOARD
+
+
+
 //TODO: DETERMING MAX AND MIN FOR THE ARM EXTENDER and the ARM SUBSYSTEM - Sana
 @Config
 public class Constants {
@@ -98,6 +103,7 @@ public class Constants {
      * Drive Encoder Tick per rotatioo: 312RPM  TODO:HUHHHH????
      * Arm and arm extender : 117RPM
      **/
+    @Config
     public static class ArmConstants {
         public static final double Kd = 0; //TODO: find this number
         public static final double Ki = 0; //TODO: find this number
@@ -109,15 +115,16 @@ public class Constants {
         public static final double GEAR_REDUCTION = (double) 20.0/100 ; //TODO: Find gear reduction
 
 
-        public static final double ARM_ANGLE_HANDOFF = 75; //TODO: Find that up arm angle
-        public static final double ARM_ANGLE_PRE_INTAKE = 193;
-        public static final double ARM_ANGLE_INTAKE= 211.82 ; //TODO: Find that down arm angle lol
-        public static final double ARM_ANGLE_SLIDE_GOING_UP = 95 ; //TODO: Find that down arm angle lol
+        public static  double ARM_ANGLE_HANDOFF = 75; //TODO: Find that up arm angle
+        public static double ARM_ANGLE_PRE_INTAKE = 193;
+        public static  double ARM_ANGLE_INTAKE= 209 ; //TODO: Find that down arm angle lol
+        public static  double ARM_ANGLE_SLIDE_GOING_UP = 95 ; //TODO: Find that down arm angle lol
     }
 
     /**
      * Intake Constants needed for Intake
      * */
+    @Config
     public static class SlidesConstants {
 
        // public static final double PULLEY_RATIO = 60;
@@ -127,33 +134,34 @@ public class Constants {
 
 
         public static final double HIGH_BASKET_POSITION = 860-3;
-        public static final double LOW_BASKET_POSITION = 0;
-        public static final double HANDOFF_POSITION = 0;
+        public static  double LOW_BASKET_POSITION = 0;
+        public static  double HANDOFF_POSITION = 0;
 
 
         public static final double ARM_NEEDS_LEAVE_POSITION = 0;
 
 
     }
-
+    @Config
     public static class BucketConstants {
 
-        public static final double BUCKET_SCORE_POSITION = 0.15;
-        public static final double BUCKET_HANDOFF_POSITION = 0.40;
+        public static  double BUCKET_SCORE_POSITION = 0.15;
+        public static  double BUCKET_HANDOFF_POSITION = 0.40;
 
     }
 
     /**
      * Intake Constants needed for Intake
      * */
+    @Config
     static class IntakeConstants {
 
-        public static final double WRIST_INTAKE_POSITION = 0.0; //TODO:
-        public static final double WRIST_HANDOFF_POSITION = -0.1; //TODO:
+        public static  double WRIST_INTAKE_POSITION = 0.98; //TODO:
+        public static  double WRIST_HANDOFF_POSITION = 0.65; //TODO:
 
 
-        public static final double INTAKE_SPEED = 0.9; //TODO:
-        public static final double OUTAKE_SPEED = -0.5; //TODO:
+        public static  double INTAKE_SPEED = 0.9; //TODO:
+        public static  double OUTAKE_SPEED = -0.5; //TODO:
 
 
     }

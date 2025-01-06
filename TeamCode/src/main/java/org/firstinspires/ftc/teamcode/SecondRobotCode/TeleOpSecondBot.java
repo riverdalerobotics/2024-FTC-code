@@ -55,9 +55,9 @@ public class TeleOpSecondBot extends  LinearOpMode {
         motorLeftB = hardwareMap.get(DcMotor.class, "motorLeftB");
         armMotor = hardwareMap.get(DcMotor.class, "armMotor");
         slideMotor = hardwareMap.get(DcMotor.class, "slideMotor");
-      bucketServo = hardwareMap.get(Servo.class, "bucket");
+        bucketServo = hardwareMap.get(Servo.class, "bucket");
         wristServo = hardwareMap.get(Servo.class, "wrist");
-      intakeServo = hardwareMap.get(CRServo.class, "intake");
+        intakeServo = hardwareMap.get(CRServo.class, "intake");
 
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -123,12 +123,11 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 intake.spinTake(0);
             }
 
-  //   ONLY NEEDS TO BE RAN ONCE: Arm to Rest Position (ARM TO 90 DEGREES)
+            //   ONLY NEEDS TO BE RAN ONCE: Arm to Rest Position (ARM TO 90 DEGREES)
             if (gamepad1.left_stick_button) {
-                if (slides.getCurrentHeight() <= 230 && arm.getPosInDegrees() <10) {
+                if (slides.getCurrentHeight() <= 230 && arm.getPosInDegrees() < 10) {
                     slides.setHeight(400);
-                }
-                else if (slides.getCurrentHeight() > 230 && arm.getPosInDegrees() <10) {
+                } else if (slides.getCurrentHeight() > 230 && arm.getPosInDegrees() < 10) {
                     arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_SLIDE_GOING_UP);
                     intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION);
 
@@ -137,7 +136,7 @@ public class TeleOpSecondBot extends  LinearOpMode {
 
 //            // ARM TO PRE INTAKE ENTER SUBMERSIBLE DEGREES AND WRIST TO 0.71
             if (gamepad1.a) {
-                if (arm.getPosInDegrees() >67 ) {
+                if (arm.getPosInDegrees() > 67) {
                     arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_PRE_INTAKE);
                     intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
                 }
@@ -175,10 +174,13 @@ public class TeleOpSecondBot extends  LinearOpMode {
                     slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION);
                     slides.bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION);
 
+                    if (slides.getCurrentHeight() <= 10) {
+                        arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_HANDOFF);
+                        intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION);
+
+                    }
+
                 }
-
-            }
-
 
 
 //            //TODO: TEST EMERGENCY CONTROLS
@@ -201,13 +203,14 @@ public class TeleOpSecondBot extends  LinearOpMode {
 //        }
 
 
-        telemetry.addData("Status", "wobot is on :3");
-        telemetry.addData("wrist current pos", intake.getWristPosition());
-        telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
-        telemetry.addData("Field Oriented is enable?", fieldOriented);
-        telemetry.addData("Arm Angle", arm.getPosInDegrees());
-        telemetry.addData("Slides  Height", slides.getCurrentHeight());
-        telemetry.update();
-    }
+                telemetry.addData("Status", "wobot is on :3");
+                telemetry.addData("wrist current pos", intake.getWristPosition());
+                telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
+                telemetry.addData("Field Oriented is enable?", fieldOriented);
+                telemetry.addData("Arm Angle", arm.getPosInDegrees());
+                telemetry.addData("Slides  Height", slides.getCurrentHeight());
+                telemetry.update();
+            }
         }
     }
+}
