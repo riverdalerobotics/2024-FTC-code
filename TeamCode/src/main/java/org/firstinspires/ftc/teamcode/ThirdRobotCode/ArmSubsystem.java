@@ -34,7 +34,7 @@ public class ArmSubsystem extends SubsystemBase{
      * @param armPivot the arm motor, must be static and DcMotor<b>EX</b>
      */
     public ArmSubsystem(DcMotorEx armPivot, MultipleTelemetry telemetry) {
-        values = new PIDFCoefficients(Constants.ArmConstants.kp, Constants.ArmConstants.ki, Constants.ArmConstants.kd, Constants.ArmConstants.kf);
+        values = Constants.ArmConstants.armPID;
         this.armPivotMotor = armPivot;
         armPivotMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.telemetry = telemetry;
