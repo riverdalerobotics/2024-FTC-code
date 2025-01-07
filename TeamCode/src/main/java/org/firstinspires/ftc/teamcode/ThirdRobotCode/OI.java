@@ -4,40 +4,41 @@ package org.firstinspires.ftc.teamcode.ThirdRobotCode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class OI {
-    static Gamepad driverController;
-    static Gamepad operatorController;
+     Gamepad driverController;
+     Gamepad operatorController;
     public OI(Gamepad driver, Gamepad operator){
         driverController = driver;
         operatorController = operator;
     }
-    public static double ySpeed(){
+    public  double ySpeed(){
         return driverController.left_stick_y;
     }
-    public static double xSpeed(){
+    public  double xSpeed(){
         return driverController.left_stick_x;
     }
-    public static double turnSpeed(){
+    public  double turnSpeed(){
         return driverController.right_stick_x;
     }
-    public static boolean climbPartOne(){
+    public  boolean climbPartOne(){
         return driverController.a;
     }
-    public static boolean climbPartTwo(){
+    public  boolean climbPartTwo(){
         return driverController.b;
     }
-    public static boolean basicScore(){
+    public boolean basicScore(){
         return operatorController.a;
     }
-    public static boolean basicIntake(){
+    public  boolean basicIntake(){
         return operatorController.b;
     }
-    public static boolean fancyScore(){
+    public  boolean fancyScore(){
         return operatorController.right_bumper;
     }
-    public static boolean fancyIntake(){
+    public  boolean spit(){return operatorController.left_trigger>0.3;}
+    public  boolean fancyIntake(){
         return operatorController.left_bumper;
     }
-    public static double moveArmForTest(){
+    public  double moveArmForTest(){
         return operatorController.left_stick_y;
     }
 

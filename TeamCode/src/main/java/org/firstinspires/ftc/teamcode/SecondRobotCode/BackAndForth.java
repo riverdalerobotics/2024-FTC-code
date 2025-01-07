@@ -39,7 +39,11 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @Autonomous(group = "drive")
 public class BackAndForth extends LinearOpMode {
 
-    public static double DISTANCE = 10; //inches
+
+    public static double XDISTANCE = 20; //inches
+    public static double YDISTANCE = 10; //inches
+    public static double rotation = 90;
+
 
     public DcMotorEx motorLeftF;
     public DcMotorEx motorRightF;
@@ -100,33 +104,43 @@ public class BackAndForth extends LinearOpMode {
 
         startingPose = new Pose2d(0, 0, Math.toRadians(0));
 
-        Pose2d linePose = new Pose2d(5,10, Math.toRadians(90));
+        Pose2d linePose = new Pose2d(XDISTANCE,YDISTANCE, Math.toRadians(90));
 
         chassis.setPoseEstimate(startingPose);
 
         trajectoryForward = chassis.trajectoryBuilder(startingPose)
-                .forward(DISTANCE)
+                .forward(XDISTANCE)
                 .build();
+
+
 
         Trajectory strafe = chassis.trajectoryBuilder(startingPose)
-                .lineToLinearHeading(linePose)
+                .strafeLeft(70)
                 .build();
 
 
 
-//        Trajectory gotoPose = chassis.trajectoryBuilder(trajectoryBackward.end())
-//                .lineToLinearHeading(new Pose2d(40, 40, Math.toRadians(90)))
-//                .build();
-//
+        Trajectory gotoPose = chassis.trajectoryBuilder(startingPose)
+                .lineToLinearHeading(
+                        new Pose2d(XDISTANCE, YDISTANCE, rotation),
+                        chassis.getVelocityConstraint(30, 200, Constants.ChassisConstants.TRACK_WIDTH),
+                        chassis.getAccelerationConstraint(20)
+                )
+                .build();
+
 
         waitForStart();
 
         if(isStopRequested()) return;
         //slides.setHeight(10);
 
-        chassis.followTrajectory(strafe);
-
         telemetry.addData("pose", chassis.getPoseEstimate());
+        chassis.followTrajectory(gotoPose);
+
+
+
+
+
         telemetry.update();
 
 

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.RobotCode;
 
+import com.acmerobotics.dashboard.config.Config;
+
 public class Constants {
     /**
      * All constants needed for the chassis

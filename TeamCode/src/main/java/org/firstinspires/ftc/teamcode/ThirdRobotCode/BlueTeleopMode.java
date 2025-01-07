@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.ThirdRobotCode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,6 +15,8 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 @TeleOp (name = "Blue Pinkie Pie Teleop", group = "Linear OpMode")
 
 public class BlueTeleopMode extends LinearOpMode {
@@ -21,22 +26,23 @@ public class BlueTeleopMode extends LinearOpMode {
     DcMotor backLeft;
     DcMotor backRight;
     IMU gyro;
-    DcMotor rightSlideExtend;
-    DcMotor leftSlideExtend;
+    DcMotorEx rightSlideExtend;
+    DcMotorEx leftSlideExtend;
     Servo leftIntake;
     Servo rightIntake;
     DcMotorEx armPivot;
-
+    MultipleTelemetry telemetryA;
     public void runOpMode() throws InterruptedException{
+        telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         double xPos, yPos, heading;
         char teamColor ='b';
         SparkFunOTOS.Pose2D pose2D;
         CRServo intakeServo;
         Servo wrist;
-        ColorSensor colorSensor;
+        RevColorSensorV3 colorSensor;
         IMU imu;
         SparkFunOTOS.Pose2D startPos = new SparkFunOTOS.Pose2D(0, 0, 180);
-        Commands commands;
+        Command commands;
         SparkFunOTOS otos;
         //imu = hardwareMap.get(IMU.class, "imu");
         otos = hardwareMap.get(SparkFunOTOS.class, "otos");
@@ -50,28 +56,28 @@ public class BlueTeleopMode extends LinearOpMode {
         leftIntake = hardwareMap.get(Servo.class, "leftIntake");
         rightIntake = hardwareMap.get(Servo.class, "rightIntake");
         double rotKp = 0.5;
-        colorSensor = hardwareMap.get(ColorSensor.class, "ColourSensor");
+        colorSensor = hardwareMap.get(RevColorSensorV3.class, "ColourSensor");
         ChassisSubsystem chassis = new ChassisSubsystem(frontLeft, frontRight, backLeft, backRight, otos);
-        IntakeSubsystem intake = new IntakeSubsystem(intakeServo, leftIntake, colorSensor, rightIntake);
+        IntakeSubsystem intake = new IntakeSubsystem(intakeServo, leftIntake, colorSensor, rightIntake, telemetry);
 
         armPivot = hardwareMap.get(DcMotorEx.class, "ArmMotor");
-        leftSlideExtend = hardwareMap.get(DcMotor.class, "leftExtends");
-        rightSlideExtend = hardwareMap.get(DcMotor.class, "rightExtends");
-        ArmSubsystem arm = new ArmSubsystem(armPivot);
-        SlideSubsystem slides = new SlideSubsystem(rightSlideExtend, leftSlideExtend);
+        leftSlideExtend = hardwareMap.get(DcMotorEx.class, "leftExtends");
+        rightSlideExtend = hardwareMap.get(DcMotorEx.class, "rightExtends");
+        ArmSubsystem arm = new ArmSubsystem(armPivot, telemetryA);
+        SlideSubsystem slides = new SlideSubsystem(rightSlideExtend, leftSlideExtend,telemetryA);
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         waitForStart();
 
         boolean hasPeice = false;
-        armPivot.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//        armPivot.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         armPivot.setDirection(DcMotorEx.Direction.REVERSE);
         armPivot.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        leftSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        leftSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        rightSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(10, 0, 0, 0);
-        commands = new Commands(arm, slides, chassis, intake, pidfCoefficients);
-        slides.runUsingEncoders();
+        commands = new Command(arm, slides, chassis, intake, pidfCoefficients);
+        slides.useRunUsingEncoders();
 
     while(opModeIsActive()) {
             double speed = Math.pow(gamepad1.left_stick_y, 5/3);
@@ -89,32 +95,35 @@ public class BlueTeleopMode extends LinearOpMode {
                 otos.setPosition(startPos);
             }
 
-            if(gamepad1.a){
-                chassis.goToPosition(xPos, yPos, heading, -0.03, rotKp, 43, -15, 135);
+        if(gamepad1.right_bumper){
+            chassis.goToPosition(xPos, yPos, heading, -0.03, rotKp, 43, -15, 135);
+        }
+        if(gamepad2.left_bumper){
+            commands.scoreBucket();
+        }
+        if(gamepad2.right_trigger>=0.3){
+            commands.goToZero();
+        }
+        if(gamepad2.left_trigger>=0.3){
+            commands.intake(teamColor, gamepad2, gamepad1);
+        }
+        if(gamepad2.right_bumper){
+            commands.spit();
+        }
 
-            }
-            if(gamepad2.left_bumper){
-                intake.pivotIntake(0.6);
-            }
-            if(gamepad2.y){
-                commands.scoreBucket();
-            }
-            if(gamepad2.b){
-
-            }
-            if(gamepad2.x){
-                commands.goToZero();
+        if(gamepad1.a){
+            commands.climb();
+        }
+        if(gamepad2.left_stick_button){
+            armPivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            armPivot.setPower(gamepad2.right_stick_y);
+        }
+        if(gamepad2.back){
+            armPivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
 
 
-            }
-            if(gamepad2.a){
-                commands.intake(teamColor, gamepad2);
-            }
-            if(gamepad2.right_bumper){
-                commands.spit();
-            }
-
-            telemetry.addData("x position:", xPos);
+        telemetry.addData("x position:", xPos);
             telemetry.addData("y position:", yPos);
             telemetry.addData("heading position:", heading);
             telemetry.addData("Arm pos",arm.getPos());

@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@TeleOp(name="Second bot TeleOp", group="Linear OpMode")
+@TeleOp(name="Test Second bot TeleOp", group="Linear OpMode")
 public class TeleOpSecondBot extends  LinearOpMode {
 
     public DcMotor motorLeftF;
@@ -39,9 +39,9 @@ public class TeleOpSecondBot extends  LinearOpMode {
     public WebcamName camera;
 
     ChassisTest chassis;
-//    ArmSubsystem arm;
-//    IntakeSubsystem intake;
-//    SlidesSubsystem slides;
+    ArmSubsystem arm;
+    IntakeSubsystem intake;
+    SlidesSubsystem slides;
 
     double speedPwr;
     double strafePwr;
@@ -53,14 +53,20 @@ public class TeleOpSecondBot extends  LinearOpMode {
         motorRightF = hardwareMap.get(DcMotor.class, "motorRightF");
         motorRightB = hardwareMap.get(DcMotor.class, "motorRightB");
         motorLeftB = hardwareMap.get(DcMotor.class, "motorLeftB");
-//        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
-//        slideMotor = hardwareMap.get(DcMotor.class, "slideMotor");
-//        bucketServo = hardwareMap.get(Servo.class, "bucket");
-//        wristServo = hardwareMap.get(Servo.class, "wrist");
-//        intakeServo = hardwareMap.get(CRServo.class, "intake");
+        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
+        slideMotor = hardwareMap.get(DcMotor.class, "slideMotor");
+        bucketServo = hardwareMap.get(Servo.class, "bucket");
+        wristServo = hardwareMap.get(Servo.class, "wrist");
+        intakeServo = hardwareMap.get(CRServo.class, "intake");
 
-//        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+// deprecated - in dissaproval of
+        motorLeftF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+        motorRightF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+        motorRightB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+        motorLeftB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
 
         imu = hardwareMap.get(IMU.class, "imu");
 
@@ -72,13 +78,13 @@ public class TeleOpSecondBot extends  LinearOpMode {
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
 
         chassis = new ChassisTest(motorLeftF, motorRightF, motorLeftB, motorRightB, imu);
-//        arm = new ArmSubsystem(armMotor);
-//        intake = new IntakeSubsystem(intakeServo, wristServo);
-//        slides = new SlidesSubsystem(slideMotor, bucketServo);
+        arm = new ArmSubsystem(armMotor);
+        intake = new IntakeSubsystem(intakeServo, wristServo);
+        slides = new SlidesSubsystem(slideMotor, bucketServo);
 
         waitForStart();
-//        arm.resetEncoders();
-//        slides.resetEncoder();
+        arm.resetEncoders();
+        slides.resetEncoder();
 
         while (opModeIsActive()) {
             //reset the yaw value
@@ -108,66 +114,74 @@ public class TeleOpSecondBot extends  LinearOpMode {
                 chassis.moveRobotMech(speedPwr, strafePwr, turnPwr);
             }
 
+//            intake and outtake
+            if (gamepad1.left_bumper) {
+                intake.spinTake(Constants.IntakeConstants.OUTAKE_SPEED);
+            } else if (gamepad1.right_bumper) {
+                intake.spinTake(Constants.IntakeConstants.INTAKE_SPEED);
+            } else {
+                intake.spinTake(0);
+            }
+
+            //   ONLY NEEDS TO BE RAN ONCE: Arm to Rest Position (ARM TO 90 DEGREES)
+            if (gamepad1.left_stick_button) {
+                if (slides.getCurrentHeight() <= 230 && arm.getPosInDegrees() < 10) {
+                    slides.setHeight(400);
+                } else if (slides.getCurrentHeight() > 230 && arm.getPosInDegrees() < 10) {
+                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_SLIDE_GOING_UP);
+                    intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION);
+
+                }
+            }
+
+//            // ARM TO PRE INTAKE ENTER SUBMERSIBLE DEGREES AND WRIST TO 0.71
+            if (gamepad1.a) {
+                if (arm.getPosInDegrees() > 67) {
+                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_PRE_INTAKE);
+                    intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
+                }
+            }
+
+//            // ARM TO INTAKE ARM TO 211 DEGREES AND WRIST TO 0.71
+            if (gamepad1.x) {
+                if (arm.getPosInDegrees() > 67) {
+                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE);
+                    intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
+                }
+            }
+
+            if (gamepad2.a) {
+                if (arm.getPosInDegrees() >= 88) {
+                    arm.setArmAngle(96);
+                    slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION);
+                }
+            }
+
             //BASKET TO SCORING ON DRIVING CONTROLLER
 
             //TODO: 260 IS THE HEIGHT SLIDES NEED TO BE FOR ARM TO PASS OFF (STORE AS A CONSTANT)
-//            if (gamepad2.a) {
-//                if (arm.getPosInDegrees() >= 88) {
-//                    arm.setArmAngle(96);
-//                    slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION);
-//                }
-//            }
 
-//            // score the basket by clipping bucket servo
-//            if (gamepad2.b) {
-//                bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION);
-//            }
 
-            //intake and outtake
-//            if (gamepad1.left_bumper) {
-//                intake.spinTake(Constants.IntakeConstants.OUTAKE_SPEED);
-//            } else if (gamepad1.right_bumper) {
-//                intake.spinTake(Constants.IntakeConstants.INTAKE_SPEED);
-//            } else {
-//                intake.spinTake(0);
-//            }
+            // score the basket by clipping bucket servo
+            if (gamepad2.b) {
+                bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION);
+            }
 
-            //ONLY NEEDS TO BE RAN ONCE: Arm to Rest Position (ARM TO 90 DEGREES)
-//            if (gamepad1.left_stick_button) {
-//                if (slides.getCurrentHeight() <= 230) {
-//                    slides.setHeight(400);
-//                } else if (slides.getCurrentHeight() > 230) {
-//                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_SLIDE_GOING_UP);
-//                    intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION);
-//
-//                }
-//            }
 
-//            //Sets the slides to a handoff position (receivgames the samples) SLIDES TO 0 ARMS TO 70 DEGREES WRIST TO 0
-//            if (gamepad1.y) {
-//                if (arm.getPosInDegrees() >= 88) {
-//                    slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION);
-//                    slides.bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION);
-//
-//                }
-//
-//            }
-//
-//            // ARM TO PRE INTAKE ENTER SUBMERSIBLE DEGREES AND WRIST TO 0.71
-//            if (gamepad1.a) {
-//                if (arm.getPosInDegrees() >67 ) {
-//                    arm.setArmAngle(193);
-//                    intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
-//                }
-//            }
-//for exmaple
-//            // ARM TO INTAKE ARM TO 211 DEGREES AND WRIST TO 0.71
-//            if (gamepad1.x) {
-//                if (arm.getPosInDegrees() > 70) {
-//                    arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE);
-//                    intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION);
-//                }
-//            }
+            //Sets the slides to a handoff position (receivgames the samples) SLIDES TO 0 ARMS TO 70 DEGREES WRIST TO 0
+            if (gamepad1.y) {
+                if (arm.getPosInDegrees() >= 88) {
+                    slides.setHeight(Constants.SlidesConstants.HANDOFF_POSITION);
+                    slides.bucketServo.setPosition(Constants.BucketConstants.BUCKET_HANDOFF_POSITION);
+
+                    if (slides.getCurrentHeight() <= 10) {
+                        arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_HANDOFF);
+                        intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION);
+
+                    }
+
+                }
+
 
 //            //TODO: TEST EMERGENCY CONTROLS
 //        if (gamepad1.start) {
@@ -188,14 +202,15 @@ public class TeleOpSecondBot extends  LinearOpMode {
 //            slides.setHeight(slides.getCurrentHeight()+1);
 //        }
 
-        // telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
-//        telemetry.addData("Status", "wobot is on :3");
-//        telemetry.addData("current arm angle", arm.getPosInDegrees());
-//        telemetry.addData("current slide height mm", slides.getCurrentHeight());
-//        telemetry.addData("wrist current pos", intake.getWristPosition());
-        telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
-        telemetry.addData("Field Oriented is enable?", fieldOriented);
-        telemetry.update();
-    }
+
+                telemetry.addData("Status", "wobot is on :3");
+                telemetry.addData("wrist current pos", intake.getWristPosition());
+                telemetry.addData("yaw", imu.getRobotYawPitchRollAngles());
+                telemetry.addData("Field Oriented is enable?", fieldOriented);
+                telemetry.addData("Arm Angle", arm.getPosInDegrees());
+                telemetry.addData("Slides  Height", slides.getCurrentHeight());
+                telemetry.update();
+            }
         }
     }
+}
