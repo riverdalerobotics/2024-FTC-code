@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.RobotCode;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -27,7 +28,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.RobotCode.ChassisSubsystem;
 
 @Autonomous(name = "Emmanuel Auto Try 2", group = "Linear OpMode")
+@Config
 public class AutoII extends LinearOpMode{
+    public static double distance = 2000;
 
 
     public double degToRotation(double deg) {
@@ -61,6 +64,7 @@ public class AutoII extends LinearOpMode{
         wrist.setPosition(0.1);
         armPivot.setPower(0.8);
 
+
         waitForStart();
 
         if (isStopRequested()) return;
@@ -68,7 +72,7 @@ public class AutoII extends LinearOpMode{
         //TODO: try if loop
         if(opModeIsActive()) {
 
-            while(left.getCurrentPosition()>-2000){
+            while(left.getCurrentPosition()>-distance){
 
                 left.setPower(0.1);
                 right.setPower(0.1);
@@ -77,7 +81,7 @@ public class AutoII extends LinearOpMode{
                 //chassis.drive(0.1,0);
             }
 
-            if (left.getCurrentPosition()<-3000) {
+            if (left.getCurrentPosition()<-(distance+(distance/2))) {
 
                     chassis.drive(0, 0);
                     wrist.setPosition(0.45);
