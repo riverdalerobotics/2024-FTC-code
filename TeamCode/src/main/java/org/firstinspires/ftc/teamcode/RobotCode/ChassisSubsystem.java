@@ -12,7 +12,6 @@ public class ChassisSubsystem {
         this.leftDrive = left;
         this.rightDrive = right;
         leftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-
     }
 
     public void drive(double speed, double turn){
@@ -21,6 +20,12 @@ public class ChassisSubsystem {
         leftDrive.setPower(leftSpeed);
         rightDrive.setPower(rightSpeed);
     }
+
+    public void moveRobotTest(double speed){
+        leftDrive.setPower(0.1);
+        rightDrive.setPower(0.1);
+    }
+
 
 
 

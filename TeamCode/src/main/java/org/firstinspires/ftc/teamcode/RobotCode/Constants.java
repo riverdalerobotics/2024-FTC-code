@@ -40,9 +40,11 @@ public class Constants {
     /**
      * Auto constants needed for auto
      * */
-    class AutoConstants{
+
+    public static class AutoConstants{
 
         //TODO: Change these Names Later (Currently just a place holder) - Emmanuel
+        public static double tickNumbers = 3000;
         public static final double DISTANCE_TO_AUTO_SAMPLE_1 = 0; // TODO: find distance to the first sample
         public static final double DISTANCE_TO_BAR = 0; // TODO: find distance to bar
     }

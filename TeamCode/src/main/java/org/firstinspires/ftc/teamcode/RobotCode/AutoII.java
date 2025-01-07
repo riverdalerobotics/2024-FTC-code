@@ -23,9 +23,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import org.firstinspires.ftc.teamcode.RobotCode.ChassisSubsystem;
 
-@Autonomous(name = "Emmanuel Auto", group = "Linear OpMode")
-public class Auto extends LinearOpMode{
+@Autonomous(name = "Emmanuel Auto Try 2", group = "Linear OpMode")
+public class AutoII extends LinearOpMode{
+
 
     public double degToRotation(double deg) {
         return deg / 360 * 1425.2 * 5;
@@ -48,49 +51,52 @@ public class Auto extends LinearOpMode{
         Commands commands = new Commands(armPivot, wrist, intakeServo);
         double armAngle = armPivot.getCurrentPosition() * 360 / (1425.2 * 5);
         armPivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        boolean moveServo = false;
-        boolean reverseDrive = false;
-        wrist.setPosition(0.1);
-        armPivot.setPower(0.8);
-        armPivot.setTargetPosition((int) degToRotation(10));
-        armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-waitForStart();
+        left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wrist.setPosition(0.1);
+        armPivot.setPower(0.8);
 
-        while(opModeIsActive()) {
-            wrist.setPosition(-0.35);
+        waitForStart();
 
+        if (isStopRequested()) return;
 
-            chassis.leftDrive.setPower(0.1);
-            chassis.rightDrive.setPower(0.1);
+        //TODO: try if loop
+        if(opModeIsActive()) {
 
+            while(left.getCurrentPosition()>-2000){
 
-            if (left.getCurrentPosition() <= -3000) {
-//                left.setPower(0.1);
-//                right.setPower(0.1);
+                left.setPower(0.1);
+                right.setPower(0.1);
+                left.setTargetPosition(10000);
+                right.setTargetPosition(10000);
+                //chassis.drive(0.1,0);
             }
-            if (left.getCurrentPosition()<= -4000){
-                while (armPivot.isBusy()) {
+
+            if (left.getCurrentPosition()<-3000) {
+
+                    chassis.drive(0, 0);
+                    wrist.setPosition(0.45);
                     armPivot.setPower(0.9);
                     armPivot.setTargetPosition((int) degToRotation(183));
                     armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                }
-                armPivot.setPower(0.8);
-                armPivot.setTargetPosition((int) degToRotation(159.0));
-                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
 
             }
+
+            armPivot.setPower(0.89);
+            armPivot.setTargetPosition((int) degToRotation(159.0));
+            armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
 
             telemetry.addData("left wheel value", left.getCurrentPosition());
             telemetry.addData("right wheel value", right.getCurrentPosition());
             telemetry.update();
+            }
         }
     }
 
-    }
