@@ -117,10 +117,12 @@ public class Constants {
     public static class SlidesConstants {
 
        // public static final double PULLEY_RATIO = 60;
-
+        public static final double TOLERANCE = 0d;//find this num
+        public static final double KP = 0.1;
+        public static final double KI = 0d;
+        public static final double KD = 0d;
         public static final double TICKS_PER_ROTATION = 537.7;
         public static final double DISTANCE_PER_ROTATION = 120; //mm
-
 
         public static final double HIGH_BASKET_POSITION = 860-3;
         public static final double LOW_BASKET_POSITION = 0;

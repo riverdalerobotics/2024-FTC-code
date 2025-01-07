@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.ThirdRobotCode;
 
 import android.app.ApplicationErrorReport;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -19,13 +22,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Auto extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {
+
         DcMotor frontLeft;
         DcMotor frontRight;
         DcMotor backLeft;
         DcMotor backRight;
         IMU gyro;
-        DcMotor rightSlideExtend;
-        DcMotor leftSlideExtend;
+        DcMotorEx rightSlideExtend;
+        DcMotorEx leftSlideExtend;
         Servo leftIntake;
         Servo rightIntake;
         DcMotorEx armPivot;
@@ -34,10 +38,11 @@ public class Auto extends LinearOpMode{
         SparkFunOTOS.Pose2D pose2D;
         CRServo intakeServo;
         Servo wrist;
-        ColorSensor colorSensor;
+        RevColorSensorV3 colorSensor;
         IMU imu;
         SparkFunOTOS.Pose2D startPos = new SparkFunOTOS.Pose2D(0, 0, 180);
-        Commands commands;
+        MultipleTelemetry telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
+        Command commands;
         SparkFunOTOS otos;
         //imu = hardwareMap.get(IMU.class, "imu");
         otos = hardwareMap.get(SparkFunOTOS.class, "otos");
@@ -52,16 +57,16 @@ public class Auto extends LinearOpMode{
         leftIntake = hardwareMap.get(Servo.class, "leftIntake");
         rightIntake = hardwareMap.get(Servo.class, "rightIntake");
         double rotKp = 0.5;
-        colorSensor = hardwareMap.get(ColorSensor.class, "ColourSensor");
+        colorSensor = hardwareMap.get(RevColorSensorV3.class, "ColourSensor");
         ChassisSubsystem chassis = new ChassisSubsystem(frontLeft, frontRight, backLeft, backRight, otos);
-        IntakeSubsystem intake = new IntakeSubsystem(intakeServo, leftIntake, colorSensor, rightIntake);
+        IntakeSubsystem intake = new IntakeSubsystem(intakeServo, leftIntake, colorSensor, rightIntake, telemetry);
 
         ElapsedTime stopwatch = new ElapsedTime();
         armPivot = hardwareMap.get(DcMotorEx.class, "ArmMotor");
-        leftSlideExtend = hardwareMap.get(DcMotor.class, "leftExtends");
-        rightSlideExtend = hardwareMap.get(DcMotor.class, "rightExtends");
-        ArmSubsystem arm = new ArmSubsystem(armPivot);
-        SlideSubsystem slides = new SlideSubsystem(rightSlideExtend, leftSlideExtend);
+        leftSlideExtend = hardwareMap.get(DcMotorEx.class, "leftExtends");
+        rightSlideExtend = hardwareMap.get(DcMotorEx.class, "rightExtends");
+        ArmSubsystem arm = new ArmSubsystem(armPivot, telemetryA);
+        SlideSubsystem slides = new SlideSubsystem(rightSlideExtend, leftSlideExtend, telemetryA);
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         armPivot.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -70,8 +75,8 @@ public class Auto extends LinearOpMode{
         leftSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(10, 0, 0, 0);
-        commands = new Commands(arm, slides, chassis, intake, pidfCoefficients);
-        slides.runUsingEncoders();
+        commands = new Command(arm, slides, chassis, intake, pidfCoefficients);
+        slides.useRunUsingEncoders();
         waitForStart();
         pose2D = otos.getPosition();
         xPos = pose2D.x*(-3.048);

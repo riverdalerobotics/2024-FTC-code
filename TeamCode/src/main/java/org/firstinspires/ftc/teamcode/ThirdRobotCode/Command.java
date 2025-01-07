@@ -44,7 +44,7 @@ class moveSlides extends Thread{
     }
 
 
-public class Commands {
+public class Command {
     ArmSubsystem arm;
     SlideSubsystem slideSubsystem;
     ChassisSubsystem chassis;
@@ -52,7 +52,7 @@ public class Commands {
     PIDFCoefficients pidf;
     ElapsedTime stopwatch = new ElapsedTime();
 
-    public Commands(ArmSubsystem arm, SlideSubsystem slideSubsystem, ChassisSubsystem chassis, IntakeSubsystem intake, PIDFCoefficients pidf) {
+    public Command(ArmSubsystem arm, SlideSubsystem slideSubsystem, ChassisSubsystem chassis, IntakeSubsystem intake, PIDFCoefficients pidf) {
         this.chassis = chassis;
         this.slideSubsystem = slideSubsystem;
         this.arm = arm;
@@ -74,14 +74,14 @@ public class Commands {
 
 //        public void climbPtTwo(IMU gyro) {
 //            boolean isClimbing = false;
-//            arm.pivotArm(Constants.ArmConstants.CLIMB_UP_ANGLE, Constants.ArmConstants.CLIMB_SPEED);
+//            arm.pivotArm(Constants.ArmConstants.CLIMB_UP_ANGLE, Constants.ArmConstants.REST_SPEED);
 //            double pitch = chassis.pitch();
 //
 //            double startPitch = pitch;
 //            while (pitch < 45 + startPitch) {
 //                pitch = chassis.pitch();
 //            }
-//            arm.pivotArm(Constants.ArmConstants.CLIMB_DOWN_ANGLE, Constants.ArmConstants.CLIMB_SPEED);
+//            arm.pivotArm(Constants.ArmConstants.CLIMB_DOWN_ANGLE, Constants.ArmConstants.REST_SPEED);
 //            telemetry.addData("I'm waiting to climb", isClimbing);
 //            while (arm.getPos() < Constants.ArmConstants.START_CLIMB) {
 //                isClimbing = true;
@@ -140,7 +140,7 @@ public class Commands {
         while(intakeSubsystem.getColour() != teamColour && intakeSubsystem.getColour() != 'y'&& !(gamepad2.right_trigger>=0.3)){
             chassis.fieldOriented(robotPos.h, -gamepad1.left_stick_y*0.3, gamepad1.left_stick_x*0.3, gamepad1.right_stick_x*0.3);
             intakeSubsystem.spinIntake(-0.15);
-            arm.pivotArm(0, 0);
+            arm.pivotArm(0, 0, pidf);
         }
         intakeSubsystem.spinIntake(0);
         intakeSubsystem.pivotIntake(0.6);
@@ -158,7 +158,7 @@ public class Commands {
         slideSubsystem.goToPosWithSpeed(10, 0.5);
         while(slideSubsystem.leftSlideExtend.isBusy()){
         }
-        arm.pivotArm(45, 1);
+        arm.pivotArm(45, 1, pidf);
     }
 
     public void autoScore(double xPos, double yPos, double heading, double rotKp, boolean canScore){

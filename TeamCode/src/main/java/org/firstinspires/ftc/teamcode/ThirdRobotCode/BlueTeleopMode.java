@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.ThirdRobotCode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,6 +15,8 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 @TeleOp (name = "Blue Pinkie Pie Teleop", group = "Linear OpMode")
 
 public class BlueTeleopMode extends LinearOpMode {
@@ -21,22 +26,23 @@ public class BlueTeleopMode extends LinearOpMode {
     DcMotor backLeft;
     DcMotor backRight;
     IMU gyro;
-    DcMotor rightSlideExtend;
-    DcMotor leftSlideExtend;
+    DcMotorEx rightSlideExtend;
+    DcMotorEx leftSlideExtend;
     Servo leftIntake;
     Servo rightIntake;
     DcMotorEx armPivot;
-
+    MultipleTelemetry telemetryA;
     public void runOpMode() throws InterruptedException{
+        telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         double xPos, yPos, heading;
         char teamColor ='b';
         SparkFunOTOS.Pose2D pose2D;
         CRServo intakeServo;
         Servo wrist;
-        ColorSensor colorSensor;
+        RevColorSensorV3 colorSensor;
         IMU imu;
         SparkFunOTOS.Pose2D startPos = new SparkFunOTOS.Pose2D(0, 0, 180);
-        Commands commands;
+        Command commands;
         SparkFunOTOS otos;
         //imu = hardwareMap.get(IMU.class, "imu");
         otos = hardwareMap.get(SparkFunOTOS.class, "otos");
@@ -50,15 +56,15 @@ public class BlueTeleopMode extends LinearOpMode {
         leftIntake = hardwareMap.get(Servo.class, "leftIntake");
         rightIntake = hardwareMap.get(Servo.class, "rightIntake");
         double rotKp = 0.5;
-        colorSensor = hardwareMap.get(ColorSensor.class, "ColourSensor");
+        colorSensor = hardwareMap.get(RevColorSensorV3.class, "ColourSensor");
         ChassisSubsystem chassis = new ChassisSubsystem(frontLeft, frontRight, backLeft, backRight, otos);
-        IntakeSubsystem intake = new IntakeSubsystem(intakeServo, leftIntake, colorSensor, rightIntake);
+        IntakeSubsystem intake = new IntakeSubsystem(intakeServo, leftIntake, colorSensor, rightIntake, telemetry);
 
         armPivot = hardwareMap.get(DcMotorEx.class, "ArmMotor");
-        leftSlideExtend = hardwareMap.get(DcMotor.class, "leftExtends");
-        rightSlideExtend = hardwareMap.get(DcMotor.class, "rightExtends");
-        ArmSubsystem arm = new ArmSubsystem(armPivot);
-        SlideSubsystem slides = new SlideSubsystem(rightSlideExtend, leftSlideExtend);
+        leftSlideExtend = hardwareMap.get(DcMotorEx.class, "leftExtends");
+        rightSlideExtend = hardwareMap.get(DcMotorEx.class, "rightExtends");
+        ArmSubsystem arm = new ArmSubsystem(armPivot, telemetryA);
+        SlideSubsystem slides = new SlideSubsystem(rightSlideExtend, leftSlideExtend,telemetryA);
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         waitForStart();
@@ -70,8 +76,8 @@ public class BlueTeleopMode extends LinearOpMode {
 //        leftSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        rightSlideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(10, 0, 0, 0);
-        commands = new Commands(arm, slides, chassis, intake, pidfCoefficients);
-        slides.runUsingEncoders();
+        commands = new Command(arm, slides, chassis, intake, pidfCoefficients);
+        slides.useRunUsingEncoders();
 
     while(opModeIsActive()) {
             double speed = Math.pow(gamepad1.left_stick_y, 5/3);
