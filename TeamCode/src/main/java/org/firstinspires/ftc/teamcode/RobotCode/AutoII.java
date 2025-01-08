@@ -70,7 +70,7 @@ public class AutoII extends LinearOpMode{
         if (isStopRequested()) return;
 
         //TODO: try if loop
-        if(opModeIsActive()) {
+        while(opModeIsActive()) {
 
             while(left.getCurrentPosition()>-distance){
 
@@ -81,12 +81,12 @@ public class AutoII extends LinearOpMode{
                 //chassis.drive(0.1,0);
             }
 
-            if (left.getCurrentPosition()<-(distance+(distance/2))) {
+            if (left.getCurrentPosition()<-(distance/2)) {
 
                     chassis.drive(0, 0);
                     wrist.setPosition(0.45);
                     armPivot.setPower(0.9);
-                    armPivot.setTargetPosition((int) degToRotation(183));
+                    armPivot.setTargetPosition((int) degToRotation(159));
                     armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             }
@@ -96,11 +96,11 @@ public class AutoII extends LinearOpMode{
             armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-
             telemetry.addData("left wheel value", left.getCurrentPosition());
             telemetry.addData("right wheel value", right.getCurrentPosition());
             telemetry.update();
             }
+
         }
     }
 

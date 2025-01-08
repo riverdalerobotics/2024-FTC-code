@@ -32,9 +32,10 @@ public class ArmDefaultCommand extends CommandBase {
     }
     public void execute(){
 
-        armSubsystem.pivotArm(armSubsystem.getPos(), Constants.ArmConstants.REST_SPEED, new PIDFCoefficients());
+        armSubsystem.pivotArm(armSubsystem.getPos(), Constants.ArmConstants.REST_SPEED, Constants.ArmConstants.armPID);
         telemetry.addData("IS RUNNING", true);
     }
+    @Override
     public boolean isFinished(){
         return false;
     }

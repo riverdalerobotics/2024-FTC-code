@@ -34,7 +34,7 @@ public class Constants {
         public static   double WHEEL_DIAMETER = 0; //TODO: get this number
         public static   double CLIMB_UP_ANGLE = 0; //TODO: find this number
         public static   double CLIMB_DOWN_ANGLE = 0d; //TODO: find this number
-        public static   double REST_SPEED = 0.3; //TODO: find this number
+        public static   double REST_SPEED = 0.75; //TODO: find this number
         public static   double SCORE_SPEED = 0;//TODO: find this number
         public static   double BUCKET_ANGLE = 100;//TODO: find this number
         public static   double INTAKE_ANGLE = 0;//TODO: find this number
@@ -63,14 +63,14 @@ public class Constants {
         public static   double CLIMB_DOWN = 0;//TODO: find this number
         public static   double SCORE_BUCKET = 85;//TODO: find this number
         public static   double INTAKE_POSITION = 0;//TODO: find this number
-        public static   double INTAKE_SPEED = 0; //TODO: find this number
+        public static   double INTAKE_SPEED = 0.3; //TODO: find this number
     }
     @Config
     public static class IntakeConstants{
         public static   long WAIT_TIME=0;//TODO: find this number
         public static   double SCORE_POSITION = 0;//TODO: find this number
         public static   double SCORE_SPEED = 0;//TODO: find this number
-        public static   double INTAKE_POSITION = 0;//TODO: find this number
+        public static   double INTAKE_POSITION = 0.5;//TODO: find this number
         public static   double INTAKE_SPEED = 0;//TODO: find this number
     }
     /**
