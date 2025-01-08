@@ -26,6 +26,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.RobotCode.ChassisSubsystem;
+import com.acmerobotics.dashboard.FtcDashboard;
 
 @Autonomous(name = "Emmanuel Auto Try 2", group = "Linear OpMode")
 @Config
@@ -39,6 +40,8 @@ public class AutoII extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {
         waitForStart();
+        FtcDashboard dashboard = FtcDashboard.getInstance;
+        MultipleTelematry telematryA=new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
         DcMotor left;
         DcMotor right;
         DcMotor armPivot;
@@ -49,7 +52,9 @@ public class AutoII extends LinearOpMode{
         armPivot = hardwareMap.get(DcMotor.class, "ArmPivot");
         wrist = hardwareMap.get(Servo.class, "Wrist");
         intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
-        ChassisSubsystem chassis = new ChassisSubsystem(left, right);
+
+        IMU imu = hardwareMap.get(IMU.class,"imu");
+        ChassisSubsystem chassis = new ChassisSubsystem(left, right,imu);
         ArmSubsystem arm = new ArmSubsystem(armPivot);
         Commands commands = new Commands(armPivot, wrist, intakeServo);
         double armAngle = armPivot.getCurrentPosition() * 360 / (1425.2 * 5);
@@ -70,7 +75,7 @@ public class AutoII extends LinearOpMode{
         if (isStopRequested()) return;
 
         //TODO: try if loop
-        while(opModeIsActive()) {
+        if(opModeIsActive()) {
 
             while(left.getCurrentPosition()>-distance){
 
@@ -81,12 +86,12 @@ public class AutoII extends LinearOpMode{
                 //chassis.drive(0.1,0);
             }
 
-            if (left.getCurrentPosition()<-(distance/2)) {
+            if (left.getCurrentPosition()<-(distance+(distance/2))) {
 
                     chassis.drive(0, 0);
                     wrist.setPosition(0.45);
                     armPivot.setPower(0.9);
-                    armPivot.setTargetPosition((int) degToRotation(159));
+                    armPivot.setTargetPosition((int) degToRotation(183));
                     armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             }
@@ -96,11 +101,12 @@ public class AutoII extends LinearOpMode{
             armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-            telemetry.addData("left wheel value", left.getCurrentPosition());
-            telemetry.addData("right wheel value", right.getCurrentPosition());
-            telemetry.update();
-            }
 
+            telemetryA.addData("left wheel value", left.getCurrentPosition());
+            telemetryA.addData("right wheel value", right.getCurrentPosition());
+            telemetryA.addData("YAW", chassis.getYaw());
+            telemetryA.update();
+            }
         }
     }
 
