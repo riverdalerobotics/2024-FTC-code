@@ -158,7 +158,7 @@ public class Constants {
     @Config
     static class IntakeConstants {
 
-        public static  double WRIST_INTAKE_POSITION = 0.97; //TODO:
+        public static  double WRIST_INTAKE_POSITION = 0.988; //TODO:
         public static  double WRIST_HANDOFF_POSITION = 0.65; //TODO:
 
 
