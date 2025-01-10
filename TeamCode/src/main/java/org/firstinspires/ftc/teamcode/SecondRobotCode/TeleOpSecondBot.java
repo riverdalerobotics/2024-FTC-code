@@ -151,10 +151,12 @@ public class TeleOpSecondBot extends  LinearOpMode {
             }
 
             if (gamepad2.a) {
+                arm.setArmAngle(96);
                 if (arm.getPosInDegrees() >= 88) {
-                    arm.setArmAngle(96);
                     slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION);
                 }
+
+
             }
 
             //BASKET TO SCORING ON DRIVING CONTROLLER

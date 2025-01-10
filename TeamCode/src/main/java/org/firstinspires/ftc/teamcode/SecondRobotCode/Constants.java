@@ -147,7 +147,7 @@ public class Constants {
     @Config
     public static class BucketConstants {
 
-        public static  double BUCKET_SCORE_POSITION = 0.15;
+        public static  double BUCKET_SCORE_POSITION = 0.17;
         public static  double BUCKET_HANDOFF_POSITION = 0.40;
 
     }
@@ -158,7 +158,7 @@ public class Constants {
     @Config
     static class IntakeConstants {
 
-        public static  double WRIST_INTAKE_POSITION = 0.98; //TODO:
+        public static  double WRIST_INTAKE_POSITION = 0.97; //TODO:
         public static  double WRIST_HANDOFF_POSITION = 0.65; //TODO:
 
 

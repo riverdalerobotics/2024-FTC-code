@@ -33,8 +33,8 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
  * is recommended that you use the FollowerPIDTuner opmode for further fine tuning.
  */
 @Config
-@Autonomous(group = "asdfasdfasdf")
-public class AutoTestMovementPrePlanned extends LinearOpMode {
+@Autonomous(group = "asdfasdfasdfasdfa")
+public class AutoTestMovementPrePlannedCRAZY extends LinearOpMode {
 
     public DcMotorEx motorLeftF;
     public DcMotorEx motorRightF;
@@ -106,7 +106,7 @@ public class AutoTestMovementPrePlanned extends LinearOpMode {
 
 
         TrajectorySequence forwardOnce = chassis.trajectorySequenceBuilder(startingPose)
-                .addTemporalMarker(() -> slides.setHeight(500))
+                .addTemporalMarker(() -> slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION))
                 .forward(2)
 //                .addTemporalMarker(1.2,() -> arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE))
 //                .addTemporalMarker(1.2,()->intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION))
@@ -117,24 +117,24 @@ public class AutoTestMovementPrePlanned extends LinearOpMode {
         TrajectorySequence lineUpBucketTrajectoryOne = chassis.trajectorySequenceBuilder(forwardOnce.end())
               .lineToLinearHeading(
                         new Pose2d(6.54, 15, Math.toRadians(315)),
-                        chassis.getVelocityConstraint(40, Math.toRadians(200), Constants.ChassisConstants.TRACK_WIDTH),
+                        chassis.getVelocityConstraint(50, Math.toRadians(200), Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(40)
                 )
-                .addTemporalMarker(1.2,() -> arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE))
-                .addTemporalMarker(1.2,()->intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION))
-                .waitSeconds(1.2)
+                .addTemporalMarker(0.2,() -> arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE))
+                .addTemporalMarker(0.2,()->intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION))
+                .waitSeconds(0.2)
                 .build();
 
 
         TrajectorySequence driveForwardToBasketScoreTrajectoryTwo = chassis.trajectorySequenceBuilder(lineUpBucketTrajectoryOne.end())
-                .waitSeconds(0.4)
+
                 .lineToLinearHeading(
                         new Pose2d(3, 18, Math.toRadians(315)),
                         chassis.getVelocityConstraint(10, Math.toRadians(200), Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(50)
                 )
-                .addTemporalMarker(1,0.1,() -> bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION))
-                .waitSeconds(2)
+                .addTemporalMarker(1,0,() -> bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION))
+                .waitSeconds(0.5)
                 .build();
 
 
@@ -144,8 +144,8 @@ public class AutoTestMovementPrePlanned extends LinearOpMode {
                 .addTemporalMarker(() -> arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_INTAKE))
                 .addTemporalMarker(() -> intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION))
                 .lineToLinearHeading(
-                        new Pose2d(5,21, Math.toRadians(0)),
-                        chassis.getVelocityConstraint(20, Math.toRadians(250), Constants.ChassisConstants.TRACK_WIDTH),
+                        new Pose2d(14.5,-10.8, Math.toRadians(35)),
+                        chassis.getVelocityConstraint(50, Math.toRadians(300), Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(50)
                 )
                 .build();
@@ -154,16 +154,15 @@ public class AutoTestMovementPrePlanned extends LinearOpMode {
         TrajectorySequence goIntakeMidSampleTrajectoryFour = chassis.trajectorySequenceBuilder(preIntakeTrajectoryThree.end())
                 .addTemporalMarker(()-> intake.spinTake(Constants.IntakeConstants.INTAKE_SPEED))
                 .lineToLinearHeading(
-                        new Pose2d(22.2, 21, Math.toRadians(0)),
+                        new Pose2d(23.2, -5, Math.toRadians(35)),
                         chassis.getVelocityConstraint(40, Math.toRadians(200), Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(50)
                 )
-                .waitSeconds(0.1)
                 .build();
 
         TrajectorySequence lineUpBucketTrajectoryFive = chassis.trajectorySequenceBuilder(goIntakeMidSampleTrajectoryFour.end())
 
-                .addTemporalMarker(0.1, ()->arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_HANDOFF))
+                .addTemporalMarker(()->arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_HANDOFF))
                 .addTemporalMarker(()->intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION))
 
                 .lineToLinearHeading(
@@ -171,11 +170,11 @@ public class AutoTestMovementPrePlanned extends LinearOpMode {
                         chassis.getVelocityConstraint(40, Math.toRadians(200), Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(50)
                 )
-                .addTemporalMarker(1,()->intake.spinTake(Constants.IntakeConstants.OUTAKE_SPEED))
-                .addTemporalMarker(2.2, ()->intake.spinTake(0))
-                .addTemporalMarker(2.2, ()->arm.setArmAngle(110))
-                .addTemporalMarker(3.2, ()-> slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION))
-                .waitSeconds(3.8)
+                .addTemporalMarker(1.6,()->intake.spinTake(Constants.IntakeConstants.OUTAKE_SPEED))
+                .addTemporalMarker(2.4, ()->intake.spinTake(0))
+                .addTemporalMarker(2.4, ()->arm.setArmAngle(110))
+                .addTemporalMarker(2.9, ()-> slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION))
+                .waitSeconds(3.5)
                 .build();
 
         TrajectorySequence driveForwardToBasketScoreTrajectorySix = chassis.trajectorySequenceBuilder(lineUpBucketTrajectoryFive.end())
@@ -185,7 +184,7 @@ public class AutoTestMovementPrePlanned extends LinearOpMode {
                         chassis.getAccelerationConstraint(50)
                 )
                 .addTemporalMarker(1,0.1,() -> bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION))
-                .waitSeconds(1)
+                .waitSeconds(0.5)
                 .build();
 
 
@@ -200,26 +199,24 @@ public class AutoTestMovementPrePlanned extends LinearOpMode {
                 .addTemporalMarker(() -> intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION))
 
                 .lineToLinearHeading(
-                        new Pose2d(5,9.5, 0),
-                        chassis.getVelocityConstraint(20 , Math.toRadians(200), Constants.ChassisConstants.TRACK_WIDTH),
+                        new Pose2d(17.6,-4.3, Math.toRadians(42)),
+                        chassis.getVelocityConstraint(50 , Math.toRadians(250), Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(40)
                 )
-                .waitSeconds(0.5)
                 .build();
 
         TrajectorySequence goIntakeMidSampleTrajectoryEight = chassis.trajectorySequenceBuilder(preIntakeTrajectorySeven.end())
                 .addTemporalMarker(()-> intake.spinTake(Constants.IntakeConstants.INTAKE_SPEED))
                 .lineToLinearHeading(
-                        new Pose2d(22.2, 9.5, Math.toRadians(0)),
-                        chassis.getVelocityConstraint(30, Math.toRadians(200), Constants.ChassisConstants.TRACK_WIDTH),
+                        new Pose2d(25, 4.7, Math.toRadians(42)),
+                        chassis.getVelocityConstraint(40, Math.toRadians(200), Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(50)
                 )
-                .waitSeconds(0.1)
                 .build();
 
 
         TrajectorySequence lineUpBucketTrajectoryNine = chassis.trajectorySequenceBuilder(goIntakeMidSampleTrajectoryEight.end())
-                .addTemporalMarker(0.1,()->arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_HANDOFF))
+                .addTemporalMarker(()->arm.setArmAngle(Constants.ArmConstants.ARM_ANGLE_HANDOFF))
                 .addTemporalMarker(()->intake.setWristPosition(Constants.IntakeConstants.WRIST_HANDOFF_POSITION))
 
                 .lineToLinearHeading(
@@ -228,11 +225,11 @@ public class AutoTestMovementPrePlanned extends LinearOpMode {
                         chassis.getAccelerationConstraint(40)
 
                 )
-                .addTemporalMarker(1,()->intake.spinTake(Constants.IntakeConstants.OUTAKE_SPEED))
-                .addTemporalMarker(2.2, ()->intake.spinTake(0))
-                .addTemporalMarker(2.2, ()->arm.setArmAngle(110))
-                .addTemporalMarker(3.2, ()-> slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION))
-                .waitSeconds(3.8)
+                .addTemporalMarker(1.6,()->intake.spinTake(Constants.IntakeConstants.OUTAKE_SPEED))
+                .addTemporalMarker(2.4, ()->intake.spinTake(0))
+                .addTemporalMarker(2.4, ()->arm.setArmAngle(110))
+                .addTemporalMarker(2.9, ()-> slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION))
+                .waitSeconds(3.5)
                 .build();
 
         TrajectorySequence driveForwardToBasketScoreTrajectoryTen = chassis.trajectorySequenceBuilder(lineUpBucketTrajectoryNine.end())
@@ -242,7 +239,7 @@ public class AutoTestMovementPrePlanned extends LinearOpMode {
                         chassis.getAccelerationConstraint(50)
                 )
                 .addTemporalMarker(1,0.1,() -> bucketServo.setPosition(Constants.BucketConstants.BUCKET_SCORE_POSITION))
-                .waitSeconds(1)
+                .waitSeconds(0.5)
                 .build();
 
 
@@ -255,8 +252,8 @@ public class AutoTestMovementPrePlanned extends LinearOpMode {
                 .addTemporalMarker(() -> intake.setWristPosition(Constants.IntakeConstants.WRIST_INTAKE_POSITION))
 
                 .lineToLinearHeading(
-                        new Pose2d(13, 12, Math.toRadians(39.5)),
-                        chassis.getVelocityConstraint(30, Math.toRadians(200), Constants.ChassisConstants.TRACK_WIDTH),
+                        new Pose2d(15, 13, Math.toRadians(33)),
+                        chassis.getVelocityConstraint(50, Math.toRadians(200), Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(50)
                 )
                 .build();
@@ -264,13 +261,12 @@ public class AutoTestMovementPrePlanned extends LinearOpMode {
 
         TrajectorySequence goIntakeMidSampleTrajectoryTwelve = chassis.trajectorySequenceBuilder(preIntakeTrajectoryEleven.end())
                 .addTemporalMarker(()-> intake.spinTake(Constants.IntakeConstants.INTAKE_SPEED))
+
                 .lineToLinearHeading(
-                        new Pose2d(17, 16, Math.toRadians(39)),
+                        new Pose2d(20, 14, Math.toRadians(33)),
                         chassis.getVelocityConstraint(20, Math.toRadians(200), Constants.ChassisConstants.TRACK_WIDTH),
                         chassis.getAccelerationConstraint(50)
                 )
-
-                .waitSeconds(0.1)
                 .build();
 
 
@@ -285,11 +281,11 @@ public class AutoTestMovementPrePlanned extends LinearOpMode {
                         chassis.getAccelerationConstraint(40)
 
                 )
-                .addTemporalMarker(1,()->intake.spinTake(Constants.IntakeConstants.OUTAKE_SPEED))
-                .addTemporalMarker(2.2, ()->intake.spinTake(0))
-                .addTemporalMarker(2.2, ()->arm.setArmAngle(110))
-                .addTemporalMarker(3.2, ()-> slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION))
-                .waitSeconds(3.8)
+                .addTemporalMarker(1.5,()->intake.spinTake(Constants.IntakeConstants.OUTAKE_SPEED))
+                .addTemporalMarker(2.4, ()->intake.spinTake(0))
+                .addTemporalMarker(2.4, ()->arm.setArmAngle(110))
+                .addTemporalMarker(2.9, ()-> slides.setHeight(Constants.SlidesConstants.HIGH_BASKET_POSITION))
+                .waitSeconds(3.5)
                 .build();
 
 
