@@ -49,6 +49,7 @@ public class TeleopMode extends LinearOpMode {
         wrist.setPosition(0.1);
         armPivot.setPower(0.8);
         armPivot.setTargetPosition((int) degToRotation(10));
+
         armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
@@ -60,8 +61,8 @@ public class TeleopMode extends LinearOpMode {
 //
 //            }
 
-            double speed = gamepad1.left_stick_y;
-            double turn = gamepad1.right_stick_x;
+            double speed = gamepad1.left_stick_y*0.7;
+            double turn = gamepad1.right_stick_x*0.7;
             if (reverseDrive) {
                 speed = -speed;
             }
@@ -74,7 +75,7 @@ public class TeleopMode extends LinearOpMode {
             chassis.drive(speed, turn);
 
 
-            //Score Low Bucket and High Bar
+            //Score Low Bucket and High Bar angle
             if (gamepad2.b) {
                 armPivot.setPower(0.8);
                 armPivot.setTargetPosition((int) degToRotation(159.0));
@@ -86,17 +87,9 @@ public class TeleopMode extends LinearOpMode {
                 armPivot.setPower(0.8);
                 armPivot.setTargetPosition((int) degToRotation(253.0));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                wrist.setPosition(0);
+                wrist.setPosition(0.1);
 
             }
-
-//            if (gamepad1.left_bumper){
-//                speed = speed - 0.7;
-//            }
-//            if (gamepad1.right_bumper){
-//                speed = speed + 0.7;
-//            }
-
 
             //Climb
             if (gamepad1.dpad_down) {
@@ -122,10 +115,10 @@ public class TeleopMode extends LinearOpMode {
                 intakeServo.setPower(-0.8);
             }
 
-            //score Bar
+            //score Bar angle
             else if (gamepad2.dpad_right) {
                 armPivot.setPower(0.6);
-                armPivot.setTargetPosition((int) degToRotation(178));
+                armPivot.setTargetPosition((int) degToRotation(183));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 intakeServo.setPower(-0.8);
                 //score bucket front position

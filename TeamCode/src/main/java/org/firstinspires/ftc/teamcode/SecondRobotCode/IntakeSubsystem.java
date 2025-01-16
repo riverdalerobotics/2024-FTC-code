@@ -11,9 +11,11 @@ public class IntakeSubsystem{
     CRServo intake;
     Servo wrist;
 
-    public IntakeSubsystem(CRServo intake, Servo lift){
+    public IntakeSubsystem(CRServo intake, Servo wrist){
         this.intake = intake;
-        this.wrist = lift;
+        this.wrist = wrist;
+
+
 
     }
     public void setWristPosition(double pos){
@@ -27,5 +29,13 @@ public class IntakeSubsystem{
     public void spinTake(double power){
         intake.setPower(power);
     }
+
+    public void wristToZero(){
+        wrist.setPosition(0);
+      //  wrist.getCurrePosition();
+
+    }
 }
+
+
 

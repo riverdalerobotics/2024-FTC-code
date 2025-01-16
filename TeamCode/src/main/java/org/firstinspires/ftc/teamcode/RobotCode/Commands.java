@@ -15,31 +15,31 @@ public class Commands {
         this.intakeServo = intakeServo;
 
     }
-    ArmSubsystem armSubsytem = new ArmSubsystem(arm);
+    ArmSubsystem armSubsystem = new ArmSubsystem(arm);
     IntakeSubsystem intake = new IntakeSubsystem(intakeServo, wrist);
 
 
         public void scoreBucket() {
             //code to score bucket
             //TODO: Instead of 90 make the desired angle a constant in Constants.java-Nicolas
-            armSubsytem.moveArm(Constants.ArmConstants.BUCKET_ANGLE);
+            armSubsystem.moveArm(Constants.ArmConstants.BUCKET_ANGLE);
 
             intake.intakePowerOn(Constants.IntakeConstants.RELEASE_SAMPLE);
         }
 
         public void scoreBar() {
-            armSubsytem.moveArm(Constants.ArmConstants.BAR_ANGLE);
+            armSubsystem.moveArm(Constants.ArmConstants.BAR_ANGLE);
             intake.intakePowerOn(Constants.IntakeConstants.RELEASE_SAMPLE);
         }
 
 
         public void intake() {
-            armSubsytem.moveArm(Constants.ArmConstants.INTAKE_ANGLE);
+            armSubsystem.moveArm(Constants.ArmConstants.INTAKE_ANGLE);
             intake.intakePowerOn(Constants.IntakeConstants.INTAKE_SAMPLE);
         }
 
         public void moveArm90Degrees(){
-            armSubsytem.moveArm(90);
+            armSubsystem.moveArm(90);
         }
 
 

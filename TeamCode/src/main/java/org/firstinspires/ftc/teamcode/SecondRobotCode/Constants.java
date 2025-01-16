@@ -1,16 +1,24 @@
 package org.firstinspires.ftc.teamcode.SecondRobotCode;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 
 //TODO: what the hone is the gear ratios and also what are our encoder ticks per revolution - Sana IMPORTANT
 
+
+//TODO: CHANGE EVERYTHING BACK TO FINAL CAUSE U HAVE TO HAVE IT AS NONFINAL TO ACCCESS VALUES IN FTC DASHBOARD
+
+
+
 //TODO: DETERMING MAX AND MIN FOR THE ARM EXTENDER and the ARM SUBSYSTEM - Sana
+@Config
 public class Constants {
     /**
      * All constants needed for the chassis
      * */
+    @Config
     static class ChassisConstants{
 
         /*
@@ -28,7 +36,7 @@ public class Constants {
          * from DriveVelocityPIDTuner.
          */
         public static final boolean RUN_USING_ENCODER = true;
-        public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(16, 20, 0,
+        public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0,
                 getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV)); //TODO: tune thissss
 
         /*
@@ -41,8 +49,8 @@ public class Constants {
          */
         public static double WHEEL_RADIUS = 2.04724; // inches
         public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-        public static double TRACK_WIDTH = 14.33333333; // in  //TODO: double check dis
-        public static double WHEEL_BASE = 16.287402;
+        public static double TRACK_WIDTH = 14.48; // in  //TODO: double check dis
+        public static double WHEEL_BASE = 13.4;
 
         /*
          * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -50,8 +58,8 @@ public class Constants {
          * motor encoders or have elected not to use them for velocity control, these values should be
          * empirically tuned.
          */
-        public static double kV = 1.0 / rpmToVelocity(MAX_RPM);
-        public static double kA = 0;
+        public static double kV = 0.020;
+        public static double kA = 0.0031;
         public static double kStatic = 0;
 
         /*
@@ -61,10 +69,10 @@ public class Constants {
          * small and gradually increase them later after everything is working. All distance units are
          * inches.
          */
-        public static double MAX_VEL = 20; //TODO: CHANGE DIS MAYBE, supposed to be 36
-        public static double MAX_ACCEL = 10; //TODO: CHANGE DIS MAYBE, supposed to be 30
-        public static double MAX_ANG_VEL = Math.toRadians(40);
-        public static double MAX_ANG_ACCEL = Math.toRadians(40);
+        public static double MAX_VEL = 40; //TODO: CHANGE DIS MAYBE, supposed to be 66
+        public static double MAX_ACCEL = 50; //TODO: CHANGE DIS MAYBE, supposed to be 66
+        public static double MAX_ANG_VEL = Math.toRadians(200);
+        public static double MAX_ANG_ACCEL = Math.toRadians(200);
 
         /*
          * Adjust the orientations here to match your robot. See the FTC SDK documentation for details.
@@ -95,6 +103,7 @@ public class Constants {
      * Drive Encoder Tick per rotatioo: 312RPM  TODO:HUHHHH????
      * Arm and arm extender : 117RPM
      **/
+    @Config
     public static class ArmConstants {
         public static final double Kd = 0; //TODO: find this number
         public static final double Ki = 0; //TODO: find this number
@@ -106,50 +115,55 @@ public class Constants {
         public static final double GEAR_REDUCTION = (double) 20.0/100 ; //TODO: Find gear reduction
 
 
-        public static final double ARM_ANGLE_HANDOFF = 75; //TODO: Find that up arm angle
-        public static final double ARM_ANGLE_INTAKE= 211.82 ; //TODO: Find that down arm angle lol
-        public static final double ARM_ANGLE_SLIDE_GOING_UP = 95 ; //TODO: Find that down arm angle lol
+        public static  double ARM_ANGLE_HANDOFF = 75; //TODO: Find that up arm angle
+        public static double ARM_ANGLE_PRE_INTAKE = 193;
+        public static  double ARM_ANGLE_INTAKE= 209 ; //TODO: Find that down arm angle lol
+        public static  double ARM_ANGLE_SLIDE_GOING_UP = 95 ; //TODO: Find that down arm angle lol
     }
 
     /**
      * Intake Constants needed for Intake
      * */
+    @Config
     public static class SlidesConstants {
 
        // public static final double PULLEY_RATIO = 60;
-
+        public static final double TOLERANCE = 0d;//find this num
+        public static final double KP = 0.1;
+        public static final double KI = 0d;
+        public static final double KD = 0d;
         public static final double TICKS_PER_ROTATION = 537.7;
         public static final double DISTANCE_PER_ROTATION = 120; //mm
 
-
         public static final double HIGH_BASKET_POSITION = 860-3;
-        public static final double LOW_BASKET_POSITION = 0;
-        public static final double HANDOFF_POSITION = 0;
+        public static  double LOW_BASKET_POSITION = 0;
+        public static  double HANDOFF_POSITION = 0;
 
 
         public static final double ARM_NEEDS_LEAVE_POSITION = 0;
 
 
     }
-
+    @Config
     public static class BucketConstants {
 
-        public static final double BUCKET_SCORE_POSITION = 0.15;
-        public static final double BUCKET_HANDOFF_POSITION = 0.40;
+        public static  double BUCKET_SCORE_POSITION = 0.17;
+        public static  double BUCKET_HANDOFF_POSITION = 0.40;
 
     }
 
     /**
      * Intake Constants needed for Intake
      * */
+    @Config
     static class IntakeConstants {
 
-        public static final double WRIST_INTAKE_POSITION = 0.71; //TODO:
-        public static final double WRIST_HANDOFF_POSITION = 0; //TODO:
+        public static  double WRIST_INTAKE_POSITION = 0.988; //TODO:
+        public static  double WRIST_HANDOFF_POSITION = 0.65; //TODO:
 
 
-        public static final double INTAKE_SPEED = 0.9; //TODO:
-        public static final double OUTAKE_SPEED = -0.5; //TODO:
+        public static  double INTAKE_SPEED = 0.9; //TODO:
+        public static  double OUTAKE_SPEED = -0.5; //TODO:
 
 
     }

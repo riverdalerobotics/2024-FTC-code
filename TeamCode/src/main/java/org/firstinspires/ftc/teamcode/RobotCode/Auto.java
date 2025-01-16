@@ -46,7 +46,6 @@ public class Auto extends LinearOpMode{
         ChassisSubsystem chassis = new ChassisSubsystem(left, right);
         ArmSubsystem arm = new ArmSubsystem(armPivot);
         Commands commands = new Commands(armPivot, wrist, intakeServo);
-        OI oi = new OI(gamepad1, gamepad2);
         double armAngle = armPivot.getCurrentPosition() * 360 / (1425.2 * 5);
         armPivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         boolean moveServo = false;
@@ -59,45 +58,34 @@ public class Auto extends LinearOpMode{
         right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+waitForStart();
 
-        if (opModeIsActive()) {
-
-            left.setDirection(DcMotor.Direction.REVERSE);
-            right.setDirection(DcMotor.Direction.REVERSE);
+        while(opModeIsActive()) {
+            wrist.setPosition(-0.35);
 
 
-            while (left.getCurrentPosition() > -3000 || right.getCurrentPosition() < 3000) {
-                right.setTargetPosition(300);
-                left.setTargetPosition(300);
-                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right.setPower(0.2);
-                left.setPower(0.2);
+            chassis.leftDrive.setPower(0.1);
+            chassis.rightDrive.setPower(0.1);
 
+
+            if (left.getCurrentPosition() <= -3000) {
+//                left.setPower(0.1);
+//                right.setPower(0.1);
+            }
+            if (left.getCurrentPosition()<= -4000){
+                while (armPivot.isBusy()) {
+                    armPivot.setPower(0.9);
+                    armPivot.setTargetPosition((int) degToRotation(183));
+                    armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
                 armPivot.setPower(0.8);
-                armPivot.setTargetPosition((int) degToRotation(158.0));
+                armPivot.setTargetPosition((int) degToRotation(159.0));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                wrist.setPosition(0.45);
-
-                armPivot.setPower(0.6);
-                armPivot.setTargetPosition((int) degToRotation(190));
-                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                intakeServo.setPower(-0.8);
 
             }
 
 
-            armPivot.setPower(0.8);
-            armPivot.setTargetPosition((int) degToRotation(158.0));
-            armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            wrist.setPosition(0.45);
-
-            armPivot.setTargetPosition((int) degToRotation(190));
-            armPivot.setPower(0.6);
-            armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            intakeServo.setPower(-0.8);
 
             telemetry.addData("left wheel value", left.getCurrentPosition());
             telemetry.addData("right wheel value", right.getCurrentPosition());
