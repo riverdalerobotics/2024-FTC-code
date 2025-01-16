@@ -45,8 +45,8 @@ public class Constants {
     public static class SlideConstants {
         public static   double ZERO = 3;
         public static   double INTAKE_MIN = 0;//TODO: find this number
-        public static   double INTAKE_MAX = 0;//TODO: find this number
-        public static   double TOLERANCE = 3;//TODO: find this number
+        public static   double INTAKE_MAX = 60;//TODO: find this number
+        public static   double TOLERANCE = 5;//TODO: find this number
         public static   double kp = 0.1;//TODO: find this number
         public static   double ki = 0;//TODO: find this number
         public static   double kd = 0;//TODO: find this number
@@ -63,15 +63,15 @@ public class Constants {
         public static   double CLIMB_DOWN = 0;//TODO: find this number
         public static   double SCORE_BUCKET = 85;//TODO: find this number
         public static   double INTAKE_POSITION = 0;//TODO: find this number
-        public static   double INTAKE_SPEED = 0.3; //TODO: find this number
+        public static   double INTAKE_SPEED = -0.3; //TODO: find this number
     }
     @Config
     public static class IntakeConstants{
-        public static   long WAIT_TIME=0;//TODO: find this number
+        public static   long WAIT_TIME = 200;//TODO: find this number
         public static   double SCORE_POSITION = 0;//TODO: find this number
         public static   double SCORE_SPEED = 0;//TODO: find this number
-        public static   double INTAKE_POSITION = 0.5;//TODO: find this number
-        public static   double INTAKE_SPEED = 0;//TODO: find this number
+        public static   double INTAKE_POSITION = 0.6;//TODO: find this number
+        public static   double INTAKE_SPEED = -0.325;//TODO: find this number
     }
     /**
      * Auto constants needed for auto

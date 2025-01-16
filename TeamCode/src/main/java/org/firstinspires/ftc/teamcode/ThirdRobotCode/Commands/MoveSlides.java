@@ -21,6 +21,9 @@ public class MoveSlides extends CommandBase {
     MultipleTelemetry telemetry;
     PIDCoefficients pidCoefficients;
     DcMotorEx rightSlide;
+    double oldPower;
+    double power;
+    boolean hasStart = false;
     public MoveSlides(SlideSubsystem slides, double setPoint, MultipleTelemetry telemetry, PIDFCoefficients pidfCoefficients){
         this.slides = slides;
         this.setPoint = setPoint;
@@ -33,21 +36,30 @@ public class MoveSlides extends CommandBase {
     public void initialize() {
         slidesPID = new PIDFController(pidfCoefficients.p, pidfCoefficients.i, pidfCoefficients.d, pidfCoefficients.f);
         slidesPID.reset();
+        slides.runWithOutEncoder();
         slidesPID.setSetPoint(setPoint);
         slidesPID.setTolerance(Constants.SlideConstants.TOLERANCE);
         slides.runWithOutEncoder();
+
     }
     @Override
+
     public void execute(){
-        double power = -slidesPID.calculate(rightSlide.getCurrentPosition()*Constants.SlideConstants.GEARDIAMETER, setPoint);
-        rightSlide.setPower(power);
+
+
+        power = -slidesPID.calculate(rightSlide.getCurrentPosition()*Constants.SlideConstants.GEARDIAMETER, setPoint);
+
+        slides.moveSlide(power);
         telemetry.addData("SLIDES POS AS GIVEN BY PID", slides.getSlidePos());
         telemetry.addData("Slides Power", power);
-    }
+        telemetry.addData("Error", slidesPID.getPositionError());
+        }
     public boolean isFinished(){
         return slidesPID.atSetPoint();
     }
     public void end(){
         slidesPID.reset();
+        slides.moveSlide(0);
     }
+
 }

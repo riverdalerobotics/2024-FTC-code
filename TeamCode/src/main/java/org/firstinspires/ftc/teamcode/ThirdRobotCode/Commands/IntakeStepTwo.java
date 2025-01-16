@@ -12,5 +12,6 @@ public class IntakeStepTwo extends ParallelRaceGroup {
                 new IntakeSpinForIntake(intake, teamColour, slides),
                 new MoveSlidesForIntake(slides)
         );
+        addRequirements(intake, slides);
     }
 }

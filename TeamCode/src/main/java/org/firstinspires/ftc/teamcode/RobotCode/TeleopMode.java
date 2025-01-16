@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -38,7 +39,7 @@ public class TeleopMode extends LinearOpMode {
         armPivot = hardwareMap.get(DcMotor.class, "ArmPivot");
         wrist = hardwareMap.get(Servo.class, "Wrist");
         intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
-        ChassisSubsystem chassis = new ChassisSubsystem(left, right);
+        ChassisSubsystem chassis = new ChassisSubsystem(left, right, hardwareMap.get(IMU.class, "imu"));
         ArmSubsystem arm = new ArmSubsystem(armPivot);
         Commands commands = new Commands(armPivot, wrist, intakeServo);
         OI oi = new OI(gamepad1, gamepad2);

@@ -11,13 +11,17 @@ import org.firstinspires.ftc.teamcode.ThirdRobotCode.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.SlideSubsystem;
 
 public class GoToZero extends SequentialCommandGroup {
+    IntakeSubsystem intake;
     public GoToZero(SlideSubsystem slides, ArmSubsystem arm, IntakeSubsystem intake, MultipleTelemetry telemetry, PIDFCoefficients armpidf, PIDFCoefficients slidespidf){
         addCommands(
+                new ZeroIntake(intake),
                 new MoveSlides(slides, Constants.SlideConstants.ZERO, telemetry, slidespidf),
                 new ZeroArm(arm, intake, telemetry, armpidf)
         );
         addRequirements(arm);
         addRequirements(slides);
         addRequirements(intake);
+        this.intake = intake;
     }
+
 }

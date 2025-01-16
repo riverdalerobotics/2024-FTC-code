@@ -16,10 +16,19 @@ public class MoveSlidesForIntake extends CommandBase {
         this.slides = slides;
         addRequirements(slides);
     }
+
+    @Override
+    public void initialize() {
+        slides.runWithOutEncoder();
+    }
+
     public void execute(){
         slides.moveSlide(power);
     }
     public boolean isFinished(){
-        return Constants.SlideConstants.INTAKE_MAX>slides.getSlidePos();
+        return Constants.SlideConstants.INTAKE_MAX<slides.getSlidePos();
+    }
+    public void end(){
+        slides.moveSlide(0);
     }
 }

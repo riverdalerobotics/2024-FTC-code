@@ -34,10 +34,11 @@ public class IntakeSubsystem extends SubsystemBase {
     public char getColour(){
         char color = 'N';
         NormalizedRGBA normalizedcolours = colour.getNormalizedColors();
-        double distToWhite = Math.sqrt(Math.pow(0-normalizedcolours.red, 2)+Math.pow(0-normalizedcolours.green, 2)+Math.pow(0-normalizedcolours.blue, 2));
-        double distToRed = Math.sqrt(Math.pow(0.05-normalizedcolours.red, 2)+Math.pow(0-normalizedcolours.green, 2)+Math.pow(0-normalizedcolours.blue, 2));
-        double distToYellow = Math.sqrt(Math.pow(0.05-normalizedcolours.red, 2)+Math.pow(0.05-normalizedcolours.green, 2)+Math.pow(0-normalizedcolours.blue, 2));
-        double distToBlue = Math.sqrt(Math.pow(0-normalizedcolours.red, 2)+Math.pow(0.05-normalizedcolours.blue, 2)+Math.pow(0-normalizedcolours.blue, 2));
+        double [] rgb = {colour.red(), colour.green(), colour.blue()};
+        double distToWhite = Math.sqrt(Math.pow(400-rgb[0], 2)+Math.pow(400-rgb[1], 2)+Math.pow(400-rgb[2], 2));
+        double distToRed = Math.sqrt(Math.pow(1000-rgb[0], 2)+Math.pow(500-rgb[1], 2)+Math.pow(500-rgb[2], 2));
+        double distToYellow = Math.sqrt(Math.pow(1000-rgb[0], 2)+Math.pow(1000-rgb[1], 2)+Math.pow(500-rgb[2], 2));
+        double distToBlue = Math.sqrt(Math.pow(500-rgb[0], 2)+Math.pow(500-rgb[1], 2)+Math.pow(1000-rgb[2], 2));
         double closestColour = Math.min(Math.min(distToYellow, distToWhite),Math.min(distToBlue, distToRed));
         if (closestColour == distToRed){
             color = 'r';
@@ -57,8 +58,8 @@ public class IntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         telemetry.addData("Color", getColour());
-        NormalizedRGBA colours = colour.getNormalizedColors();
-        telemetry.addData("R:", colours.red+" G " +colours.green+ " B " + colours.blue);
+        double [] rgb = {colour.red(), colour.green(), colour.blue()};
+        telemetry.addData("R:", rgb[0]+" G " +rgb[1]+ " B " + rgb[2]);
 
     }
 }

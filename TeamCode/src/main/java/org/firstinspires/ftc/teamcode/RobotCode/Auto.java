@@ -43,7 +43,7 @@ public class Auto extends LinearOpMode{
         armPivot = hardwareMap.get(DcMotor.class, "ArmPivot");
         wrist = hardwareMap.get(Servo.class, "Wrist");
         intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
-        ChassisSubsystem chassis = new ChassisSubsystem(left, right);
+        ChassisSubsystem chassis = new ChassisSubsystem(left, right, hardwareMap.get(IMU.class, "imu"));
         ArmSubsystem arm = new ArmSubsystem(armPivot);
         Commands commands = new Commands(armPivot, wrist, intakeServo);
         double armAngle = armPivot.getCurrentPosition() * 360 / (1425.2 * 5);

@@ -16,17 +16,20 @@ public class IntakeSpinForIntake extends CommandBase {
         this.slides = slides;
         addRequirements(intake);
     }
+    
     public void execute(){
-        intake.spinIntake(1);
+        intake.spinIntake(Constants.IntakeConstants.INTAKE_SPEED);
         if(slides.getSlidePos()>20){
             intake.pivotIntake(Constants.IntakeConstants.INTAKE_POSITION);
         }
     }
     public boolean isFinished(){
-        return intake.getColour() != colour;
+        return intake.getColour() == colour || intake.getColour() == 'y';
     }
-    public void end(){
+    public void end() throws InterruptedException{
+        Thread.sleep(Constants.IntakeConstants.WAIT_TIME);
         intake.pivotIntake(0);
         intake.spinIntake(0);
+
     }
 }

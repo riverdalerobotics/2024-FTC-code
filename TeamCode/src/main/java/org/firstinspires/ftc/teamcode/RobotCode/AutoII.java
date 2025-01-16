@@ -40,8 +40,8 @@ public class AutoII extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {
         waitForStart();
-        FtcDashboard dashboard = FtcDashboard.getInstance;
-        MultipleTelematry telematryA=new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
+//        FtcDashboard dashboard = FtcDashboard.getInstance;
+//        MultipleTelematry telematryA= new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
         DcMotor left;
         DcMotor right;
         DcMotor armPivot;
@@ -102,10 +102,10 @@ public class AutoII extends LinearOpMode{
 
 
 
-            telemetryA.addData("left wheel value", left.getCurrentPosition());
-            telemetryA.addData("right wheel value", right.getCurrentPosition());
-            telemetryA.addData("YAW", chassis.getYaw());
-            telemetryA.update();
+//            telemetryA.addData("left wheel value", left.getCurrentPosition());
+//            telemetryA.addData("right wheel value", right.getCurrentPosition());
+//            telemetryA.addData("YAW", chassis.getYaw());
+//            telemetryA.update();
             }
         }
     }
