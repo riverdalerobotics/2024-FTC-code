@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-//NOT USED NOT USED
+
 @TeleOp (name="Rookie Bot TeleOP")
 public class RookieTeleOp extends LinearOpMode {
 
@@ -15,7 +15,7 @@ public class RookieTeleOp extends LinearOpMode {
     DcMotor arm;
     Servo claw;
     CRServo intake;
-    //ChassisSubsystem chassis;
+
     ArmSubsystem armSub;
     IntakeSubsystem intakeSub;
     DcMotor intakeMotor;
@@ -123,8 +123,8 @@ public class RookieTeleOp extends LinearOpMode {
             telemetry.addData("strafe", strafe);
             telemetry.addData("X axis Pwr", turn);
             telemetry.addData("Driver input", gamepad1.left_stick_y );
-            // telemetry.addData("Field Oriented is enable?", fieldOriented);
-            telemetry.update();
+
+
             telemetry.update();
         }
     }

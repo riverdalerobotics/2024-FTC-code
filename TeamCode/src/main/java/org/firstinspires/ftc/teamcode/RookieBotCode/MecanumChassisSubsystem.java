@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 public class MecanumChassisSubsystem {
 
 
-    //directions for wheels
+    //Wheels
     DcMotor FR;
     DcMotor FL;
     DcMotor BR;
