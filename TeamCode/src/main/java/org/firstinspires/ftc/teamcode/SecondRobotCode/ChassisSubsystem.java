@@ -77,7 +77,7 @@ public class ChassisSubsystem extends MecanumDrive{
     private List<Integer> lastEncVels = new ArrayList<>();
 
 
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(4.5, 1.5, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(3.5, 1.5, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(0.7, 3, 0);
 
     public static double LATERAL_MULTIPLIER = 1.052; //1.48 //1.336
