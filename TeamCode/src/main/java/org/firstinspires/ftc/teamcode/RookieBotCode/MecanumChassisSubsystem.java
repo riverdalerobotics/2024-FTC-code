@@ -1,12 +1,17 @@
 package org.firstinspires.ftc.teamcode.RookieBotCode;
 
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
+
+
 public class MecanumChassisSubsystem {
+
+
 
 
     //Wheels
@@ -14,6 +19,7 @@ public class MecanumChassisSubsystem {
     DcMotor FL;
     DcMotor BR;
     DcMotor BL;
+
 
     double speed;
     double strafe;
@@ -24,6 +30,8 @@ public class MecanumChassisSubsystem {
     double bl;
 
 
+
+
     public MecanumChassisSubsystem(DcMotor FL, DcMotor FR, DcMotor BL, DcMotor BR) {
         FL = this.FL;
         FR = this.FR;
@@ -31,15 +39,23 @@ public class MecanumChassisSubsystem {
         BL = this.BL;
 
 
+
+
     }
+
+
 
 
     public void movement(double speed, double strafe, double turn) {
 
+
     }
 
 
+
+
     public void moveRobotMech(double fwd, double strafe, double turn) {
+
 
         br = fwd - turn + strafe;
         bl = fwd + turn - strafe;
@@ -47,10 +63,13 @@ public class MecanumChassisSubsystem {
         fl = fwd + turn + strafe;
 
 
+
+
         //nerf the speed if over absolute 1
         double max = Math.max(Math.abs(fr), Math.abs(br));
         max = Math.max(max, Math.abs(fl));
         max = Math.max(max, Math.abs(bl));
+
 
         if (max > 1.0) {
             br /= max;
@@ -58,6 +77,7 @@ public class MecanumChassisSubsystem {
             bl /= max;
             fl /= max;
         }
+
 
         BR.setPower(br);
         BL.setPower(bl);

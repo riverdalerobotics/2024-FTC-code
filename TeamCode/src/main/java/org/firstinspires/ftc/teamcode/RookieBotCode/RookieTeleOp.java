@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.RookieBotCode;
 
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -7,14 +8,17 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+
 @TeleOp (name="Rookie Bot TeleOP")
 public class RookieTeleOp extends LinearOpMode {
+
 
     DcMotor leftDrive;
     DcMotor rightDrive  ;
     DcMotor arm;
     Servo claw;
     CRServo intake;
+
 
     ArmSubsystem armSub;
     IntakeSubsystem intakeSub;
@@ -26,7 +30,10 @@ public class RookieTeleOp extends LinearOpMode {
     DcMotor BL;
 
 
+
+
     public void runOpMode() throws InterruptedException {
+
 
         FR = hardwareMap.get(DcMotor.class, "FR");
         FL = hardwareMap.get(DcMotor.class, "FL");
@@ -34,6 +41,8 @@ public class RookieTeleOp extends LinearOpMode {
         BL = hardwareMap.get(DcMotor.class, "BL");
         BL.setDirection(DcMotorSimple.Direction.REVERSE);
         FL.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
 
 
         arm = hardwareMap.get(DcMotor.class, "arm");
@@ -47,13 +56,17 @@ public class RookieTeleOp extends LinearOpMode {
         armSub.resetEncoder();
         armSub.setArmAngle(10,1);
 
+
         double speed;
         double strafe;
         double turn;
 
+
         while(opModeIsActive()){
 
+
             //driver
+
 
             if(gamepad1.right_bumper){
                 speed = gamepad1.left_stick_y/2;
@@ -69,6 +82,8 @@ public class RookieTeleOp extends LinearOpMode {
             turn = gamepad1.right_stick_x;
 
 
+
+
             if(gamepad2.a){
                 armSub.setArmAngle(30, 1);
                 intakeSub.moveIntakeArmToPos(140, 0.8);
@@ -82,15 +97,20 @@ public class RookieTeleOp extends LinearOpMode {
             else{
                 intakeSub.spinTake(0);
 
+
             }
 
+
             //operator
+
 
             if(gamepad2.x) {
                 intakeSub.moveIntakeArmToPos(0, 1);
 
+
                 armSub.setArmAngle(80, 1);
             }
+
 
             if(gamepad2.dpad_up){
                 intakeSub.grabWithClaw(0.35);
@@ -106,14 +126,18 @@ public class RookieTeleOp extends LinearOpMode {
                 armSub.setArmAngle(10,0.5);
             }
 
+
             if(gamepad2.dpad_left){
                 armSub.setArmAngle(52, 0.5);
             }
+
 
             if(gamepad2.left_trigger > 0.5){
                 armSub.setArmAngle(170, 0.5);
                 intakeSub.moveIntakeArmToPos(80, 0.5);
             }
+
+
 
 
             chassis.moveRobotMech(speed, strafe, turn);
@@ -125,7 +149,10 @@ public class RookieTeleOp extends LinearOpMode {
             telemetry.addData("Driver input", gamepad1.left_stick_y );
 
 
+
+
             telemetry.update();
         }
     }
 }
+
