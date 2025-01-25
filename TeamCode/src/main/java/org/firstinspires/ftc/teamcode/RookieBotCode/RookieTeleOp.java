@@ -18,8 +18,6 @@ public class RookieTeleOp extends LinearOpMode {
     DcMotor arm;
     Servo claw;
     CRServo intake;
-
-
     ArmSubsystem armSub;
     IntakeSubsystem intakeSub;
     DcMotor intakeMotor;
@@ -52,14 +50,17 @@ public class RookieTeleOp extends LinearOpMode {
         armSub = new ArmSubsystem(arm);
         intakeSub = new IntakeSubsystem(intake, claw, intakeMotor);
         chassis = new MecanumChassisSubsystem(FL, FR, BL, BR);
+
+        double speed;
+        double strafe;
+        double turn;
+
         waitForStart();
         armSub.resetEncoder();
         armSub.setArmAngle(10,1);
 
 
-        double speed;
-        double strafe;
-        double turn;
+
 
 
         while(opModeIsActive()){
