@@ -43,4 +43,17 @@ public class IntakeSubsystem{
     public void resetPos(){
         claw.setPosition(0);
     }
+    public void bringBackIntake(double speed){
+        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intakeMotor.setPower(speed);
+    }
+    public void runWithEncoder(){
+        intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+    public void resetEncoder(){
+        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+
+
 }

@@ -21,9 +21,6 @@ public class MecanumChassisSubsystem {
     DcMotor BL;
 
 
-    double speed;
-    double strafe;
-    double turn;
     double fr;
     double fl;
     double br;
@@ -33,10 +30,10 @@ public class MecanumChassisSubsystem {
 
 
     public MecanumChassisSubsystem(DcMotor FL, DcMotor FR, DcMotor BL, DcMotor BR) {
-        FL = this.FL;
-        FR = this.FR;
-        BR = this.BR;
-        BL = this.BL;
+        this.FL = FL;
+        this.FR = FR;
+        this.BR = BR;
+        this.BL = BL;
 
 
 
