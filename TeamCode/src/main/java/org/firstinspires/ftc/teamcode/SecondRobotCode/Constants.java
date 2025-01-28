@@ -69,9 +69,9 @@ public class Constants {
          * small and gradually increase them later after everything is working. All distance units are
          * inches.
          */
-        public static double MAX_VEL = 40; //TODO: CHANGE DIS MAYBE, supposed to be 66
+        public static double MAX_VEL = 60; //TODO: CHANGE DIS MAYBE, supposed to be 66
         public static double MAX_ACCEL = 50; //TODO: CHANGE DIS MAYBE, supposed to be 66
-        public static double MAX_ANG_VEL = Math.toRadians(200);
+        public static double MAX_ANG_VEL = Math.toRadians(230);
         public static double MAX_ANG_ACCEL = Math.toRadians(200);
 
         /*
@@ -163,7 +163,7 @@ public class Constants {
 
 
         public static  double INTAKE_SPEED = 0.9; //TODO:
-        public static  double OUTAKE_SPEED = -0.5; //TODO:
+        public static  double OUTAKE_SPEED = -0.2; //TODO:
 
 
     }
