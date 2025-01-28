@@ -32,7 +32,6 @@ public class MecanumChassisSubsystem {
         this.FR = FR;
         this.BR = BR;
         this.BL = BL;
-
     }
 
 
