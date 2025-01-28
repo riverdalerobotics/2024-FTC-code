@@ -82,7 +82,6 @@ public class RookieTeleOp extends LinearOpMode {
 
 // operator
 
-
             if(gamepad2.a){
                 armSub.setArmAngle(13, 1);
                 intakeSub.moveIntakeArmToPos(118, 0.8);

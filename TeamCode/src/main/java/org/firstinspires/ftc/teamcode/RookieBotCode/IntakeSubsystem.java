@@ -57,4 +57,5 @@ public class IntakeSubsystem{
     public void resetEncoder(){
         intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
+
 }
