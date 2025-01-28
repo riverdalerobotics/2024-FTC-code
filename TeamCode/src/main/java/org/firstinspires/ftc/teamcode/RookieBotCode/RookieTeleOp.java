@@ -109,7 +109,6 @@ public class RookieTeleOp extends LinearOpMode {
 
 
 
-
             if(gamepad2.x) {
                 intakeSub.moveIntakeArmToPos(0, 1);
 
