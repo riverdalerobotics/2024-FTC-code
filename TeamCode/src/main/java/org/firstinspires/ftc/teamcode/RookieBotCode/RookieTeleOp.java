@@ -96,7 +96,6 @@ public class RookieTeleOp extends LinearOpMode {
                 intakeSub.spinTake(0);
             }
 
-
             if(gamepad2.dpad_down){
                 intakeSub.bringBackIntake(-gamepad2.left_trigger);
             }
