@@ -24,73 +24,73 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
-@Autonomous(name = "Emmanuel Auto", group = "Linear OpMode")
-public class Auto extends LinearOpMode{
-
-    public double degToRotation(double deg) {
-        return deg / 360 * 1425.2 * 5;
-    }
-    @Override
-    public void runOpMode() throws InterruptedException {
-        waitForStart();
-        DcMotor left;
-        DcMotor right;
-        DcMotor armPivot;
-        Servo wrist;
-        CRServo intakeServo;
-        left = hardwareMap.get(DcMotor.class, "LeftMotor");
-        right = hardwareMap.get(DcMotor.class, "RightMotor");
-        armPivot = hardwareMap.get(DcMotor.class, "ArmPivot");
-        wrist = hardwareMap.get(Servo.class, "Wrist");
-        intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
-        ChassisSubsystem chassis = new ChassisSubsystem(left, right, hardwareMap.get(IMU.class, "imu"));
-        ArmSubsystem arm = new ArmSubsystem(armPivot);
-        Commands commands = new Commands(armPivot, wrist, intakeServo);
-        double armAngle = armPivot.getCurrentPosition() * 360 / (1425.2 * 5);
-        armPivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        boolean moveServo = false;
-        boolean reverseDrive = false;
-        wrist.setPosition(0.1);
-        armPivot.setPower(0.8);
-        armPivot.setTargetPosition((int) degToRotation(10));
-        armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-waitForStart();
-
-        while(opModeIsActive()) {
-            wrist.setPosition(-0.35);
-
-
-            chassis.leftDrive.setPower(0.1);
-            chassis.rightDrive.setPower(0.1);
-
-
-            if (left.getCurrentPosition() <= -3000) {
-//                left.setPower(0.1);
-//                right.setPower(0.1);
-            }
-            if (left.getCurrentPosition()<= -4000){
-                while (armPivot.isBusy()) {
-                    armPivot.setPower(0.9);
-                    armPivot.setTargetPosition((int) degToRotation(183));
-                    armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                }
-                armPivot.setPower(0.8);
-                armPivot.setTargetPosition((int) degToRotation(159.0));
-                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-            }
-
-
-
-            telemetry.addData("left wheel value", left.getCurrentPosition());
-            telemetry.addData("right wheel value", right.getCurrentPosition());
-            telemetry.update();
-        }
-    }
-
-    }
+//@Autonomous(name = "Emmanuel Auto", group = "Linear OpMode")
+//public class Auto extends LinearOpMode{
+//
+//    public double degToRotation(double deg) {
+//        return deg / 360 * 1425.2 * 5;
+//    }
+//    @Override
+//    public void runOpMode() throws InterruptedException {
+//        waitForStart();
+//        DcMotor left;
+//        DcMotor right;
+//        DcMotor armPivot;
+//        Servo wrist;
+//        CRServo intakeServo;
+//        left = hardwareMap.get(DcMotor.class, "LeftMotor");
+//        right = hardwareMap.get(DcMotor.class, "RightMotor");
+//        armPivot = hardwareMap.get(DcMotor.class, "ArmPivot");
+//        wrist = hardwareMap.get(Servo.class, "Wrist");
+//        intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
+//        //ChassisSubsystem chassis = new ChassisSubsystem(left, right);
+//        ArmSubsystem arm = new ArmSubsystem(armPivot);
+//        Commands commands = new Commands(armPivot, wrist, intakeServo);
+//        double armAngle = armPivot.getCurrentPosition() * 360 / (1425.2 * 5);
+//        armPivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        boolean moveServo = false;
+//        boolean reverseDrive = false;
+//        wrist.setPosition(0.1);
+//        armPivot.setPower(0.8);
+//        armPivot.setTargetPosition((int) degToRotation(10));
+//        armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//waitForStart();
+//
+//        while(opModeIsActive()) {
+//            wrist.setPosition(-0.35);
+//
+//
+//            chassis.leftDrive.setPower(0.1);
+//            chassis.rightDrive.setPower(0.1);
+//
+//
+//            if (left.getCurrentPosition() <= -3000) {
+////                left.setPower(0.1);
+////                right.setPower(0.1);
+//            }
+//            if (left.getCurrentPosition()<= -4000){
+//                while (armPivot.isBusy()) {
+//                    armPivot.setPower(0.9);
+//                    armPivot.setTargetPosition((int) degToRotation(183));
+//                    armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                }
+//                armPivot.setPower(0.8);
+//                armPivot.setTargetPosition((int) degToRotation(159.0));
+//                armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//
+//            }
+//
+//
+//
+//            telemetry.addData("left wheel value", left.getCurrentPosition());
+//            telemetry.addData("right wheel value", right.getCurrentPosition());
+//            telemetry.update();
+//        }
+//    }
+//
+//    }

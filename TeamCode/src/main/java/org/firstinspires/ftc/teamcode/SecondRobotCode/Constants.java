@@ -69,9 +69,9 @@ public class Constants {
          * small and gradually increase them later after everything is working. All distance units are
          * inches.
          */
-        public static double MAX_VEL = 40; //TODO: CHANGE DIS MAYBE, supposed to be 66
+        public static double MAX_VEL = 60; //TODO: CHANGE DIS MAYBE, supposed to be 66
         public static double MAX_ACCEL = 50; //TODO: CHANGE DIS MAYBE, supposed to be 66
-        public static double MAX_ANG_VEL = Math.toRadians(200);
+        public static double MAX_ANG_VEL = Math.toRadians(230);
         public static double MAX_ANG_ACCEL = Math.toRadians(200);
 
         /*
@@ -147,7 +147,7 @@ public class Constants {
     @Config
     public static class BucketConstants {
 
-        public static  double BUCKET_SCORE_POSITION = 0.15;
+        public static  double BUCKET_SCORE_POSITION = 0.17;
         public static  double BUCKET_HANDOFF_POSITION = 0.40;
 
     }
@@ -158,12 +158,12 @@ public class Constants {
     @Config
     static class IntakeConstants {
 
-        public static  double WRIST_INTAKE_POSITION = 0.98; //TODO:
+        public static  double WRIST_INTAKE_POSITION = 0.988; //TODO:
         public static  double WRIST_HANDOFF_POSITION = 0.65; //TODO:
 
 
         public static  double INTAKE_SPEED = 0.9; //TODO:
-        public static  double OUTAKE_SPEED = -0.5; //TODO:
+        public static  double OUTAKE_SPEED = -0.2; //TODO:
 
 
     }

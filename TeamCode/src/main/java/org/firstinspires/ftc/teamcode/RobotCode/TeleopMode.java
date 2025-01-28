@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.teamcode.RobotCode;
-
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -39,7 +38,8 @@ public class TeleopMode extends LinearOpMode {
         armPivot = hardwareMap.get(DcMotor.class, "ArmPivot");
         wrist = hardwareMap.get(Servo.class, "Wrist");
         intakeServo = hardwareMap.get(CRServo.class, "IntakeServo");
-        ChassisSubsystem chassis = new ChassisSubsystem(left, right, hardwareMap.get(IMU.class, "imu"));
+        IMU imu = hardwareMap.get(IMU.class,"imu");
+        ChassisSubsystem chassis = new ChassisSubsystem(left, right,imu);
         ArmSubsystem arm = new ArmSubsystem(armPivot);
         Commands commands = new Commands(armPivot, wrist, intakeServo);
         OI oi = new OI(gamepad1, gamepad2);
@@ -119,11 +119,12 @@ public class TeleopMode extends LinearOpMode {
             //score Bar angle
             else if (gamepad2.dpad_right) {
                 armPivot.setPower(0.6);
-                armPivot.setTargetPosition((int) degToRotation(183));
+                armPivot.setTargetPosition((int) degToRotation(180.6));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                intakeServo.setPower(-0.8);
+                intakeServo.setPower(0.1);
                 //score bucket front position
-            } else if (gamepad2.dpad_left) {
+            }
+            else if (gamepad2.dpad_left) {
                 armPivot.setPower(0.8);
                 armPivot.setTargetPosition((int) degToRotation(100));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -136,7 +137,7 @@ public class TeleopMode extends LinearOpMode {
 
             //move Wrist
             if (gamepad2.left_bumper) {
-                wrist.setPosition(0.45);
+                wrist.setPosition(0.4);
             }
             //reset Wrist
             if (gamepad2.right_bumper) {
@@ -147,6 +148,8 @@ public class TeleopMode extends LinearOpMode {
                 armPivot.setPower(0.8);
                 armPivot.setTargetPosition((int) degToRotation(10));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                wrist.setPosition(0.1);
+
             }
 
             if (gamepad2.dpad_down){

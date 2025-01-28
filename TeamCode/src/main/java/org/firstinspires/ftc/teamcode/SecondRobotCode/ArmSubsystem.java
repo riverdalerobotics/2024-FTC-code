@@ -24,7 +24,7 @@ public class ArmSubsystem {
     }
 
     public void setArmAngle(double angleInDegrees){
-    armMotor.setPower(0.7);
+    armMotor.setPower(0.9);
     armMotor.setTargetPosition((int)degToTicks(angleInDegrees));
     armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
