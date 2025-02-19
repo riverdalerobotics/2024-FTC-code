@@ -65,6 +65,9 @@ public class ArmSubsystem extends SubsystemBase{
         return armPivotMotor.isBusy();
 
     }
+    public void stopArm(){
+        armPivotMotor.setPower(0);
+    }
     public void pivotArm(double angle, double speed, PIDFCoefficients pidfCoefficients){
 
         double rotations = angle*Constants.ArmConstants.GEAR_RATIO/360;

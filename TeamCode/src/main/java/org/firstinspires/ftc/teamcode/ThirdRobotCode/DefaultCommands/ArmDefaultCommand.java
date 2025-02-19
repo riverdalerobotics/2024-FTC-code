@@ -32,8 +32,15 @@ public class ArmDefaultCommand extends CommandBase {
     }
     public void execute(){
 
-        armSubsystem.pivotArm(armSubsystem.getPos(), Constants.ArmConstants.REST_SPEED, Constants.ArmConstants.armPID);
+       // armSubsystem.pivotArm(armSubsystem.getPos(), Constants.ArmConstants.REST_SPEED, Constants.ArmConstants.armPID);
         telemetry.addData("IS RUNNING", true);
+        if(armSubsystem.getPos()<6){
+            armSubsystem.stopArm();
+            telemetry.addData("THE POWER SHOULD BE ZERO", true);
+        }
+        else{
+            armSubsystem.pivotArm(armSubsystem.getPos(), Constants.ArmConstants.REST_SPEED, Constants.ArmConstants.armPID);
+        }
     }
     @Override
     public boolean isFinished(){

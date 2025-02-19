@@ -27,26 +27,26 @@ public class Constants {
      * */
     @Config
     public static class ArmConstants{
-        public static PIDFCoefficients armPID = new PIDFCoefficients(3.75, 1.1, 1.4, 25);
+        public static PIDFCoefficients armPID = new PIDFCoefficients(3.75, 1.75, 1.4, 25);
         public static double START_CLIMB = 0; // TODO: find this number
         public static   double  GEAR_RATIO = (81/7)*537.7; //TODO: get this number
         public static   double CLAW_SERVO_START_POSITION = 0; //TODO: get this number
         public static   double WHEEL_DIAMETER = 0; //TODO: get this number
-        public static   double CLIMB_UP_ANGLE = 0; //TODO: find this number
+        public static   double CLIMB_UP_ANGLE = 100; //TODO: find this number
         public static   double CLIMB_DOWN_ANGLE = 0d; //TODO: find this number
-        public static   double REST_SPEED = 0.75; //TODO: find this number
+        public static   double REST_SPEED = 1; //TODO: find this number
         public static   double SCORE_SPEED = 0;//TODO: find this number
-        public static   double BUCKET_ANGLE = 100;//TODO: find this number
+        public static   double BUCKET_ANGLE = 95;//TODO: find this number
         public static   double INTAKE_ANGLE = 0;//TODO: find this number
         public static   double INTAKE_SPEED = 0;//TODO: find this number
 
     }
     @Config
     public static class SlideConstants {
-        public static   double ZERO = 3;
+        public static   double ZERO = 10;
         public static   double INTAKE_MIN = 0;//TODO: find this number
         public static   double INTAKE_MAX = 60;//TODO: find this number
-        public static   double TOLERANCE = 5;//TODO: find this number
+        public static   double TOLERANCE = 4;//TODO: find this number
         public static   double kp = 0.1;//TODO: find this number
         public static   double ki = 0;//TODO: find this number
         public static   double kd = 0;//TODO: find this number
@@ -59,19 +59,21 @@ public class Constants {
         public static   double GEARDIAMETER = (3.8*Math.PI)/384.5; //TODO: get this number
         public static   double LIMIT = 41-Math.cos(85*Math.PI/180);
         public static   double ARM_LENGTH = 0; //TODO: get this number
-        public static   double CLIMB_UP = 0; //TODO: find this number
-        public static   double CLIMB_DOWN = 0;//TODO: find this number
-        public static   double SCORE_BUCKET = 85;//TODO: find this number
+        public static   double CLIMB_UP = 40; //TODO: find this number
+        public static   double CLIMB_DOWN = 10;//TODO: find this number
+        public static   double SCORE_BUCKET = 76;//TODO: find this number
         public static   double INTAKE_POSITION = 0;//TODO: find this number
         public static   double INTAKE_SPEED = -0.3; //TODO: find this number
     }
     @Config
     public static class IntakeConstants{
-        public static   long WAIT_TIME = 200;//TODO: find this number
+        public static double max = 0.2;
+        public static double min = 0.5;
+        public static   int WAIT_TIME = 200;//TODO: find this number
         public static   double SCORE_POSITION = 0;//TODO: find this number
-        public static   double SCORE_SPEED = 0;//TODO: find this number
+        public static   double SCORE_SPEED = -0.5;//TODO: find this number
         public static   double INTAKE_POSITION = 0.6;//TODO: find this number
-        public static   double INTAKE_SPEED = -0.325;//TODO: find this number
+        public static   double INTAKE_SPEED = -0.2;//TODO: find this number
     }
     /**
      * Auto constants needed for auto

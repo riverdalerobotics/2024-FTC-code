@@ -16,7 +16,6 @@ public class IntakeDefaultCommand extends CommandBase {
     }
     public void initialize(){
         intake.spinIntake(0);
-        intake.pivotIntake(0);
         telemetry.addLine("hello");
         telemetry.update();
     }

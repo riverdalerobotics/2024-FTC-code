@@ -6,33 +6,29 @@ import org.firstinspires.ftc.teamcode.ThirdRobotCode.Constants;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.SlideSubsystem;
 
-import java.util.concurrent.TimeUnit;
-
-public class IntakeSpinForIntake extends CommandBase {
+public class Spit extends CommandBase {
     char colour;
     IntakeSubsystem intake;
     SlideSubsystem slides;
-
-    public IntakeSpinForIntake(IntakeSubsystem intake, char teamColour, SlideSubsystem slides){
+    public Spit(IntakeSubsystem intake, char teamColour){
         this.colour = teamColour;
         this.intake = intake;
-        this.slides = slides;
+                addRequirements(intake);
+    }
 
-        addRequirements(intake);
+    @Override
+    public void initialize() {
+        intake.pivotIntake(Constants.IntakeConstants.SCORE_POSITION);
     }
 
     public void execute(){
-        intake.spinIntake(0);
-        if(slides.getSlidePos()>20) {
-            intake.pivotIntake(Constants.IntakeConstants.INTAKE_POSITION);
-        }
-        intake.spinIntake(Constants.IntakeConstants.INTAKE_SPEED);
-
+        intake.spinIntake(Constants.IntakeConstants.SCORE_SPEED);
     }
     public boolean isFinished(){
-        return intake.getColour() == colour || intake.getColour() == 'y';
+        return intake.getColour() == 'w';
     }
-    public void end(){
+    public void end() throws InterruptedException{
+        Thread.sleep(Constants.IntakeConstants.WAIT_TIME);
         intake.pivotIntake(0);
         intake.spinIntake(0);
 

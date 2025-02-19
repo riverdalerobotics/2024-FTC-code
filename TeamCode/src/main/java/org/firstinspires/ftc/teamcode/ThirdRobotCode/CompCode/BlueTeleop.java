@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.ThirdRobotCode;
+package org.firstinspires.ftc.teamcode.ThirdRobotCode.CompCode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -13,32 +13,34 @@ import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorRangeSensor;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.ArmGoToScore;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.ArmSubsystem;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.ChassisSubsystem;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.Climb;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.ClimbPartTwo;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.GoToZero;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.Intake;
-import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.IntakeSpinForIntake;
-import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.MoveSidesManually;
-import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.MoveSlides;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.IntakeStepTwoButFancy;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.MoveIntake;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.ScoreBucket;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.Spit;
-import org.firstinspires.ftc.teamcode.ThirdRobotCode.DefaultCommands.ChassisDefaultCommand;
-import org.firstinspires.ftc.teamcode.ThirdRobotCode.DefaultCommands.SlideDefaultCommand;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.Constants;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.DefaultCommands.ArmDefaultCommand;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.DefaultCommands.ChassisDefaultCommand;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.DefaultCommands.IntakeDefaultCommand;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.DefaultCommands.SlideDefaultCommand;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.IntakeSubsystem;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.OI;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.SlideSubsystem;
 
 @Config
-@TeleOp (name = "TestCommandOpMode", group = "LinerOpMode")
-public class TestTeleop extends CommandOpMode {
+@TeleOp (name = "PinkiePieSad:(", group = "LinerOpMode")
+public class BlueTeleop extends CommandOpMode {
     SlideSubsystem slides;
     ArmSubsystem arm;
     IntakeSubsystem intake;
@@ -68,6 +70,7 @@ public class TestTeleop extends CommandOpMode {
     SparkFunOTOS.Pose2D pose2D;
     double xPos,yPos;
     SparkFunOTOS otos;
+    char teamColour = 'b';
 
 // set the clock speed on this I2C bus to 400kHz:
 
@@ -125,6 +128,7 @@ public class TestTeleop extends CommandOpMode {
     @Override
     public void run(){
         super.run();
+        pose2D = otos.getPosition();
         Button zeroButton = new GamepadButton(
                 operator, GamepadKeys.Button.A
         ).whenPressed(
@@ -138,25 +142,35 @@ public class TestTeleop extends CommandOpMode {
         Button intakeButton = new GamepadButton(
                 operator, GamepadKeys.Button.LEFT_BUMPER
         ).whenPressed(
-                new Intake(intake, slides, arm, 'b', telemetryA)
+                new Intake(intake, slides, arm, teamColour, telemetryA)
+        );
+        Button climb = new GamepadButton(
+                driver, GamepadKeys.Button.A
+        ).whenPressed(
+                new Climb(arm, slides, intake, telemetryA, Constants.ArmConstants.armPID)
+        );
+        Button secondClimb = new GamepadButton(
+                driver, GamepadKeys.Button.B
+        ).whenPressed(
+                new ClimbPartTwo(slides, arm, intake, telemetryA, Constants.ArmConstants.armPID, Constants.SlideConstants.slidesPID)
         );
 
         Button spitButton = new GamepadButton(
                 operator, GamepadKeys.Button.RIGHT_BUMPER
         ).whenPressed(
                 new Spit(intake, 'b')
-                );
-       pose2D = otos.getPosition()  ;
-//        xPos = pose2D.x*(-3.048);
-//        yPos = pose2D.y*(-3.048);
-//        heading = pose2D.h;
-////        if(heading<0){
-////            heading+=360;
-////        }
-//        double speed = gamepad1.left_stick_y;
-//        double strafe = gamepad1.left_stick_x;
-//        double turn = 0.8*gamepad1.right_stick_x;
-//        chassis.fieldOriented(heading,-speed, strafe, turn);
+        );
+        Button intakeDown = new GamepadButton(
+                operator, GamepadKeys.Button.X
+        ).whenPressed(
+                new MoveIntake(intake, Constants.IntakeConstants.INTAKE_POSITION)
+        );
+        Button intakeButFancyButton = new GamepadButton(
+                operator, GamepadKeys.Button.Y
+        ).whenPressed(
+                new IntakeStepTwoButFancy(intake, slides, teamColour)
+        );
+
         telemetryA.addData("heading", pose2D.h);
         telemetryA.update();
     }

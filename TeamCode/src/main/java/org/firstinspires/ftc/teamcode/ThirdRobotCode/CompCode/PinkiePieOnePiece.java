@@ -1,44 +1,43 @@
-package org.firstinspires.ftc.teamcode.ThirdRobotCode;
-
+package org.firstinspires.ftc.teamcode.ThirdRobotCode.CompCode;
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.button.Button;
-import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.hardware.lynx.LynxI2cDeviceSynch;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorRangeSensor;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.ArmGoToScore;
-import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.GoToZero;
-import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.Intake;
-import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.IntakeSpinForIntake;
-import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.MoveSidesManually;
-import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.MoveSlides;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.ArmSubsystem;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.ChassisSubsystem;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.AutoScore;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.ScoreBucket;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.Commands.Spit;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.Constants;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.DefaultCommands.ChassisDefaultCommand;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.DefaultCommands.SlideDefaultCommand;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.DefaultCommands.ArmDefaultCommand;
 import org.firstinspires.ftc.teamcode.ThirdRobotCode.DefaultCommands.IntakeDefaultCommand;
 
-@Config
-@TeleOp (name = "TestCommandOpMode", group = "LinerOpMode")
-public class TestTeleop extends CommandOpMode {
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.IntakeSubsystem;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.OI;
+import org.firstinspires.ftc.teamcode.ThirdRobotCode.SlideSubsystem;
+import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
+import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathBuilder;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
+
+@Autonomous(name = "PinkiePieIsAllAlone:(", group = "Linear OpMode")
+public class PinkiePieOnePiece extends CommandOpMode{
     SlideSubsystem slides;
     ArmSubsystem arm;
     IntakeSubsystem intake;
@@ -69,21 +68,21 @@ public class TestTeleop extends CommandOpMode {
     double xPos,yPos;
     SparkFunOTOS otos;
 
-// set the clock speed on this I2C bus to 400kHz:
-
+    DcMotor frontLeft;
+    DcMotor frontRight;
+    DcMotor backLeft;
+    DcMotor backRight;
+    PathChain pathChain;
+    Follower follower;
+    Pose startPose = new Pose(9.746, 110.602, 0);
 
     @Override
-    public void initialize(){
-        DcMotor frontLeft;
-        DcMotor frontRight;
-        DcMotor backLeft;
-        DcMotor backRight;
-
+    public void initialize() {
         otos = hardwareMap.get(SparkFunOTOS.class, "I2C0");
         otos.calibrateImu();
         otos.resetTracking();
         otos.setOffset(startPos);
-        sensor = hardwareMap.get(RevColorSensorV3.class, "Color");
+        sensor = hardwareMap.get(RevColorSensorV3 .class, "Color");
         ((LynxI2cDeviceSynch) sensor.getDeviceClient()).setBusSpeed(LynxI2cDeviceSynch.BusSpeed.FAST_400K);
         dashboard = FtcDashboard.getInstance();
         operator = new GamepadEx(gamepad2);
@@ -116,50 +115,17 @@ public class TestTeleop extends CommandOpMode {
         slides.setDefaultCommand(slideDefaultCommand);
         arm.setDefaultCommand(armDefaultCommand);
         intake.setDefaultCommand(intakeDefaultCommand);
-        chassis.setDefaultCommand(chassisDefaultCommand);
-
-
-
-
+        PathChain pathChain;
+        Pose startPose = new Pose(9.746, 107.602, Math.PI);
     }
+
     @Override
     public void run(){
-        super.run();
-        Button zeroButton = new GamepadButton(
-                operator, GamepadKeys.Button.A
-        ).whenPressed(
-                new GoToZero(slides, arm, intake, telemetryA, Constants.ArmConstants.armPID, slidesPidf)
-        );
-        Button scoreButton = new GamepadButton(
-                operator, GamepadKeys.Button.B
-        ).whenPressed(
-                new ScoreBucket(slides, arm, intake, telemetryA, Constants.ArmConstants.armPID, slidesPidf)
-        );
-        Button intakeButton = new GamepadButton(
-                operator, GamepadKeys.Button.LEFT_BUMPER
-        ).whenPressed(
-                new Intake(intake, slides, arm, 'b', telemetryA)
-        );
+            super.run();
+            follower.update();
+            if(!follower.isBusy()){
+                new AutoScore(slides, arm, intake, telemetryA);
 
-        Button spitButton = new GamepadButton(
-                operator, GamepadKeys.Button.RIGHT_BUMPER
-        ).whenPressed(
-                new Spit(intake, 'b')
-                );
-       pose2D = otos.getPosition()  ;
-//        xPos = pose2D.x*(-3.048);
-//        yPos = pose2D.y*(-3.048);
-//        heading = pose2D.h;
-////        if(heading<0){
-////            heading+=360;
-////        }
-//        double speed = gamepad1.left_stick_y;
-//        double strafe = gamepad1.left_stick_x;
-//        double turn = 0.8*gamepad1.right_stick_x;
-//        chassis.fieldOriented(heading,-speed, strafe, turn);
-        telemetryA.addData("heading", pose2D.h);
-        telemetryA.update();
+        }
     }
-
-
 }

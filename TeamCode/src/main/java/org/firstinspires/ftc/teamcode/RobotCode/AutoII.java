@@ -28,7 +28,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.RobotCode.ChassisSubsystem;
 //import com.acmerobotics.dashboard.FtcDashboard;
 
-@Autonomous(name = "Emmanuel Auto Try 2", group = "Linear OpMode")
+@Autonomous(name = "KityKat 1 piece bar auto", group = "Linear OpMode")
 //@Config
 public class AutoII extends LinearOpMode{
     public static double distance = 500;
@@ -90,7 +90,7 @@ public class AutoII extends LinearOpMode{
 
             if (part1 == 1) {
                 armPivot.setPower(0.9);
-                armPivot.setTargetPosition((int) degToRotation(180.6));
+                armPivot.setTargetPosition((int) degToRotation(180.5));
                 armPivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                 wrist.setPosition(0.4);
@@ -102,10 +102,10 @@ public class AutoII extends LinearOpMode{
                 left.setTargetPosition(10);
                 right.setTargetPosition(10);
 
-                Thread.sleep(300);
+                Thread.sleep(280);
 
-                chassis.drive(-1, 0);
-                Thread.sleep(10);
+                chassis.drive(-0.8, 0);
+                Thread.sleep(8);
                 chassis.drive(0,0);
 
                 Thread.sleep(2000);

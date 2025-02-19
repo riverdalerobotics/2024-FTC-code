@@ -48,14 +48,8 @@ public class ChassisSubsystem extends SubsystemBase {
         this.backLeft = backLeftDrive;
         //this.gyro = gyro;
         myAwtos = otos;
-//        frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-//        backLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-//        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-//                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-//                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
-//        ));
-//        gyro.initialize(parameters);
-
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
     }
     /**
      * This is kinda source code for mech drive...
@@ -66,9 +60,9 @@ public class ChassisSubsystem extends SubsystemBase {
 
     public void moveRobotMech(double fwd, double strafe, double turn){
         fwd = -fwd;
-        rightBackSpeed = fwd - turn + strafe;
+        rightBackSpeed = fwd - turn - strafe;
         leftBackSpeed = fwd + turn - strafe;
-        rightFrontSpeed = fwd - turn - strafe;
+        rightFrontSpeed = fwd - turn + strafe;
         leftFrontSpeed = fwd + turn + strafe;
 
         //nerf the speed if over absolute 1
@@ -103,8 +97,8 @@ public class ChassisSubsystem extends SubsystemBase {
      * @param turn the spin speed of the robot
      * */
     public void fieldOriented(double yaw, double fwd, double strafe, double turn){
-        double rotX = strafe * Math.cos(Math.toRadians(yaw)) + fwd* Math.sin(Math.toRadians(yaw));
-        double rotY = strafe * Math.sin(Math.toRadians(yaw)) - fwd * Math.cos(Math.toRadians(yaw));
+        double rotX = strafe * Math.cos(-Math.toRadians(yaw)) - fwd* Math.sin(-Math.toRadians(yaw));
+        double rotY = strafe * Math.sin(-Math.toRadians(yaw)) + fwd * Math.cos(-Math.toRadians(yaw));
         moveRobotMech(rotY, rotX, turn);
     }
 

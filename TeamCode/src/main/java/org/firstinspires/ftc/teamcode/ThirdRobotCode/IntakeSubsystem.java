@@ -30,28 +30,50 @@ public class IntakeSubsystem extends SubsystemBase {
     public void spinIntake(double power){
         intakeServo.setPower(power);
     }
-
+    public static void intakeWait(int ms)
+    {
+        try
+        {
+            Thread.sleep(ms);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }
+    }
     public char getColour(){
-        char color = 'N';
+
+        char color = 'w';
         NormalizedRGBA normalizedcolours = colour.getNormalizedColors();
         double [] rgb = {colour.red(), colour.green(), colour.blue()};
-        double distToWhite = Math.sqrt(Math.pow(400-rgb[0], 2)+Math.pow(400-rgb[1], 2)+Math.pow(400-rgb[2], 2));
-        double distToRed = Math.sqrt(Math.pow(1000-rgb[0], 2)+Math.pow(500-rgb[1], 2)+Math.pow(500-rgb[2], 2));
-        double distToYellow = Math.sqrt(Math.pow(1000-rgb[0], 2)+Math.pow(1000-rgb[1], 2)+Math.pow(500-rgb[2], 2));
-        double distToBlue = Math.sqrt(Math.pow(500-rgb[0], 2)+Math.pow(500-rgb[1], 2)+Math.pow(1000-rgb[2], 2));
-        double closestColour = Math.min(Math.min(distToYellow, distToWhite),Math.min(distToBlue, distToRed));
-        if (closestColour == distToRed){
-            color = 'r';
-        }
-        else if (closestColour == distToBlue){
-            color = 'b';
-        }
-
-        else if (closestColour == distToYellow){
+        double max = Constants.IntakeConstants.max*((rgb[0]+rgb[1]+rgb[2])/3);
+        double min = Constants.IntakeConstants.min*((rgb[0]+rgb[1]+rgb[2])/3);
+        if(rgb[0]>rgb[1]+max&&rgb[0]>rgb[2]+max){
+            color='r';
+        } else if (rgb[2]>rgb[1]+max&&rgb[2]>rgb[0]+max) {
+            color='b';
+        } else if (rgb[1]>rgb[2]+max&&rgb[0]>rgb[2]+max&&Math.abs(rgb[0]-rgb[1])<min) {
             color = 'y';
         }
-        else{
-            color = 'w';}
+//        double distToWhite = Math.sqrt(Math.pow(min-rgb[0], 2)+Math.pow(min-rgb[1], 2)+Math.pow(min-rgb[2], 2));
+//        double distToRed = Math.sqrt(Math.pow(max-rgb[0], 2)+Math.pow(min-rgb[1], 2)+Math.pow(min-rgb[2], 2));
+//        double distToYellow = Math.sqrt(Math.pow(max+200-rgb[0], 2)+Math.pow(max+200-rgb[1], 2)+Math.pow(min-rgb[2], 2));
+//        double distToBlue = Math.sqrt(Math.pow(min-rgb[0], 2)+Math.pow(min-rgb[1], 2)+Math.pow(max-rgb[2], 2));
+//        double closestColour = Math.min(Math.min(distToYellow, distToWhite),Math.min(distToBlue, distToRed));
+//        if (closestColour == distToRed){
+//            color = 'r';
+//        }
+//        else if (closestColour == distToBlue){
+//            color = 'b';
+//        }
+//
+//        else if (closestColour == distToYellow){
+//            color = 'y';
+//        }
+//        else{
+//            color = 'w';}
+//
+//
         return color;
     }
 

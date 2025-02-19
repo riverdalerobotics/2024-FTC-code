@@ -25,12 +25,12 @@ public class FollowerConstants {
     // This section is for configuring your motors
     public static String leftFrontMotorName = "frontLeft";
     public static String leftRearMotorName = "backLeft";
-    public static String rightFrontMotorName = "frontRight";
-    public static String rightRearMotorName = "backRight";
+    public static String rightFrontMotorName = "backRight";
+    public static String rightRearMotorName = "frontRight";
 
     // This section is for setting the actual drive vector for the front left wheel, if the robot
     // is facing a heading of 0 radians with the wheel centered at (0,0)
-    private static double xMovement = 72.335;
+    private static double xMovement = -72.335;
     private static double yMovement = 59.0828;
     private static double[] convertToPolar = Point.cartesianToPolar(xMovement, -yMovement);
     public static Vector frontLeftVector = MathFunctions.normalizeVector(new Vector(convertToPolar[0], convertToPolar[1]));
@@ -38,7 +38,7 @@ public class FollowerConstants {
 
     // Translational PIDF coefficients (don't use integral)
     public static CustomPIDFCoefficients translationalPIDFCoefficients = new CustomPIDFCoefficients(
-            0.1,
+            -0.1,
             0,
             0,
             0);
@@ -125,7 +125,7 @@ public class FollowerConstants {
     // When the t-value of the closest point to the robot on the Path is greater than this value,
     // then the Path is considered at its end.
     // This can be custom set for each Path.
-    public static double pathEndTValueConstraint = 0.995;
+    public static double pathEndTValueConstraint = 3;
 
     // When the Path is considered at its end parametrically, then the Follower has this many
     // milliseconds to further correct by default.

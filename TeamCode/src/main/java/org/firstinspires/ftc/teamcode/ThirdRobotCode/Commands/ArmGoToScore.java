@@ -30,12 +30,12 @@ public class ArmGoToScore extends CommandBase {
         // Use addRequirements() here to declare subsystem dependencies.
 
         addRequirements(subsystem);
-        addRequirements(intake);
+//        addRequirements(intake);
     }
     @Override
     public void initialize(){
         armSubsystem.pivotArm(Constants.ArmConstants.BUCKET_ANGLE, 1, pidf);
-        intake.pivotIntake(0);
+//        intake.pivotIntake(0);
         intake.spinIntake(0);
     }
     @Override

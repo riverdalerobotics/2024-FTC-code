@@ -14,10 +14,8 @@ public class Intake extends SequentialCommandGroup {
                 new ZeroIntake(intake),
                 new MoveSlides(slides, Constants.SlideConstants.ZERO, telemetry, Constants.SlideConstants.slidesPID),
                 new ZeroArm(arm, intake,telemetry, Constants.ArmConstants.armPID),
-                new IntakeStepTwo(intake, slides,teamColour),
-                new ZeroIntake(intake),
-                new MoveSlides(slides, Constants.SlideConstants.ZERO, telemetry, Constants.SlideConstants.slidesPID),
-                new ZeroArm(arm, intake,telemetry, Constants.ArmConstants.armPID)
+                new IntakeStepTwoButFancy(intake, slides,teamColour),
+                new ZeroIntake(intake)
                 );
         addRequirements(slides, arm, intake);
     }

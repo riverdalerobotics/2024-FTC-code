@@ -39,7 +39,7 @@ public class ZeroArm extends CommandBase {
     @Override
     public void execute(){
         telemetry.addData("ZEROING", true);
-        armSubsystem.pivotArm(1, 1, pidf);
+        armSubsystem.pivotArm(0, 1, pidf);
 
     }
     public boolean isFinished(){
@@ -48,6 +48,7 @@ public class ZeroArm extends CommandBase {
     }
     public void end(){
         telemetry.clear();
+        armSubsystem.pivotArm(0,0,pidf);
     }
 
 

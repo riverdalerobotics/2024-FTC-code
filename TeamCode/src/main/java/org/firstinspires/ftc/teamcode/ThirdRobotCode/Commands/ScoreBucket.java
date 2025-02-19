@@ -14,12 +14,14 @@ public class ScoreBucket extends SequentialCommandGroup {
     MultipleTelemetry telemetry;
     public ScoreBucket(SlideSubsystem slides, ArmSubsystem arm, IntakeSubsystem intake, MultipleTelemetry telemetry, PIDFCoefficients armpidf, PIDFCoefficients slidespidf){
         addCommands(
+//                new ZeroIntake(intake),
+                new MoveSlides(slides, Constants.SlideConstants.ZERO, telemetry, Constants.SlideConstants.slidesPID),
                 new ArmGoToScore(arm, intake, telemetry, armpidf),
                 new MoveSlides(slides, Constants.SlideConstants.SCORE_BUCKET, telemetry, slidespidf)
         );
         addRequirements(arm);
         addRequirements(slides);
-        addRequirements(intake);
+//        addRequirements(intake);
         this.telemetry = telemetry;
     }
 

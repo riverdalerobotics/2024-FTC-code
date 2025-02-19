@@ -23,8 +23,12 @@ public class MoveSlidesForIntake extends CommandBase {
     }
 
     public void execute(){
-        slides.moveSlide(power);
-    }
+        if(slides.getSlidePos()< Constants.SlideConstants.INTAKE_MAX){
+            slides.moveSlide(power);}
+        else{
+            slides.moveSlide(0);
+        }
+        }
     public boolean isFinished(){
         return Constants.SlideConstants.INTAKE_MAX<slides.getSlidePos();
     }
