@@ -1,50 +1,90 @@
 package org.firstinspires.ftc.teamcode.RookieBotCode;
 
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+
 
 @TeleOp (name="Rookie Bot TeleOP")
 public class RookieTeleOp extends LinearOpMode {
 
-        DcMotor leftDrive;
-        DcMotor rightDrive  ;
-        DcMotor arm;
-        Servo claw;
-        CRServo intake;
-        ChassisSubsystem chassis;
-        ArmSubsystem armSub;
-        IntakeSubsystem intakeSub;
-        DcMotor intakeMotor;
+
+
+
+    DcMotor arm;
+    Servo claw;
+    CRServo intake;
+    ArmSubsystem armSub;
+    IntakeSubsystem intakeSub;
+    DcMotor intakeMotor;
+    MecanumChassisSubsystem chassis;
+    DcMotor FR;
+    DcMotor FL;
+    DcMotor BR;
+    DcMotor BL;
+
+
 
     public void runOpMode() throws InterruptedException {
 
-        leftDrive  = hardwareMap.get(DcMotor.class, "leftDrive");
-        rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
+
+        FR = hardwareMap.get(DcMotor.class, "FR");
+        FL = hardwareMap.get(DcMotor.class, "FL");
+        BR = hardwareMap.get(DcMotor.class, "BR");
+        BL = hardwareMap.get(DcMotor.class, "BL");
+        BL.setDirection(DcMotorSimple.Direction.REVERSE);
+        FL.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
+
+
         arm = hardwareMap.get(DcMotor.class, "arm");
         claw = hardwareMap.get(Servo.class, "claw");
         intake = hardwareMap.get(CRServo.class, "intake");
         intakeMotor = hardwareMap.get(DcMotor.class, "IntakeMotor");
         armSub = new ArmSubsystem(arm);
         intakeSub = new IntakeSubsystem(intake, claw, intakeMotor);
-        chassis = new ChassisSubsystem(leftDrive, rightDrive);
+        chassis = new MecanumChassisSubsystem(FL, FR, BL, BR);
+
+        double speed;
+        double strafe;
+        double turn;
+
         waitForStart();
         armSub.resetEncoder();
         armSub.setArmAngle(10,1);
 
-        double speed;
-        double turn;
+
+
+
 
         while(opModeIsActive()){
 
-            speed = gamepad1.left_stick_y;
-            turn = gamepad1.right_stick_x;
+
+            //driver
+
+
+            if(gamepad1.right_bumper){
+                speed = gamepad1.left_stick_y/2;
+                strafe = gamepad1.left_stick_x/2;
+                turn = gamepad1.right_stick_x/2;
+            }
+            else {
+                speed = gamepad1.left_stick_y;
+                strafe = gamepad1.left_stick_x;
+                turn = gamepad1.right_stick_x;
+            }
+
+
+// operator
 
             if(gamepad2.a){
-                armSub.setArmAngle(30, 1);
-                intakeSub.moveIntakeArmToPos(140, 0.8);
+                armSub.setArmAngle(13, 1);
+                intakeSub.moveIntakeArmToPos(118, 0.8);
             }
             if( gamepad2.right_bumper){
                 intakeSub.spinTake(3.5);
@@ -54,12 +94,28 @@ public class RookieTeleOp extends LinearOpMode {
             }
             else{
                 intakeSub.spinTake(0);
-
             }
-            if(gamepad2.x){
+
+            if(gamepad2.dpad_down){
+                intakeSub.bringBackIntake(-gamepad2.left_trigger);
+            }
+            else{
+                intakeSub.runWithEncoder();
+            }
+
+            if((gamepad2.left_trigger > 0.9) && (gamepad2.right_trigger > 0.9)){
+                intakeSub.resetEncoder();
+            }
+
+
+            if(gamepad2.x) {
                 intakeSub.moveIntakeArmToPos(0, 1);
+
+
                 armSub.setArmAngle(80, 1);
             }
+
+
             if(gamepad2.dpad_up){
                 intakeSub.grabWithClaw(0.35);
             }
@@ -75,12 +131,32 @@ public class RookieTeleOp extends LinearOpMode {
             }
 
 
-            chassis.drive(speed,turn);
+            if(gamepad2.dpad_left){
+                armSub.setArmAngle(52, 0.5);
+            }
+
+
+            if(gamepad2.dpad_right){
+                armSub.setArmAngle(170, 0.5);
+                intakeSub.moveIntakeArmToPos(80, 0.5);
+            }
+
+
+
+
+            chassis.moveRobotMech(-speed, strafe, turn);
             telemetry.addData("Intake pos", intakeSub.intakeInDeg());
             telemetry.addData("Arm Position", armSub.getPosInDegrees());
             telemetry.addData("Y axis Pwr", speed);
+            telemetry.addData("strafe", strafe);
             telemetry.addData("X axis Pwr", turn);
+            telemetry.addData("Driver input", gamepad1.left_stick_y );
+
+
+
+
             telemetry.update();
         }
     }
 }
+

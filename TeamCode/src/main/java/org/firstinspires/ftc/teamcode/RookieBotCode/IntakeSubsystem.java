@@ -10,6 +10,7 @@ public class IntakeSubsystem{
     CRServo intake;
     Servo claw;
     DcMotor intakeMotor;
+    Boolean intakeRunningWithoutEncoder;
 
     public IntakeSubsystem(CRServo intake, Servo lift, DcMotor intakeMotor){
         this.intake = intake;
@@ -42,5 +43,18 @@ public class IntakeSubsystem{
 
     public void resetPos(){
         claw.setPosition(0);
+    }
+    public void bringBackIntake(double speed){
+        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intakeRunningWithoutEncoder = true;
+        intakeMotor.setPower(speed);
+    }
+    public void runWithEncoder(){
+        if (intakeRunningWithoutEncoder = false) {
+            intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER );
+        }
+    }
+    public void resetEncoder(){
+        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
