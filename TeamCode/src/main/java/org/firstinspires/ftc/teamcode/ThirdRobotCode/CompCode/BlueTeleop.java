@@ -41,6 +41,7 @@ import org.firstinspires.ftc.teamcode.ThirdRobotCode.SlideSubsystem;
 @Config
 @TeleOp (name = "PinkiePieSad:(", group = "LinerOpMode")
 public class BlueTeleop extends CommandOpMode {
+    //test
     SlideSubsystem slides;
     ArmSubsystem arm;
     IntakeSubsystem intake;
